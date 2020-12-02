@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ScrollView} from 'react-native';
 import {Colors} from '../styles/colors';
 import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 //third party library
@@ -16,8 +16,7 @@ import GOALS from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-goa
 import APPT from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-appt.svg';
 import RESOURCES from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-resources.svg';
 import MY_CAREGIVER from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-mycaregiver.svg';
-import {ScrollView} from 'react-native-gesture-handler';
-import {scaleFont} from '../commonFunctions/scaleFunction';
+import LAB from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-lab.svg';
 
 const iconStyle = {
   width: adjustSize(30),
@@ -35,6 +34,12 @@ const DrawerContent = (props) => {
         labelStyle={styles.subText}
         icon={() => <ACCOUNT {...iconStyle} />}
         onPress={() => props.navigation.navigate('Edit Account')}
+      />
+      <DrawerItem
+        label="Lab Results"
+        labelStyle={styles.subText}
+        icon={() => <LAB {...iconStyle} />}
+        onPress={() => props.navigation.navigate('LabResults')}
       />
       <DrawerItem
         label="Diary"
@@ -55,7 +60,7 @@ const DrawerContent = (props) => {
         onPress={() => props.navigation.navigate('Goals')}
       />
       <DrawerItem
-        label="Appointment"
+        label="Appointments"
         labelStyle={styles.subText}
         icon={() => <APPT {...iconStyle} />}
         onPress={() => props.navigation.navigate('Appointment')}

@@ -151,14 +151,14 @@ const dateFrom2dayLog = async (type, date) => {
       Moment(date).add(1, 'days').format('YYYY-MM-DD'),
     );
   }
-  let logs = arr1.logs;
-  if (logs.length === 0) {
+  let logs = arr1?.logs;
+  if (logs?.length === 0) {
     return noLog;
   } else {
     //weight exist in last 7 days
     let today = Moment(date).startOf('day');
     let takenDate = Moment(
-      getDateObj(logs[logs.length - 1].record_date),
+      getDateObj(logs[logs?.length - 1].record_date),
     ).startOf('day');
     let diff = today.diff(takenDate, 'days');
     if (diff != 0) {
@@ -181,10 +181,10 @@ const checkLogDone = async (period) => {
   try {
     let data = await getEntry4Day(String(today));
     let d = data[today];
-    bgLogs = d.glucose.logs;
-    foodLogs = d.food.logs;
-    medLogs = d.medication.logs;
-    weightLogs = d.weight.logs;
+    bgLogs = d?.glucose?.logs;
+    foodLogs = d?.food?.logs;
+    medLogs = d?.medication?.logs;
+    weightLogs = d?.weight?.logs;
 
     if ((await dateFrom2dayLog(bg_key, new Date())) === noLog) {
       notCompleted.push(bg_key);

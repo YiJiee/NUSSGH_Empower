@@ -47,12 +47,12 @@ import BgFilterDate from '../../components/dashboard/reports/bgFilterDate';
 import {getDateObj} from '../../commonFunctions/diaryFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
-const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
+import BGL_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-bloodglucose.svg';
+import FOOD_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-food.svg';
+import WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-weight.svg';
+import MED_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-med.svg';
 
-const BGL_ICON = require('../../resources/images/Patient-Icons/2x/icon-navy-bloodglucose-2x.png');
-const FOOD_ICON = require('../../resources/images/Patient-Icons/2x/icon-navy-food-2x.png');
-const MED_ICON = require('../../resources/images/Patient-Icons/2x/icon-navy-med-2x.png');
-const WEIGHT_ICON = require('../../resources/images/Patient-Icons/2x/icon-navy-weight-2x.png');
+const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
 
 const iconProps = {
   width: adjustSize(30),
@@ -68,22 +68,22 @@ const ACTIVITY_KEY = 'Activity';
 const tabs = [
   {
     name: BGL_TAB_KEY,
-    norm: () => <Image source={BGL_ICON} style={iconProps} />,
+    norm: () => <BGL_ICON {...iconProps} />,
     highlighted: () => <HIGHLIGHTED_BGL_ICON {...iconProps} />,
   },
   {
     name: FOOD_INTAKE_KEY,
-    norm: () => <Image source={FOOD_ICON} style={iconProps} />,
+    norm: () => <FOOD_ICON {...iconProps} />,
     highlighted: () => <HIGHLIGHTED_FOOD_ICON {...iconProps} />,
   },
   {
     name: MEDICATION_KEY,
-    norm: () => <Image source={MED_ICON} style={iconProps} />,
+    norm: () => <MED_ICON {...iconProps} />,
     highlighted: () => <HIGHLIGHTED_MED_ICON {...iconProps} />,
   },
   {
     name: WEIGHT_KEY,
-    norm: () => <Image source={WEIGHT_ICON} style={iconProps} />,
+    norm: () => <WEIGHT_ICON {...iconProps} />,
     highlighted: () => <HIGHLIGHTED_WEIGHT_ICON {...iconProps} />,
   },
   {
@@ -288,7 +288,7 @@ const ReportsScreen = (props) => {
       <TimeFilterTab
         currentTab={timeTabIndexFilter}
         setTabCallback={setTimeTabIndexFilter}
-        style={{alignSelf: 'center', width:'50%', marginTop: '3.5%'}}
+        style={{alignSelf: 'center', width: '50%', marginTop: '3.5%'}}
       />
       <ScrollView
         style={{...styles.screen, ...props.style}}

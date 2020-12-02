@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 //third party libs
 import {connect} from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
 //functions
 import {mapStateToProps, mapDispatchToProps} from '../../redux/reduxMapping';
 import {
@@ -25,10 +26,12 @@ import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //components
 import Loading from '../../components/loading';
 import globalStyles from '../../styles/globalStyles';
+import loginStyles, {loginLogoStyle} from '../../styles/loginStyles';
 //svg
 import Logo from '../../resources/images/Patient-Icons/SVG/icon-color-empower.svg';
 import {role_patient, role_caregiver} from '../../commonFunctions/common';
-import {scaleFont} from '../../commonFunctions/scaleFunction';
+import {Colors} from '../../styles/colors';
+import {getSecurityQnByUsername} from '../../netcalls/requestsSecurityQn';
 
 const tabs = [role_patient, role_caregiver];
 
@@ -76,9 +79,15 @@ class Login extends Component {
       await storePassword(this.state.password);
       await storeToken(token);
       await storeRole(role);
-      this.props.login();
-
-      console.log('login success!');
+      let formatUsername = String(this.state.username).toLowerCase();
+      let qn = await getSecurityQnByUsername(formatUsername);
+      if (qn?.qnList.length === 0) {
+        console.log('start onboarding!');
+        this.props.navigation.navigate('OnboardingWizard');
+      } else {
+        this.props.login();
+        console.log('login success!');
+      }
     } else {
       Alert.alert('Error', 'Invalid username/password combination.', [
         {text: 'Got It'},
@@ -97,62 +106,70 @@ class Login extends Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-        style={{flex: 1}}
-        behavior={Platform.OS === 'ios' ? 'padding' : null}>
-        <View style={styles.container}>
-          <Logo
-            height={styles.logoStyle.height}
-            width={styles.logoStyle.width}
-          />
-          <Text style={styles.welcomeText}>Welcome</Text>
-          <Text style={styles.detailText}>
-            To proceed with the app, please log in with your credentials
+      <LinearGradient
+        colors={Colors.loginColorArr}
+        useAngle={true}
+        angle={240}
+        style={loginStyles.container}>
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : null}>
+          <View style={{flex: 1}} />
+          <Logo {...loginLogoStyle} />
+          <Text style={loginStyles.headerText}>Welcome</Text>
+          <Text style={loginStyles.subText}>
+            To proceed with the app, please log in with your credential.
           </Text>
-          <View style={{flex: 0.5}} />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Username"
-            placeholderTextColor="white"
-            value={this.state.username}
-            onChangeText={this.handleUsernameInput}
-          />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Password"
-            secureTextEntry={true}
-            placeholderTextColor="white"
-            value={this.state.password}
-            onChangeText={this.handlePasswordInput}
-          />
-          <TouchableOpacity
-            style={[
-              globalStyles.nextButtonStyle,
-              {backgroundColor: 'white', marginBottom: 0},
-            ]}
-            onPress={this.handleLogin}>
-            <Text style={globalStyles.actionButtonText}>Login</Text>
-          </TouchableOpacity>
-          <Text
-            style={styles.forgetPassword}
-            onPress={() => this.props.navigation.navigate('ForgetPassword')}>
-            Forget Password?
-          </Text>
-          <Loading isLoading={this.state.isLoading} />
-          <View style={{justifyContent: 'flex-end', paddingTop: '3%'}}>
-            <Text style={styles.light}>
-              Having trouble?{' '}
-              <Text
-                style={styles.bold}
-                onPress={() =>
-                  this.props.navigation.navigate('ContactUsScreen')
-                }>
-                Contact Us Now!{' '}
-              </Text>
+
+          <View style={{flex: 3, marginTop: '10%'}}>
+            <TextInput
+              style={loginStyles.inputBox}
+              placeholder="Username"
+              placeholderTextColor={Colors.loginPlaceholder}
+              value={this.state.username}
+              onChangeText={this.handleUsernameInput}
+            />
+            <TextInput
+              style={loginStyles.inputBox}
+              placeholder="Password"
+              secureTextEntry={true}
+              placeholderTextColor={Colors.loginPlaceholder}
+              value={this.state.password}
+              onChangeText={this.handlePasswordInput}
+            />
+            <TouchableOpacity
+              style={[
+                globalStyles.nextButtonStyle,
+                {backgroundColor: 'white', marginBottom: 0},
+              ]}
+              onPress={this.handleLogin}>
+              <Text style={globalStyles.actionButtonText}>Login</Text>
+            </TouchableOpacity>
+            <Text
+              style={loginStyles.clickableText}
+              onPress={() => this.props.navigation.navigate('ForgetPassword')}>
+              Forget Password?
             </Text>
+            <Loading isLoading={this.state.isLoading} />
           </View>
+        </KeyboardAvoidingView>
+
+        <View
+          style={{
+            justifyContent: 'flex-end',
+            padding: '5%',
+            paddingBottom: '10%',
+          }}>
+          <Text style={styles.light}>
+            Having trouble?{' '}
+            <Text
+              style={styles.bold}
+              onPress={() => this.props.navigation.navigate('ContactUsScreen')}>
+              Contact Us Now!
+            </Text>
+          </Text>
         </View>
-      </KeyboardAvoidingView>
+      </LinearGradient>
     );
   }
 }
@@ -160,39 +177,6 @@ class Login extends Component {
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#0D8b43',
-    padding: '6%',
-  },
-  logoStyle: {
-    width: adjustSize(100),
-    height: adjustSize(100),
-    marginBottom: adjustSize(10),
-    borderRadius: adjustSize(20),
-  },
-  welcomeText: {
-    fontSize: adjustSize(30),
-    color: 'white',
-    fontFamily: 'SFProDisplay-Bold',
-  },
-  detailText: {
-    fontSize: adjustSize(20),
-    color: 'white',
-    fontFamily: 'SFProDisplay-Regular',
-  },
-  inputBox: {
-    width: '90%',
-    fontSize: adjustSize(18),
-    height: adjustSize(50),
-    borderRadius: adjustSize(20),
-    backgroundColor: '#12683E',
-    paddingStart: adjustSize(30), //position placeholder text
-    marginVertical: adjustSize(10),
-    alignSelf: 'center',
-    color: 'white',
-  },
   light: {
     color: 'white',
     fontSize: adjustSize(17),
@@ -203,12 +187,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontFamily: 'SFProDisplay-Bold',
-  },
-  forgetPassword: {
-    margin: '4%',
-    color: 'white',
-    textAlign: 'center',
-    fontSize: adjustSize(17),
   },
   border: {
     borderBottomColor: 'white',

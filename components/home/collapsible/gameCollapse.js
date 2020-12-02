@@ -5,16 +5,34 @@ import {Colors} from '../../../styles/colors';
 import {useNavigation} from '@react-navigation/native';
 
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-
+import {
+  requestGetOverview,
+  requestGetRewardOverview,
+} from '../../../netcalls/gameCenterEndPoints/requestGameCenter';
 
 const GameCollapse = (props) => {
-  const {points, chances, reward} = props;
+  const {availableItems, allItems, points, chances} = props;
   const [open, setOpen] = useState(true);
   const [minHeight, setMinHeight] = useState(0);
   const [maxHeight, setMaxHeight] = useState(0);
   const dropDownAnimation = useRef(new Animated.Value(1)).current;
+  const [reedemable, setRedeemable] = useState(0);
 
   const navigation = useNavigation();
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    let count = 0;
+    for (var x of availableItems) {
+      for (var y of allItems) {
+        if (y._id === x._id && y?.points <= points) {
+          count++;
+        }
+      }
+    }
+    setRedeemable(count);
+  }, [availableItems, allItems, points]);
 
   const toggle = (visible) => {
     if (visible) {
@@ -80,7 +98,7 @@ const GameCollapse = (props) => {
             </TouchableOpacity>
             <TouchableOpacity>
               <Text style={styles.paramText}>Reedemable</Text>
-              <Text style={styles.valueText}>{chances} Rewards</Text>
+              <Text style={styles.valueText}>{reedemable} Reward(s)</Text>
             </TouchableOpacity>
           </View>
         </Animated.View>

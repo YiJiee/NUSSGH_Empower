@@ -41,9 +41,9 @@ const ReportInfo = (props) => {
       case 0:
         return require('../../../resources/images/Report-Modal/img-report-modal-01.gif');
       case 1:
-        return '';
-      default:
         return require('../../../resources/images/Report-Modal/img-report-modal-02.gif');
+      default:
+        return require('../../../resources/images/Report-Modal/img-report-modal-03.gif');
     }
   };
 
@@ -51,7 +51,7 @@ const ReportInfo = (props) => {
     switch (currentStep) {
       case 0:
         return (
-          <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '100%', alignItems: 'center', marginTop: '5%'}}>
             <Text style={globalStyles.pageDetails}>
               Interact with the Graph
             </Text>
@@ -64,7 +64,7 @@ const ReportInfo = (props) => {
 
       case 1:
         return (
-          <View style={{width: '100%', alignItems: 'center'}}>
+          <View style={{width: '100%', alignItems: 'center', marginTop: '5%'}}>
             <Text style={globalStyles.pageDetails}>Compare with the Graph</Text>
             <Text style={styles.subText}>
               Tap the period of the food consumed and see the highlight on the
@@ -75,7 +75,12 @@ const ReportInfo = (props) => {
 
       default:
         return (
-          <View style={{width: '100%', alignItems: 'center', paddingTop: '2%'}}>
+          <View
+            style={{
+              width: '100%',
+              alignItems: 'center',
+              marginTop: '5%',
+            }}>
             <Text style={globalStyles.pageDetails}>
               Interact with the Chart
             </Text>
@@ -131,7 +136,8 @@ const ReportInfo = (props) => {
             />
           </View>
           {reportContent(currentStep)}
-          <View style={GameCenterStyles.subContainerNarrow}>
+          <View
+            style={[GameCenterStyles.subContainerNarrow, {paddingTop: '20%'}]}>
             {steps.map((item, index) => (
               <Ionicon
                 key={index}

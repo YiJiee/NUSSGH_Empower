@@ -66,7 +66,7 @@ const resetPassword = async (password, token, selection) => {
   let role = await getRole();
   let link = '';
   try {
-    if (role === role_patient || selection === role_patient) {
+    if (role === role_patient || selection === 'patient') {
       link = postNewPassword;
     } else {
       link = postNewPassword_C;

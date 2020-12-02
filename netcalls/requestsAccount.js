@@ -39,7 +39,7 @@ const getCaregiverProfile = async () => {
 };
 
 //both
-const editName = async (firstName, lastName) => {
+const editName = async (firstName) => {
   let role = await getRole();
   try {
     let link = '';
@@ -56,7 +56,6 @@ const editName = async (firstName, lastName) => {
         'Content-type': 'application/json',
       },
       body: JSON.stringify({
-        last_name: lastName,
         first_name: firstName,
       }),
     });

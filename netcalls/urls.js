@@ -46,6 +46,15 @@ const requestOTP_C = server + 'auth/caregiver/password-reset/request-otp';
 const verifyOTP_C = server + 'auth/caregiver/password-reset/verify-otp';
 const postNewPassword_C = server + 'auth/caregiver/password-reset/reset';
 
+const authSecurityQn = server + 'auth/security-questions';
+const authSecurityQnAns = server + 'auth/security-answers';
+const get_authSecurityQn = server + 'auth/security-questions/all';
+const verify_authSecurityQn = server + 'auth/security-answers/verify';
+
+const getLab = server + 'profile/lab-data';
+
+const getAppointment = server + 'profile/appointment';
+
 export {
   login,
   isTokenValid,
@@ -89,4 +98,10 @@ export {
   pendingCaregiverReq,
   patientCode,
   sendCaregiverReq,
+  authSecurityQn,
+  get_authSecurityQn,
+  verify_authSecurityQn,
+  authSecurityQnAns,
+  getLab,
+  getAppointment,
 };
