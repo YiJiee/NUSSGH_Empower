@@ -133,7 +133,11 @@ class AskAdd extends Component {
           <TouchableOpacity
             style={styles.addButton}
             onPress={this.handleAddMedication}>
-            <Ionicons name="add-circle" size={adjustSize(80)} color={Colors.nextBtnColor} />
+            <Ionicons
+              name="add-circle"
+              size={adjustSize(80)}
+              color={Colors.nextBtnColor}
+            />
           </TouchableOpacity>
         ) : (
           <PlannedMedList
@@ -171,8 +175,6 @@ class AskAdd extends Component {
             onDeleteMed={this.handleDelete}
           />
         ) : null}
-
-        <LoadingModal visible={loading} message={'Setting up your account'} />
       </View>
     );
   }

@@ -257,6 +257,7 @@ export {
   maxSteps,
   maxDuration,
   getDateObj,
+  getDateArray,
   getTime,
   getHour,
   getDateRange,

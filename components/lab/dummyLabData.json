@@ -1,0 +1,47 @@
+{
+  "data": [
+    {
+      "title": "Medical Report",
+      "date": "10/11/2020 13:51:40",
+      "diabeticProfile": [
+        {
+          "title": "Insulin",
+          "value": 20,
+          "units": "uIU/mL",
+          "target": 30,
+          "comparator": "<="
+        },
+        {
+          "title": "Glucose (Fasting)",
+          "value": 120,
+          "units": "mg/dL",
+          "target": 100,
+          "comparator": "<="
+        }
+      ],
+      "lipidProfile": [
+        {
+          "title": "Total Cholesterol",
+          "value": 180,
+          "units": "mg/dL",
+          "target": 200,
+          "comparator": "<="
+        },
+        {
+          "title": "Triglycerides",
+          "value": 150,
+          "units": "mg/dL",
+          "target": 100,
+          "comparator": "<="
+        },
+        {
+          "title": "HDL",
+          "value": 30,
+          "units": "mg/dL",
+          "target": 20,
+          "comparator": "<="
+        }
+      ]
+    }
+  ]
+}

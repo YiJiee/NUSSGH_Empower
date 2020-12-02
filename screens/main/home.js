@@ -1,11 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Animated,
-} from 'react-native';
+import {View, StyleSheet, Dimensions, ScrollView, Animated} from 'react-native';
 //third party lib
 import Moment from 'moment';
 //component
@@ -47,14 +41,14 @@ import OverviewCollapse from '../../components/home/collapsible/overviewCollapse
 import GameCollapse from '../../components/home/collapsible/gameCollapse';
 import {getRole} from '../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
+import {
+  requestGetOverview,
+  requestGetRewardOverview,
+} from '../../netcalls/gameCenterEndPoints/requestGameCenter';
 
 // properties
 const today_date = Moment(new Date()).format('YYYY-MM-DD');
 const dateString = Moment(new Date()).format('DD MMM YYYY');
-
-const point = 1600;
-const chances = 35;
-const rewards = 1;
 
 const HomeScreen = (props) => {
   const [role, setRole] = useState('');
@@ -83,6 +77,13 @@ const HomeScreen = (props) => {
   const [fat, setFat] = useState(null);
   const [activitySummary, setActivitySummary] = useState(null);
   const [activityTarget, setActivityTarget] = useState(null);
+
+  //game
+  const [chances, setChances] = useState(0);
+
+  const [points, setPoints] = useState(0);
+  const [availableItems, setAvailableItems] = useState([]);
+  const [allItems, setAllItems] = useState([]);
 
   //animation
   const slideRightAnimation = useRef(new Animated.Value(0)).current;
@@ -120,7 +121,6 @@ const HomeScreen = (props) => {
       getRole().then((data) => {
         setRole(data);
       });
-      console.log(role);
 
       checkLogDone(getGreetingFromHour(currHour))
         .then((response) => {
@@ -226,7 +226,18 @@ const HomeScreen = (props) => {
     });
 
     loadNutritionalData().then(() => {});
+    initGame().then(() => {});
     initUncompleteLog();
+  };
+
+  const initGame = async () => {
+    let responseObj = await requestGetOverview();
+    setChances(responseObj?.chances);
+    setPoints(responseObj?.points);
+
+    let responseObj2 = await requestGetRewardOverview();
+    setAllItems(responseObj2?.all_items);
+    setAvailableItems(responseObj2?.available_items);
   };
 
   const loadNutritionalData = async () => {
@@ -338,7 +349,12 @@ const HomeScreen = (props) => {
               medLogs={medLogs}
               init={() => initLogs()}
             />
-            <GameCollapse points={point} chances={chances} rewards={rewards} />
+            <GameCollapse
+              points={points}
+              chances={chances}
+              availableItems={availableItems}
+              allItems={allItems}
+            />
           </View>
 
           {/* Diary overview of weight, blood glucose, food, medication and physical activity */}

@@ -22,7 +22,6 @@ import {
 } from '../../netcalls/requestsMyCaregiver';
 import AuthoriseContent from '../../components/myCaregiver/authoriseContent';
 import AuthoriseReqModal from '../../components/authoriseReqModal';
-import {pendingCaregiverReq} from '../../netcalls/urls';
 
 const iconStyle = {
   width: adjustSize(40),
@@ -52,21 +51,21 @@ const MyCaregiverScreen = (props) => {
     if (rsp?._id != null) {
       setCaregiver(rsp);
       setPendingCaregiver({});
+      setPermissions(rsp?.permissions);
     } else {
       setCaregiver({});
-      let obj = await getPendingReq();
-      //there is a pending request
-      console.log(obj.response);
-      if (obj?.status === 200) {
-        setShowModal(true);
-        setPermissions(obj?.response?.permissions);
-        setPendingCaregiver(obj?.response?.caregiver);
-      } else {
-        let code = await getCode();
-        setPinNum(code?.code);
-        //check again for any incoming req
-        setTimeout(init, 5000);
-      }
+    }
+    let obj = await getPendingReq();
+    //there is a pending request
+    if (obj?.status === 200) {
+      setShowModal(true);
+      setPermissions(obj?.response?.permissions);
+      setPendingCaregiver(obj?.response?.caregiver);
+    } else {
+      let code = await getCode();
+      setPinNum(code?.code);
+      //check again for any incoming req
+      setTimeout(init, 5000);
     }
   };
 
@@ -80,7 +79,6 @@ const MyCaregiverScreen = (props) => {
     init().then(() => {});
   };
 
-  //get caregiver assigned and the list of permission granted*
   return (
     <View style={{...globalStyles.pageContainer, ...props.style}}>
       <View style={globalStyles.menuBarContainer}>
