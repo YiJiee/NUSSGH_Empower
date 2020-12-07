@@ -20,11 +20,13 @@ function initPusherNotif(username, pusherToken) {
     pusherToken,
     (statusCode, resp) => console.log('Error occurred while setting user id'),
     () => {
-      //console.log('Registration success!')
+      console.log('Registration success!')
     },
   );
 
   subscribe(donutsInterest);
+
+  console.log("Successfully registered pusher notifications");
   // RNPusherPushNotifications.on('notification', handleNotification);
   /*
   RNPusherPushNotifications.getSubscriptions(

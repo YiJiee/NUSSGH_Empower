@@ -407,7 +407,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = V8HMJMSHCY;
+						DevelopmentTeam = F24S5RZ4SU;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -889,7 +889,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = NUSSGH_Empower/NUSSGH_Empower.entitlements;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = V8HMJMSHCY;
+				DEVELOPMENT_TEAM = F24S5RZ4SU;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NUSSGH_Empower/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

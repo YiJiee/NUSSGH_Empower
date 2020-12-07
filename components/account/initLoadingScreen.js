@@ -33,7 +33,7 @@ const init = async (props, finishHandler) => {
 
 const LoadingScreen = (props) => {
   useEffect(() => {
-    init(props, props.finishHandler);
+    init(props, props.finishHandler).then(()=>{}).catch(err => console.log('err: ', err));
   });
 
   return (

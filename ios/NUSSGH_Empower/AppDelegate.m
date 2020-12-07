@@ -1,6 +1,6 @@
 #import "AppDelegate.h"
 
-// #import <RNPusherPushNotifications.h>
+#import <RNPusherPushNotifications.h>
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -73,6 +73,7 @@ static void InitializeFlipper(UIApplication *application) {
   NSLog(@"Registered for remote with token: %@", deviceToken);
   [RNCPushNotificationIOS
         didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  [[RNPusherPushNotifications alloc] setDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {

@@ -32,7 +32,8 @@ class NotificationHandler {
         // so it won't work on debug apps built on using xcode. - Hopefully when this gets pushed to
         // test flight, we can get a confirmation if it works.
         if (Platform.OS === 'ios') {
-            redirect = notification.aps?.alert?.userinfo?.redirect;
+            //console.log('alert: ', notification.data?.aps?.alert);
+            redirect = notification.data?.aps?.alert?.userinfo?.redirect;
         }
 
         // TWO CASES TO HANDLE:
@@ -53,7 +54,7 @@ class NotificationHandler {
     }
 
     onRegister(token) {
-        // console.log('NotificationHandler:', token);
+        console.log('NotificationHandler:', token);
 
         if (typeof this._onRegister === 'function') {
             this._onRegister(token);
