@@ -7,21 +7,20 @@ import LeftArrowBtn from '../logs/leftArrowBtn';
 import {editName} from '../../netcalls/requestsAccount';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
-
 const EditNameModal = (props) => {
   const {user} = props;
   const [firstName, setFirstName] = useState(user?.first_name);
-  const [lastName, setLastName] = useState(user?.last_name);
+  //const [lastName, setLastName] = useState(user?.last_name);
 
   const checkInput = () => {
-    if (firstName && lastName) {
+    if (firstName) {
       return true;
     }
     return false;
   };
 
   const handleSubmit = () => {
-    editName(firstName, lastName).then((response) => {
+    editName(firstName).then((response) => {
       if (response) {
         Alert.alert(
           'Name Changed Successfully',
@@ -76,6 +75,7 @@ const EditNameModal = (props) => {
           onChangeText={setFirstName}
           value={firstName}
         />
+        {/*
         <TextInput
           style={globalStyles.editInputBox}
           placeholder="Last Name"
@@ -83,6 +83,7 @@ const EditNameModal = (props) => {
           onChangeText={setLastName}
           value={lastName}
         />
+        */}
       </View>
       <View style={globalStyles.buttonContainer}>
         {checkInput() ? (

@@ -169,6 +169,27 @@ const unassignCaregiver = async () => {
   return null;
 };
 
+const patientSetPermission = async (arr) => {
+  try {
+    let response = await fetch(getCaregiver, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + (await getToken()),
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        permissions: arr,
+      }),
+    });
+    let status = await response.status;
+    return status;
+  } catch (error) {
+    console.error(error);
+  }
+  return null;
+};
+
 export {
   getMyCaregiver,
   unassignCaregiver,
@@ -178,4 +199,5 @@ export {
   sendReqPermission,
   rejectPendingCaregiver,
   acceptPendingCaregiver,
+  patientSetPermission,
 };

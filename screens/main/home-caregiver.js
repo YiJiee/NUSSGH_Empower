@@ -25,6 +25,7 @@ import PatientInfo from '../../components/home/collapsible/patientInfo';
 import {
   getAuthorisedStatusCaregiver,
   storeAuthorisedStatusCaregiver,
+  storePermissions,
 } from '../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 import AuthorisationCaregiver from '../../components/home/authorisationCaregiver';
@@ -33,6 +34,7 @@ import {getPendingReq} from '../../netcalls/requestsMyCaregiver';
 const HomeScreenCaregiver = (props) => {
   const [caregiver, setCaregiver] = useState({});
   const [patient, setPatient] = useState({});
+  const [patientTypes, setPatientType] = useState({});
   const [currHour, setCurrHour] = useState(new Date().getHours());
   const [uncompleteLogs, setUncompleteLogs] = useState([]);
 
@@ -85,6 +87,7 @@ const HomeScreenCaregiver = (props) => {
   const initCaregiver = async () => {
     let data = await getCaregiverProfile();
     setCaregiver(data?.caregiver);
+    await storePermissions(data?.caregiver?.permissions);
 
     if (data?.patient === null) {
       await storeAuthorisedStatusCaregiver(false);
@@ -99,6 +102,7 @@ const HomeScreenCaregiver = (props) => {
       }
     } else {
       setPatient(data?.patient);
+      setPatientType(data?.patient_type);
       await storeAuthorisedStatusCaregiver(true);
       setAuthorise(true);
     }
@@ -146,7 +150,7 @@ const HomeScreenCaregiver = (props) => {
                   uncompleteLogs={uncompleteLogs}
                   hour={getGreetingFromHour(currHour)}
                 />
-                <PatientType patient={patient} />
+                <PatientType patientTypes={patientTypes} />
                 <PatientInfo patient={patient} />
               </>
             ) : (

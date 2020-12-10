@@ -64,17 +64,17 @@ function AuthoriseReqModal(props) {
         unaccepted += ', Lab Results';
       }
     }
-    if (permissions.includes('first_name')) {
+    if (permissions.includes('appointment')) {
       if (acceptedS.length === 4) {
-        acceptedS += ' First Name ';
+        acceptedS += ' Appointment ';
       } else {
-        acceptedS += ', First Name';
+        acceptedS += ', Appointment';
       }
     } else {
       if (unaccepted.length === 0) {
-        unaccepted += 'First Name';
+        unaccepted += 'Appointment';
       } else {
-        unaccepted += ', First Name';
+        unaccepted += ', Appointment';
       }
     }
 

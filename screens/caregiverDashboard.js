@@ -20,7 +20,6 @@ import AlertNotifIcon from '../components/alertNotifIcon';
 //function
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
 
-
 import {
   morningObj,
   afternoonObj,
@@ -40,8 +39,10 @@ import {
 import {
   getReadNotifDate,
   storeReadNotifDate,
+  getPermissions,
 } from '../storage/asyncStorageFunctions';
 import moment from 'moment';
+import {getCaregiverProfile} from '../netcalls/requestsAccount';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,14 +58,18 @@ const CaregiverBottomTab = (props) => {
   const [count, setCount] = useState(0);
   //badge
   const [showBadge, setShowBadge] = useState(false);
+  //permission
+  const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
     async function getRead() {
       await initUncompleteLog();
       await setBadge();
+      let permission = await getPermissions();
+      setPermissions(permission);
     }
     getRead();
-  }, []);
+  }, [permissions]);
 
   useEffect(() => {
     setBadge().then(() => {});
@@ -183,20 +188,22 @@ const CaregiverBottomTab = (props) => {
           },
         }}
       />
-      <Tab.Screen
-        name="Reports"
-        component={ReportsScreen}
-        options={{
-          title: 'Reports',
-          tabBarIcon: ({focused}) => {
-            if (focused) {
-              return <REPORTS_FOCUSED {...iconStyle} />;
-            } else {
-              return <REPORTS {...iconStyle} />;
-            }
-          },
-        }}
-      />
+      {permissions?.includes('diary') && (
+        <Tab.Screen
+          name="Reports"
+          component={ReportsScreen}
+          options={{
+            title: 'Reports',
+            tabBarIcon: ({focused}) => {
+              if (focused) {
+                return <REPORTS_FOCUSED {...iconStyle} />;
+              } else {
+                return <REPORTS {...iconStyle} />;
+              }
+            },
+          }}
+        />
+      )}
       <Tab.Screen
         name="AddLog"
         component={AddLog}

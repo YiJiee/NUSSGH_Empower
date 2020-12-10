@@ -13,6 +13,7 @@ const key_fitbit_token = 'fitbitToken';
 const key_authorisedCaregiver = 'authorisedCaregiver';
 const key_notif_read = 'notif_read';
 const key_notifReadPeriod = 'notif_readPeriod';
+const key_permission = 'permissions';
 
 const storeData = async (key, value) => {
   try {
@@ -151,6 +152,14 @@ const getReadNotifDate = async () => {
   return await getDataObj(key_notifReadPeriod);
 };
 
+const storePermissions = async (array) => {
+  return await storeDataObj(key_permission, array);
+};
+
+const getPermissions = async () => {
+  return await getDataObj(key_permission);
+};
+
 export {
   storeUsername,
   getUsername,
@@ -175,4 +184,6 @@ export {
   getAuthorisedStatusCaregiver,
   storeReadNotifDate,
   getReadNotifDate,
+  storePermissions,
+  getPermissions,
 };

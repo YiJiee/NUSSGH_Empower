@@ -6,12 +6,8 @@ import ProgressBar from '../../progressbar';
 import {Colors} from '../../../styles/colors';
 //third party lib
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {
-  getAge,
-  getMax4Type,
-} from '../../../commonFunctions/common';
+import {getAge, getMax4Type} from '../../../commonFunctions/common';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-
 
 const ProgressContent = (props) => {
   const {
@@ -30,7 +26,8 @@ const ProgressContent = (props) => {
   const [target, setTarget] = useState(0);
 
   useEffect(() => {
-    let max = getMax4Type(getAge(patient?.birth_date), type, patient?.gender);
+    console.log(patient?.age);
+    let max = getMax4Type(Number(patient?.age), type, patient?.gender);
     setTarget(max);
     let percent = Math.floor((Number(value) / Number(max)) * 100) + '%';
     setPercentage(percent);

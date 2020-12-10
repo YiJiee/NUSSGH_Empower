@@ -5,6 +5,7 @@ import zxcvbn from 'zxcvbn';
 //styles
 import globalStyles from '../styles/globalStyles';
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
+import {Colors} from '../styles/colors';
 
 //using score 1 - 4, animate the respective bars to show strength
 export default class PasswordStrengthMeter extends Component {
@@ -133,9 +134,12 @@ export default class PasswordStrengthMeter extends Component {
       <>
         <TextInput
           placeholder="New password"
+          placeholderTextColor={
+            this.props.notLogined === true ? Colors.loginPlaceholder : '#a1a3a0'
+          }
           secureTextEntry
           onChangeText={this.setInputPassword}
-          style={globalStyles.editInputBox}
+          style={{...globalStyles.editInputBox, ...this.props.style}}
         />
         <View
           style={{
@@ -144,20 +148,45 @@ export default class PasswordStrengthMeter extends Component {
             marginStart: '4%',
             marginEnd: '4%',
           }}>
-          <Animated.View style={[progressStyleA]} />
-          <Animated.View style={[progressStyleB]} />
-          <Animated.View style={[progressStyleC]} />
-          <Animated.View style={[progressStyleD]} />
+          <Animated.View
+            style={{...progressStyleA, ...this.props.strengthContainerStyle}}
+          />
+          <Animated.View
+            style={{...progressStyleB, ...this.props.strengthContainerStyle}}
+          />
+          <Animated.View
+            style={{...progressStyleC, ...this.props.strengthContainerStyle}}
+          />
+          <Animated.View
+            style={{...progressStyleD, ...this.props.strengthContainerStyle}}
+          />
         </View>
-        <Text
-          style={{
-            alignSelf: 'flex-end',
-            marginEnd: '4%',
-            marginBottom: '2%',
-            fontSize: adjustSize(16),
-          }}>
-          {this.state.result}
-        </Text>
+        {this.props.notLogined ? (
+          <Text
+            style={{
+              ...{
+                alignSelf: 'flex-end',
+                marginEnd: '4%',
+                marginBottom: '2%',
+                fontSize: adjustSize(16),
+                color: 'white',
+              },
+            }}>
+            {this.state.result}
+          </Text>
+        ) : (
+          <Text
+            style={{
+              ...{
+                alignSelf: 'flex-end',
+                marginEnd: '4%',
+                marginBottom: '2%',
+                fontSize: adjustSize(16),
+              },
+            }}>
+            {this.state.result}
+          </Text>
+        )}
       </>
     );
   }

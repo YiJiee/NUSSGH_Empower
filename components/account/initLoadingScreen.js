@@ -1,18 +1,16 @@
 import React, {useEffect} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
-import {
-  getToken,
-  getUsername,
-} from '../../storage/asyncStorageFunctions';
+import {getToken, getUsername} from '../../storage/asyncStorageFunctions';
 import {isTokenValidRequest} from '../../netcalls/requestsAuth';
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '../../redux/reduxMapping';
 import {getPusherToken} from '../../netcalls/notif/requestsPusher';
 import {initPusherNotif} from '../../commonFunctions/AuthorisePusherNotif';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
+import {getSecurityQnByUsername} from '../../netcalls/requestsSecurityQn';
+import {navigate} from '../../screens/appRoot';
 
-
-const init = async (props, finishHandler) => {
+const init = async (props, finishHandler, login, logout) => {
   const token = await getToken();
   if (token !== null && token !== '') {
     //console.log('token : ' + token);
@@ -21,7 +19,13 @@ const init = async (props, finishHandler) => {
       const pusherToken = await getPusherToken(token);
       const username = await getUsername();
       initPusherNotif(username.toLowerCase(), pusherToken.token);
-      props.login();
+
+      let qn = await getSecurityQnByUsername(username.toLowerCase());
+      if (qn?.qnList?.length === 0) {
+        logout();
+      } else {
+        login();
+      }
     }
   }
   console.log('token : ' + token);
@@ -33,7 +37,7 @@ const init = async (props, finishHandler) => {
 
 const LoadingScreen = (props) => {
   useEffect(() => {
-    init(props, props.finishHandler).then(()=>{}).catch(err => console.log('err: ', err));
+    init(props, props.finishHandler, props?.login, props?.logout);
   });
 
   return (

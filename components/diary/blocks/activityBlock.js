@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -17,11 +17,19 @@ import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 //styles
-import {Colors} from '../../../styles/colors';
+import { Colors } from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 import logStyles from '../../../styles/logStyles';
-import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
+import { adjustSize } from '../../../commonFunctions/autoResizeFuncs';
+//svg	import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
+import HEARTRATE from '../../../resources/images/Patient-Icons/SVG/icon-navy-heartrate.svg';
+import DISTANCE from '../../../resources/images/Patient-Icons/SVG/icon-navy-distance.svg';
+import CALBURNT from '../../../resources/images/Patient-Icons/SVG/icon-navy-calburnt.svg';
+import STEPS from '../../../resources/images/Patient-Icons/SVG/icon-navy-steps.svg';
+import EXERCISE from '../../../resources/images/Patient-Icons/SVG/icon-navy-activemins.svg';
+import { step_key } from '../../../commonFunctions/logFunctions';
+import ProgressContent2 from './progressContent2';
 
 const heartRate = 'heartrate';
 const distance_key = 'distance';
@@ -45,7 +53,7 @@ const ActivityBlock = (props) => {
     day,
     activityTarget,
   } = props;
-  const {closeModal} = props;
+  const { closeModal } = props;
   const distance = summary.distance + ' KM';
   const [expand, setExpand] = useState(true);
   const scrollViewRef = useRef();
@@ -64,14 +72,14 @@ const ActivityBlock = (props) => {
       backdropOpacity={1}
       onBackButtonPress={() => closeModal()}
       backdropColor={Colors.backgroundColor}
-      style={{margin: 0}}>
+      style={{ margin: 0 }}>
       <View style={globalStyles.pageContainer}>
         <View style={globalStyles.menuBarContainer}>
           <LeftArrowBtn close={closeModal} />
         </View>
         <Text style={globalStyles.pageHeader}>Activity</Text>
         <Text style={globalStyles.pageDetails}>{day}</Text>
-        <View style={{flexDirection: 'row', marginTop: '3%'}}>
+        <View style={{ flexDirection: 'row', marginTop: '3%' }}>
           {miss ? (
             <Text style={globalStyles.pageDetails}>Missed</Text>
           ) : pass ? (
@@ -86,26 +94,26 @@ const ActivityBlock = (props) => {
               />
             </>
           ) : (
-            <>
-              <Text style={globalStyles.pageDetails}>
-                {summary.duration} Mins Active
+                <>
+                  <Text style={globalStyles.pageDetails}>
+                    {summary.duration} Mins Active
               </Text>
-              <Ionicon
-                name="alert-circle-outline"
-                style={diaryStyles.failIcon}
-                size={adjustSize(25)}
-              />
-            </>
-          )}
+                  <Ionicon
+                    name="alert-circle-outline"
+                    style={diaryStyles.failIcon}
+                    size={adjustSize(25)}
+                  />
+                </>
+              )}
         </View>
         <Text style={styles.header}>Summary</Text>
         <View style={styles.border} />
         <ScrollView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           showsVerticalScrollIndicator={false}
           ref={scrollViewRef}
           onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({animated: true})
+            scrollViewRef.current.scrollToEnd({ animated: true })
           }>
           {renderSummaryContent(distance_key, distance, 'Distance')}
           {renderSummaryContent(caloriesBurnt, caloriesBurnt, summary)}
@@ -133,7 +141,7 @@ const ActivityBlock = (props) => {
                     <Text
                       style={[
                         styles.contentDetail,
-                        {alignSelf: 'flex-end', marginStart: 0},
+                        { alignSelf: 'flex-end', marginStart: 0 },
                       ]}>
                       {item.duration} Mins
                     </Text>
@@ -159,12 +167,12 @@ function renderSummaryContent(
 ) {
   return (
     <>
-      <View style={{margin: '3%', flexDirection: 'row'}}>
+      <View style={{ margin: '3%', flexDirection: 'row' }}>
         {type === excerise && <EXERCISE {...iconStyle} />}
         {type === distance_key && <DISTANCE {...iconStyle} />}
         {type === caloriesBurnt && <CALBURNT {...iconStyle} />}
         {type === step_key && <STEPS {...iconStyle} />}
-        <View style={{marginStart: '2%'}}>
+        <View style={{ marginStart: '2%' }}>
           {content === steps_taken ? (
             <ProgressContent2
               value={detail.steps}
@@ -193,11 +201,11 @@ function renderSummaryContent(
               small={false}
             />
           ) : (
-            <>
-              <Text style={styles.content}>{content}</Text>
-              <Text style={styles.contentDetail}>{detail}</Text>
-            </>
-          )}
+                  <>
+                    <Text style={styles.content}>{content}</Text>
+                    <Text style={styles.contentDetail}>{detail}</Text>
+                  </>
+                )}
         </View>
       </View>
       <View style={styles.detailBorder} />

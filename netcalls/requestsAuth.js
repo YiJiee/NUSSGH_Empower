@@ -15,7 +15,6 @@ const loginRequest = async (username, password) => {
       }),
     });
     let responseJson = await response.json();
-    console.log(responseJson);
     return responseJson;
   } catch (error) {
     console.error(error);

@@ -4,7 +4,6 @@ import {Colors} from '../../../styles/colors';
 import {isEmpty, getAge} from '../../../commonFunctions/common';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
-
 const PatientInfo = (props) => {
   const {patient} = props;
   const [open, setOpen] = useState(true);
@@ -62,17 +61,25 @@ const PatientInfo = (props) => {
           }}>
           <View style={{marginBottom: '2%'}}>
             <View style={styles.content}>
-              <Text style={styles.header}>Age</Text>
+              <Text style={styles.header}>Trial ID</Text>
               <Text style={styles.detail}>
-                {isEmpty(patient) ? '-' : getAge(patient?.birth_date)}
+                {patient?.trial_id?.length === 0 ? '-' : patient?.trial_id}
               </Text>
             </View>
+            <View style={styles.content}>
+              <Text style={styles.header}>Age</Text>
+              <Text style={styles.detail}>
+                {isEmpty(patient) ? '-' : patient?.age}
+              </Text>
+            </View>
+            {/*
             <View style={styles.content}>
               <Text style={styles.header}>Weight</Text>
               <Text style={styles.detail}>
                 {isEmpty(patient) ? '-' : patient?.weight} kg
               </Text>
             </View>
+        */}
           </View>
         </Animated.View>
       ) : null}
@@ -102,10 +109,6 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(18),
     color: 'white',
     alignSelf: 'center',
-  },
-  optionIcon: {
-    alignSelf: 'center',
-    marginEnd: '3%',
   },
   content: {
     flexDirection: 'row',

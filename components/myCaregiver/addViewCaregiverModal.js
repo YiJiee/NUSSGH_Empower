@@ -26,6 +26,7 @@ import {isEmpty} from '../../commonFunctions/common';
 import {
   unassignCaregiver,
   sendReqPermission,
+  patientSetPermission,
 } from '../../netcalls/requestsMyCaregiver';
 import DeleteBin from '../deleteBin';
 import diaryStyles from '../../styles/diaryStyles';
@@ -39,8 +40,6 @@ const iconStyle = {
   height: adjustSize(40),
   alignSelf: 'center',
 };
-
-const height = Dimensions.get('window').height;
 
 const AddViewCaregiverModal = (props) => {
   const {
@@ -60,11 +59,12 @@ const AddViewCaregiverModal = (props) => {
   const [chosenUser, setChosenUser] = useState(
     patient != null ? patient : caregiver,
   );
-  const [accessName, setAccessName] = useState(false);
+  const [accessAppt, setAccessAppt] = useState(false);
   const [accessRD, setAccessRd] = useState(false);
   const [accessLr, setAccessLr] = useState(false);
 
   useEffect(() => {
+    console.log([permissions]);
     if (permissions !== undefined) {
       if (permissions.includes('diary')) {
         setAccessRd(true);
@@ -72,8 +72,8 @@ const AddViewCaregiverModal = (props) => {
       if (permissions.includes('lab_results')) {
         setAccessLr(true);
       }
-      if (permissions.includes('first_name')) {
-        setAccessName(true);
+      if (permissions.includes('appointment')) {
+        setAccessAppt(true);
       }
     }
   }, [visible]);
@@ -100,8 +100,8 @@ const AddViewCaregiverModal = (props) => {
 
   const getPermissionsArr = () => {
     let arr = [];
-    if (accessName) {
-      arr.push('first_name');
+    if (accessAppt) {
+      arr.push('appointment');
     }
     if (accessRD) {
       arr.push('diary');
@@ -111,8 +111,6 @@ const AddViewCaregiverModal = (props) => {
     }
     return arr;
   };
-
-  console.log(chosenUser);
 
   const openURL = async () => {
     let link =
@@ -140,6 +138,20 @@ const AddViewCaregiverModal = (props) => {
         ]);
       } else {
         Alert.alert('Unexpected Error ', '', [{text: 'Try Again'}]);
+      }
+    });
+  };
+
+  const editPermissionByPatient = () => {
+    patientSetPermission(getPermissionsArr()).then((rsp) => {
+      if (rsp === 200) {
+        Alert.alert('Permissions updated successfully!', '', [
+          {text: 'Got It', onPress: () => closeModal()},
+        ]);
+      } else {
+        Alert.alert('Unexpected Error!', 'Please try again later!', [
+          {text: 'Got It'},
+        ]);
       }
     });
   };
@@ -188,20 +200,26 @@ const AddViewCaregiverModal = (props) => {
         </Text>
         <ScrollView style={{flexGrow: 1}}>
           <AccessOption
-            mainheader={"Patient's First Name"}
+            mainheader={"Patient's Appointment"}
             subheader={'Personal Information'}
             onSelect={() => {
-              if (from === 'caregiver' && isEmpty(pendingCaregiver)) {
-                setAccessName(!accessName);
+              if (
+                (from === 'caregiver' && isEmpty(pendingCaregiver)) ||
+                caregiver != null
+              ) {
+                setAccessAppt(!accessAppt);
               }
             }}
-            selected={accessName}
+            selected={accessAppt}
           />
           <AccessOption
             mainheader={"Patient's Report & Diary"}
             subheader={'Health Information'}
             onSelect={() => {
-              if (from === 'caregiver' && isEmpty(pendingCaregiver)) {
+              if (
+                (from === 'caregiver' && isEmpty(pendingCaregiver)) ||
+                caregiver != null
+              ) {
                 setAccessRd(!accessRD);
               }
             }}
@@ -211,7 +229,10 @@ const AddViewCaregiverModal = (props) => {
             mainheader={"Patient's Lab Results"}
             subheader={'Health Information'}
             onSelect={() => {
-              if (from === 'caregiver' && isEmpty(pendingCaregiver)) {
+              if (
+                (from === 'caregiver' && isEmpty(pendingCaregiver)) ||
+                caregiver != null
+              ) {
                 setAccessLr(!accessLr);
               }
             }}
@@ -238,7 +259,7 @@ const AddViewCaregiverModal = (props) => {
             />
             <TouchableOpacity
               style={logStyles.enableEditButton}
-              onPress={() => closeModal()}>
+              onPress={() => editPermissionByPatient()}>
               <Text style={globalStyles.actionButtonText}>Done</Text>
             </TouchableOpacity>
           </View>

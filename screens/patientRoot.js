@@ -23,6 +23,8 @@ import AskAdd from './onboarding/medicationPlan/askAdd';
 import FitbitSetup from './onboarding/fitbit/FitbitSetup';
 import DrawerNavigator from './drawer';
 import MyCaregiverScreen from './more/myCaregiver';
+import SecurityQns from './more/securityQns';
+import LabResults from './more/labResults';
 
 const Stack = createStackNavigator();
 
@@ -31,14 +33,9 @@ class PatientRoot extends Component {
     super(props);
     this.props = props;
   }
+  componentDidUpdate() {}
 
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
+  componentWillUnmount() {}
 
   render() {
     return (
@@ -62,12 +59,6 @@ class PatientRoot extends Component {
               animationEnabled: true,
             }}
           />
-          {/* Onboarding */}
-          <Stack.Screen
-            name="MedicationPlan"
-            component={AskAdd}
-            options={{header: () => <View />}}
-          />
           <Stack.Screen
             name="FitbitSetup"
             component={FitbitSetup}
@@ -77,6 +68,13 @@ class PatientRoot extends Component {
           <Stack.Screen
             name="Edit Account"
             component={AccountDetailScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="LabResults"
+            component={LabResults}
             options={{
               headerShown: false,
             }}
@@ -150,6 +148,11 @@ class PatientRoot extends Component {
             options={{
               headerShown: false,
             }}
+          />
+          <Stack.Screen
+            name="SecurityQnSetUp"
+            component={SecurityQns}
+            options={{headerShown: false}}
           />
         </>
       </Stack.Navigator>
