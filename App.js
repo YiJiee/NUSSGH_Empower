@@ -50,8 +50,7 @@ export default class App extends React.Component {
           <Modal
               isVisible={this.state.showUpdateAppInfo}
               transparent={true}
-              animationType='fade'
-              onRequestClose={() => this.setState({showUpdateAppInfo : false})}>
+              animationType='fade'>
 
               <UpdateInfo closeModal={() => this.setState({showUpdateAppInfo : false})}/>
 

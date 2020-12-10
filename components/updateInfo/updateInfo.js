@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {View, TouchableOpacity, Text, StyleSheet, DevSettings} from 'react-native';
 
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //styles
@@ -9,12 +9,12 @@ import {Colors} from '../../styles/colors';
 const UpdateInfo = (props) => {
     return (
         <View style={[styles.card, styles.cardPadding]}>
-            <Text style={styles.bigText}>Updated version</Text>
-            <Text style={styles.medianText}>Bug fix</Text>
+            <Text style={styles.bigText}>A New Version is available</Text>
+            <Text style={styles.medianText}>Press 'Restart' button to take effect</Text>
             <TouchableOpacity
                 style={[styles.buttonStyle, styles.nextColor]}
-                onPress={() => {props.closeModal()}}>
-                <Text style={styles.actionButtonText}>Continue</Text>
+                onPress={() => {DevSettings.reload()}}>
+                <Text style={styles.actionButtonText}>Restart</Text>
             </TouchableOpacity>
         </View>
     );

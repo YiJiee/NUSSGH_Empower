@@ -28,10 +28,7 @@ import {
 
 const Tab = createBottomTabNavigator();
 
-const iconStyle = {
-  width: adjustSize(30),
-  height: adjustSize(30),
-};
+
 const DashboardScreen = (props) => {
   Icon.loadFont();
   return (

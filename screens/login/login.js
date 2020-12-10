@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, ScrollView,
 } from 'react-native';
 //third party libs
 import {connect} from 'react-redux';
@@ -33,7 +33,6 @@ import {role_patient, role_caregiver} from '../../commonFunctions/common';
 import {Colors} from '../../styles/colors';
 import {getSecurityQnByUsername} from '../../netcalls/requestsSecurityQn';
 
-const tabs = [role_patient, role_caregiver];
 
 class Login extends Component {
   constructor(props) {
@@ -106,70 +105,72 @@ class Login extends Component {
 
   render() {
     return (
-      <LinearGradient
-        colors={Colors.loginColorArr}
-        useAngle={true}
-        angle={240}
-        style={loginStyles.container}>
-        <KeyboardAvoidingView
-          style={{flex: 1}}
-          behavior={Platform.OS === 'ios' ? 'padding' : null}>
-          <View style={{flex: 1}} />
-          <Logo {...loginLogoStyle} />
-          <Text style={loginStyles.headerText}>Welcome</Text>
-          <Text style={loginStyles.subText}>
-            To proceed with the app, please log in with your credential.
-          </Text>
-
-          <View style={{flex: 3, marginTop: '10%'}}>
-            <TextInput
-              style={loginStyles.inputBox}
-              placeholder="Username"
-              placeholderTextColor={Colors.loginPlaceholder}
-              value={this.state.username}
-              onChangeText={this.handleUsernameInput}
-            />
-            <TextInput
-              style={loginStyles.inputBox}
-              placeholder="Password"
-              secureTextEntry={true}
-              placeholderTextColor={Colors.loginPlaceholder}
-              value={this.state.password}
-              onChangeText={this.handlePasswordInput}
-            />
-            <TouchableOpacity
-              style={[
-                globalStyles.nextButtonStyle,
-                {backgroundColor: 'white', marginBottom: 0},
-              ]}
-              onPress={this.handleLogin}>
-              <Text style={globalStyles.actionButtonText}>Login</Text>
-            </TouchableOpacity>
-            <Text
-              style={loginStyles.clickableText}
-              onPress={() => this.props.navigation.navigate('ForgetPassword')}>
-              Forget Password?
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <LinearGradient
+          colors={Colors.loginColorArr}
+          useAngle={true}
+          angle={240}
+          style={loginStyles.container}>
+          <KeyboardAvoidingView
+            style={{flex: 1}}
+            behavior={Platform.OS === 'ios' ? 'padding' : null}>
+            <View style={{flex: 1}} />
+            <Logo {...loginLogoStyle} />
+            <Text style={loginStyles.headerText}>Welcome</Text>
+            <Text style={loginStyles.subText}>
+              To proceed with the app, please log in with your credential.
             </Text>
-            <Loading isLoading={this.state.isLoading} />
+
+            <View style={{flex: 3, marginTop: '10%'}}>
+              <TextInput
+                style={loginStyles.inputBox}
+                placeholder="Username"
+                placeholderTextColor={Colors.loginPlaceholder}
+                value={this.state.username}
+                onChangeText={this.handleUsernameInput}
+              />
+              <TextInput
+                style={loginStyles.inputBox}
+                placeholder="Password"
+                secureTextEntry={true}
+                placeholderTextColor={Colors.loginPlaceholder}
+                value={this.state.password}
+                onChangeText={this.handlePasswordInput}
+              />
+              <TouchableOpacity
+                style={[
+                  globalStyles.nextButtonStyle,
+                  {backgroundColor: 'white', marginBottom: 0},
+                ]}
+                onPress={this.handleLogin}>
+                <Text style={globalStyles.actionButtonText}>Login</Text>
+              </TouchableOpacity>
+              <Text
+                style={loginStyles.clickableText}
+                onPress={() => this.props.navigation.navigate('ForgetPassword')}>
+                Forget Password?
+              </Text>
+              <Loading isLoading={this.state.isLoading} />
+            </View>
+          </KeyboardAvoidingView>
+
+          <View
+            style={{
+              justifyContent: 'flex-end',
+              padding: '5%',
+              paddingBottom: '10%',
+            }}>
+            <Text style={styles.light}>
+              Having trouble?{' '}
+              <Text
+                style={styles.bold}
+                onPress={() => this.props.navigation.navigate('ContactUsScreen')}>
+                Contact Us Now!
+              </Text>
+            </Text>
           </View>
-        </KeyboardAvoidingView>
-
-        <View
-          style={{
-            justifyContent: 'flex-end',
-            padding: '5%',
-            paddingBottom: '10%',
-          }}>
-          <Text style={styles.light}>
-            Having trouble?{' '}
-            <Text
-              style={styles.bold}
-              onPress={() => this.props.navigation.navigate('ContactUsScreen')}>
-              Contact Us Now!
-            </Text>
-          </Text>
-        </View>
-      </LinearGradient>
+        </LinearGradient>
+      </ScrollView>
     );
   }
 }
