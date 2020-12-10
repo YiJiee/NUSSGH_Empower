@@ -52,7 +52,7 @@
     "react-native-svg-charts": "^5.4.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-vector-icons": "^7.0.0",
-    "react-native-webview": "^10.7.0",
+    "react-native-webview": "^11.0.0",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
     "svg-path-properties": "^1.0.5",
