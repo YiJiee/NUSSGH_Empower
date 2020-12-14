@@ -5,10 +5,12 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Modal from "react-native-modal";
 import DatePicker from "react-native-date-picker";
 import Moment from 'moment';
+import RNFetchBlob from 'rn-fetch-blob';
 import {getReportsData} from "../../../netcalls/reports/exportReports";
 import {getCsvHeader, toCsv} from "../../../commonFunctions/IOFunctions";
 import {getUsername} from "../../../storage/asyncStorageFunctions";
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
+import {HorizontalSelector} from "../../common/HorizontalSelector";
 
 
 // fs library
@@ -25,6 +27,13 @@ const reportTypes = [
     {name: 'Activity'}
 ]
 
+const exportFormats = [
+    {name: 'PDF'},
+    {name: 'CSV'}
+]
+
+const defaultExportFormat = 'PDF';
+
 function ExportReportsModal(props) {
     const {visible, setVisible} = props;
     const [startDate, setStartDate] = useState(new Date());
@@ -32,6 +41,7 @@ function ExportReportsModal(props) {
     const [selectedReportType, setSelectedReportTypes] = useState(reportTypes.map(type =>  {
         return {...type, selected: false};
     }));
+    const [exportFormat, setExportFormat] = React.useState(defaultExportFormat);
 
     // Takes in report name that will be toggled.
     const updateReportSelected = (reportName) => {
@@ -49,6 +59,15 @@ function ExportReportsModal(props) {
     }
 
     const handleExport = async () => {
+        if (exportFormat === 'PDF') {
+            console.log('EXPORT AS PDF');
+            await exportAsPdf();
+        } else if (exportFormat === 'CSV') {
+            console.log('EXPORT AS CSV');
+        }
+    }
+
+    const exportAsCsv = async () => {
         const srt = selectedReportType.filter(type => type.selected).map(type => type.name);
         const reportData = await getReportsData(srt, startDate, endDate);
         const startDateString = Moment(startDate).format('DD_MM_YYYY');
@@ -81,6 +100,95 @@ function ExportReportsModal(props) {
         */
     }
 
+    const exportAsPdf = async () => {
+        let resp = await RNFetchBlob.config({
+                // add this option that makes response data to be stored as a file,
+                // this is much more performant.
+                fileCache : true,
+                appendExt : 'pdf'
+            })
+            .fetch('POST', 'http://localhost:8080/report-pdf-builder', {
+                //some headers ..
+                'Content-Type' : 'application/json',
+                Accept: 'application/pdf'
+            }, JSON.stringify({
+                "profile": {
+                    "name": "Jimmy",
+                    "period": "14 Aug 2020 to 20 Aug 2020",
+                    "age": 32,
+                    "weight": 59
+                },
+                "graphs": {
+                    "datasets": [
+                        {
+                            "title": "Blood Glucose",
+                            "plots": [
+                                {
+                                    "graph_name": "Readings - mmol/L",
+                                    "type": "line",
+                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
+                                    "y": [12, 19, 3, 5, 5, 3, 7],
+                                    "boundary_min": 4.0,
+                                    "boundary_max": 7.0,
+                                    "plot_type": "inter-day"
+                                },
+                                {
+                                    "graph_name": "Readings2 - mmol/L",
+                                    "type": "line",
+                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
+                                    "y": [1, 1, 3, 5, 5, 3, 2],
+                                    "boundary_min": 2.0,
+                                    "boundary_max": 4.0,
+                                    "plot_type": "inter-day"
+                                },
+                                {
+                                    "graph_name": "Readings3 - mmol/L",
+                                    "type": "line",
+                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
+                                    "y": [1, 1, 3, 5, 5, 3, 4],
+                                    "boundary_min": 2.0,
+                                    "boundary_max": 4.0,
+                                    "plot_type": "inter-day"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Food Intake",
+                            "plots": [
+                                {
+                                    "graph_name": "Calories consumed - kcal",
+                                    "type": "bar",
+                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
+                                    "y": [1800, 2400, 1900, 2200, 2100, 1950, 2040],
+                                    "plot_type": "inter-day"
+                                },
+                                {
+                                    "graph_name": "Fat consumed - grams",
+                                    "type": "bar",
+                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
+                                    "y": [210, 165, 340, 540, 195, 425, 377],
+                                    "plot_type": "inter-day"
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Medication",
+                            "plots": [
+                                {
+                                    "graph_name": "Average adherence - %",
+                                    "type": "progress-bar",
+                                    "x": ["Metformin - 500mg", "Insulin - 1 bolus", "Metformin - 500mg", "Insulin - 1 bolus", "Metformin - 500mg", "Insulin - 1 bolus"],
+                                    "y": [0.75, 0.8, 0.5, 0.6, 0.7, 0.4],
+                                    "plot_type": "inter-day"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }));
+        console.log(resp.path());
+    }
+
     return (
         <Modal isVisible={visible} style={{margin: 0}}>
             <View style={globalStyles.pageContainer}>
@@ -90,7 +198,12 @@ function ExportReportsModal(props) {
                             <Icon name={'chevron-down'} size={adjustSize(34)} color='#16A850' />
                         </TouchableOpacity>
                     </View>
-                    <Text style={globalStyles.pageHeader}>Export</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '3%'}}>
+                        <Text style={globalStyles.pageHeader}>Export</Text>
+                        <HorizontalSelector choices={exportFormats}
+                                            currentlySelected={exportFormat}
+                                            setSelected={setExportFormat} />
+                    </View>
                     <Text style={[globalStyles.pageDetails, {color: 'grey'}]}>Select report</Text>
                     <ReportTypeSelector style={globalStyles.pageDetails}
                                         reportTypes={selectedReportType}
