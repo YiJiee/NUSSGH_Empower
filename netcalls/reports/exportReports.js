@@ -15,6 +15,8 @@ import {getPlan} from "../requestsMedPlan";
 import {getEntry4Day} from "../requestsDiary";
 import {getToken} from "../../storage/asyncStorageFunctions";
 
+let dirs = RNFetchBlob.fs.dirs;
+
 async function getReportsDataForCsv(reportTypes, startDate, endDate) {
     const datestringFormatForLogs = 'YYYY-MM-DD';
     const datestringFormatForNutritionLog = 'DD/MM/YYYY HH:mm:ss';
@@ -102,7 +104,8 @@ async function exportToPdfRequest(payload) {
             // add this option that makes response data to be stored as a file,
             // this is much more performant.
             fileCache : true,
-            appendExt : 'pdf'
+            path : dirs.DocumentDir + `/${payload.profile.name}.pdf`
+            //appendExt : 'pdf'
         })
             .fetch('POST', exportReportEndpoint, {
                 //some headers ..
