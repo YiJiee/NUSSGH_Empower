@@ -51,6 +51,7 @@ import BGL_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-bloodgl
 import FOOD_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-food.svg';
 import WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-weight.svg';
 import MED_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-med.svg';
+import {getReportsDataForGraphs} from "../../netcalls/reports/exportReports";
 
 const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
 
@@ -177,59 +178,18 @@ const ReportsScreen = (props) => {
   }, [props.route.params, props.navigation, selectedDate]);
 
   const init = async () => {
-    console.log('initing ');
-    //load data
     const startDate = Moment(new Date()).subtract(28, 'days');
     const endDate = Moment(new Date()).add(1, 'day');
-    const foodData = (
-      await requestNutrientConsumption(
-        startDate.format('DD/MM/YYYY HH:mm:ss'),
-        getLastMinuteFromTodayDate(),
-      )
-    ).data;
-    const weightData = (
-      await getWeightLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const medData = (
-      await getMedicationLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const bglData = (
-      await getBloodGlucoseLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const activityData = replaceActivitySummary(
-      (
-        await getActivitySummaries(
-          startDate.format('YYYY-MM-DD'),
-          endDate.format('YYYY-MM-DD'),
-        )
-      ).summaries,
-    );
-    const medPlan = await getPlan(
-      startDate.format('YYYY-MM-DD'),
-      endDate.format('YYYY-MM-DD'),
-    );
+    console.log('initing ');
+
+    let graphsData = await getReportsDataForGraphs(startDate, endDate)
 
     let data = await getEntry4Day(selectedDate);
     const foodLogs = data?.[selectedDate]?.food?.logs;
 
-    return {
-      foodData,
-      medData,
-      bglData,
-      activityData,
-      weightData,
-      medPlan,
-      foodLogs,
-    };
+    graphsData.foodLogs = foodLogs;
+
+    return graphsData;
   };
 
   const handleTabSelectChange = (tabIndex) => {

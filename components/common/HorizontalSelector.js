@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         backgroundColor: Colors.gameColorGrey,
-        borderRadius: 5
+        borderRadius: adjustSize(5)
     },
     selected: {
         backgroundColor: Colors.submitBtnColor,
-        borderRadius: 5
+        borderRadius: adjustSize(5)
     },
     unSelected: {
 
@@ -34,12 +34,12 @@ const styles = StyleSheet.create({
     selectedText: {
         color: '#fff',
         fontSize: adjustSize(20),
-        margin: 5
+        margin: adjustSize(5)
     },
     unSelectedText: {
         color: Colors.subsubHeaderColor,
         fontSize: adjustSize(20),
-        margin: 5
+        margin: adjustSize(5)
     }
 });
 

@@ -6,11 +6,18 @@ import Modal from "react-native-modal";
 import DatePicker from "react-native-date-picker";
 import Moment from 'moment';
 import RNFetchBlob from 'rn-fetch-blob';
-import {getReportsData} from "../../../netcalls/reports/exportReports";
+import {
+    exportToPdfRequest,
+    getReportsDataForCsv,
+    getReportsDataForGraphs
+} from "../../../netcalls/reports/exportReports";
 import {getCsvHeader, toCsv} from "../../../commonFunctions/IOFunctions";
 import {getUsername} from "../../../storage/asyncStorageFunctions";
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 import {HorizontalSelector} from "../../common/HorizontalSelector";
+import {getPatientProfile} from "../../../netcalls/requestsAccount";
+import {processData} from "../../../commonFunctions/reportDataFormatter";
+import {calculateAdherence, zipMedicationData} from "./MedicationTable";
 
 
 // fs library
@@ -59,17 +66,18 @@ function ExportReportsModal(props) {
     }
 
     const handleExport = async () => {
+        const srt = selectedReportType.filter(type => type.selected).map(type => type.name);
         if (exportFormat === 'PDF') {
             console.log('EXPORT AS PDF');
-            await exportAsPdf();
+            await exportAsPdf(srt);
         } else if (exportFormat === 'CSV') {
             console.log('EXPORT AS CSV');
+            await exportAsCsv(srt);
         }
     }
 
-    const exportAsCsv = async () => {
-        const srt = selectedReportType.filter(type => type.selected).map(type => type.name);
-        const reportData = await getReportsData(srt, startDate, endDate);
+    const exportAsCsv = async (srt) => {
+        const reportData = await getReportsDataForCsv(srt, startDate, endDate);
         const startDateString = Moment(startDate).format('DD_MM_YYYY');
         const endDateString = Moment(endDate).format('DD_MM_YYYY');
         const username = await getUsername();
@@ -100,23 +108,19 @@ function ExportReportsModal(props) {
         */
     }
 
-    const exportAsPdf = async () => {
-        let resp = await RNFetchBlob.config({
-                // add this option that makes response data to be stored as a file,
-                // this is much more performant.
-                fileCache : true,
-                appendExt : 'pdf'
-            })
-            .fetch('POST', 'http://localhost:8080/report-pdf-builder', {
-                //some headers ..
-                'Content-Type' : 'application/json',
-                Accept: 'application/pdf'
-            }, JSON.stringify({
+    const exportAsPdf = async (srt) => {
+
+        /*
+        // SAMPLE PAYLOAD
+        {
                 "profile": {
                     "name": "Jimmy",
-                    "period": "14 Aug 2020 to 20 Aug 2020",
                     "age": 32,
                     "weight": 59
+                },
+                "period": {
+                    "start": "14/08/2020",
+                    "end": "20/08/2020"
                 },
                 "graphs": {
                     "datasets": [
@@ -185,8 +189,137 @@ function ExportReportsModal(props) {
                         }
                     ]
                 }
-            }));
-        console.log(resp.path());
+            }
+         */
+
+        const datetimeFormat = 'DD/MM/YYYY HH:mm:ss';
+
+        // get full dataset from this range
+        let fullDataset = await getReportsDataForGraphs(Moment(startDate), Moment(endDate).add(1, 'day'));
+
+        // get profile information
+        let profile = (await getPatientProfile()).patient;
+
+        // generate payload
+        let payload = {
+            "profile": {
+                "name": profile.first_name,
+                "age": profile.age,
+                "weight": 60.0
+            },
+            "period": {
+                "start": Moment(startDate).format(datetimeFormat),
+                "end": Moment(endDate).format(datetimeFormat)
+            },
+            "graphs": {
+                "datasets": []
+            }
+        };
+
+        for (const reportType of srt) {
+            if (reportType === 'Blood Glucose') {
+                const plot = processData(null, fullDataset.bglData, d=>d.record_date,
+                        d=>d.bg_reading, 'average', null);
+
+                const dataset = {
+                    "title": reportType,
+                    "plots": [
+                        {
+                            "graph_name": "Average Readings - mmol/L",
+                            "type": "line",
+                            "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": plot.map(d => d.y),
+                            "boundary_min": 4.0,
+                            "boundary_max": 12.0,
+                            "plot_type": "inter-day"
+                        }
+                    ]
+                }
+
+                payload.graphs.datasets.push(dataset);
+            }
+
+            if (reportType === 'Food Intake') {
+                const plot = processData(null, fullDataset.foodData, d=>d.date,
+                    d=>d.nutrients.energy.amount, 'sum', null);
+                const dataset = {
+                    "title": reportType,
+                    "plots": [
+                        {
+                            "graph_name": "Total Calories Consumed - kcal",
+                            "type": "bar",
+                            "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": plot.map(d => d.y),
+                            "boundary_min": 1700,
+                            "boundary_max": 2200,
+                            "plot_type": "inter-day"
+                        }
+                    ]
+                }
+
+                payload.graphs.datasets.push(dataset);
+            }
+
+            if (reportType === 'Medication') {
+                const adherencePlot = calculateAdherence(zipMedicationData(fullDataset.medPlan, fullDataset.medData));
+                const dataset = {
+                    "title": reportType,
+                    "plots": [
+                        {
+                            "graph_name": "Average Adherence - %",
+                            "type": "progress-bar",
+                            "x": adherencePlot.map(d=>d.name),
+                            "y": adherencePlot.map(d=>d.adherence),
+                            "plot_type": "inter-day"
+                        }
+                    ]
+                }
+
+                payload.graphs.datasets.push(dataset);
+            }
+
+            if (reportType === 'Weight') {
+                const plot = processData(null, fullDataset.weightData, d=>d.record_date,
+                    d=>d.weight, 'average', null);
+                const dataset = {
+                    "title": reportType,
+                    "plots": [
+                        {
+                            "graph_name": "Average progress - kg",
+                            "type": "bar",
+                            "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": plot.map(d => d.y),
+                            "plot_type": "inter-day"
+                        }
+                    ]
+                }
+
+                payload.graphs.datasets.push(dataset);
+            }
+
+            if (reportType === 'Activity') {
+                const plot = processData(null, fullDataset.activityData, d=>d.date,
+                    d=>d.calories, 'sum', null);
+                const dataset = {
+                    "title": reportType,
+                    "plots": [
+                        {
+                            "graph_name": "Total Calories Burnt - kcal",
+                            "type": "bar",
+                            "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": plot.map(d => d.y),
+                            "plot_type": "inter-day"
+                        }
+                    ]
+                }
+
+                payload.graphs.datasets.push(dataset);
+            }
+        }
+
+        let resp = await exportToPdfRequest(payload);
+
+        return resp;
     }
 
     return (

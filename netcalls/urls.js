@@ -55,6 +55,8 @@ const getLab = server + 'profile/lab-data';
 
 const getAppointment = server + 'profile/appointment';
 
+const exportReportEndpoint = server + 'report/create-pdf';
+
 export {
   login,
   isTokenValid,
@@ -104,4 +106,5 @@ export {
   authSecurityQnAns,
   getLab,
   getAppointment,
+  exportReportEndpoint
 };
