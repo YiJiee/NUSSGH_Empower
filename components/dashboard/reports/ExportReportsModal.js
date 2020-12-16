@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, TouchableHighlight, ScrollView, Image, FlatList} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, TouchableHighlight, ScrollView, Image, FlatList, Alert} from 'react-native';
 import globalStyles from "../../../styles/globalStyles";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Modal from "react-native-modal";
@@ -43,7 +43,7 @@ const defaultExportFormat = 'PDF';
 
 function ExportReportsModal(props) {
     const {visible, setVisible} = props;
-    const [startDate, setStartDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(Moment(new Date()).subtract(7, 'days').toDate());
     const [endDate, setEndDate] = useState(new Date());
     const [selectedReportType, setSelectedReportTypes] = useState(reportTypes.map(type =>  {
         return {...type, selected: false};
@@ -67,6 +67,27 @@ function ExportReportsModal(props) {
 
     const handleExport = async () => {
         const srt = selectedReportType.filter(type => type.selected).map(type => type.name);
+        //console.log(Moment(endDate).add(1, 'day').clone().diff(Moment(startDate, 'days')));
+        if (Moment(endDate).add(1, 'day').clone().diff(Moment(startDate), 'days') < 7) {
+            Alert.alert('Export PDF report currently supports at least a difference of 7 days', 'Please make sure that the start and end date have a difference of 7 days.', [
+                {
+                    text: 'Got It',
+                    onPress: () => {},
+                },
+            ]);
+            return ;
+        }
+
+        if (srt.length === 0) {
+            Alert.alert('Please select at least one report type.', '', [
+                {
+                    text: 'Got It',
+                    onPress: () => {},
+                },
+            ]);
+            return ;
+        }
+
         if (exportFormat === 'PDF') {
             console.log('EXPORT AS PDF');
             await exportAsPdf(srt);
@@ -317,9 +338,12 @@ function ExportReportsModal(props) {
             }
         }
 
+        //console.log(JSON.stringify(payload));
+
         let resp = await exportToPdfRequest(payload);
 
         return resp;
+
     }
 
     return (
