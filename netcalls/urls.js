@@ -57,6 +57,8 @@ const getAppointment = server + 'profile/appointment';
 
 const exportReportEndpoint = server + 'report/create-pdf';
 
+const inappNotifEndpoint = server + 'notification/in-app';
+
 export {
   login,
   isTokenValid,
@@ -106,5 +108,6 @@ export {
   authSecurityQnAns,
   getLab,
   getAppointment,
-  exportReportEndpoint
+  exportReportEndpoint,
+  inappNotifEndpoint
 };

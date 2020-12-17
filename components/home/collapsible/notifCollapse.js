@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text, Animated, FlatList} from 'react-native';
 import NotificationRow from '../notificationRow';
 
 import {Colors} from '../../../styles/colors';
@@ -9,7 +9,7 @@ import {
 } from '../../../commonFunctions/common';
 import {getLogIncompleteText} from '../../../commonFunctions/notifFunction';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-
+import {getInAppNotifications} from "../../../netcalls/notif/inApp";
 
 const NotifCollapse = (props) => {
   const {hour, morningNotDone, afternoonNotDone} = props;
@@ -20,6 +20,9 @@ const NotifCollapse = (props) => {
   const dropDownAnimation = useRef(new Animated.Value(1)).current;
 
   const [logNotDoneText, setLogNotDoneText] = useState('');
+
+  // extra notifications from server
+  const [extraNotifications, setExtraNotifications] = useState([]);
 
   const countNotif = () => {
     let total = 0;
@@ -39,18 +42,37 @@ const NotifCollapse = (props) => {
     if (visible) {
       Animated.timing(dropDownAnimation, {
         toValue: 0,
-        duration: 200,
+        duration: 400,
         useNativeDriver: false,
       }).start(() => setOpen(false));
     } else {
       setOpen(true);
       Animated.timing(dropDownAnimation, {
         toValue: 1,
-        duration: 200,
+        duration: 400,
         useNativeDriver: false,
       }).start();
     }
   };
+
+  // adjust minimum heights and maximum heights of component.
+  const handleLayoutEvents = (event) => {
+    if (minHeight === 0) {
+      setMinHeight(event.nativeEvent.layout.height);
+    }
+
+    if (maxHeight === 0) {
+      setMaxHeight(event.nativeEvent.layout.height);
+    }
+
+    if (minHeight > event.nativeEvent.layout.height) {
+      setMinHeight(event.nativeEvent.layout.height);
+    }
+
+    if (maxHeight < event.nativeEvent.layout.height) {
+      setMaxHeight(event.nativeEvent.layout.height);
+    }
+  }
 
   //notification - add log * -----
   useEffect(() => {
@@ -66,6 +88,8 @@ const NotifCollapse = (props) => {
     ) {
       setLogNotDoneText('');
     }
+    getInAppNotifications().then(notif => setExtraNotifications(notif['_toplevel'] || []));
+
   }, [morningNotDone, afternoonNotDone]);
 
   const setLogNotDone = () => {
@@ -80,11 +104,13 @@ const NotifCollapse = (props) => {
     outputRange: [minHeight, maxHeight],
   });
 
+
+  const allNotifications = [{redirect: notif_log, message: logNotDoneText}].concat(extraNotifications);
+
   return (
-    <View onLayout={(event) => setMaxHeight(event.nativeEvent.layout.height)}>
+    <View onLayout={handleLayoutEvents}>
       <View
-        style={styles.cardTab}
-        onLayout={(event) => setMinHeight(event.nativeEvent.layout.height)}>
+        style={styles.cardTab}>
         <TouchableOpacity
           onPress={() => {
             toggle(open);
@@ -95,21 +121,34 @@ const NotifCollapse = (props) => {
         </TouchableOpacity>
       </View>
       {/*Content */}
-      {open && (
-        <Animated.View
-          style={{
-            maxHeight: heightInterpolation,
-            backgroundColor: Colors.notifTab,
-          }}>
+      <Animated.View style={{maxHeight: heightInterpolation, backgroundColor: Colors.notifTab}}>
+      {
+        /*
+        open && (<Animated.View
+            style={{
+              maxHeight: heightInterpolation,
+              backgroundColor: Colors.notifTab,
+            }}>
           {logNotDoneText.length !== 0 && (
-            <NotificationRow
-              type={notif_log}
-              hour={hour}
-              text={logNotDoneText}
-            />
+              <NotificationRow
+                  type={notif_log}
+                  hour={hour}
+                  text={logNotDoneText}
+              />
           )}
-        </Animated.View>
-      )}
+        </Animated.View>)
+         */
+      }
+      {
+        open && (<FlatList
+            data={allNotifications}
+            keyExtractor={i=>`${i.redirect}_${i.message}`}
+            renderItem={({item}) => {
+              return (<NotificationRow type={item.redirect} text={item.message} />);
+            }}
+        />)
+      }
+      </Animated.View>
     </View>
   );
 };

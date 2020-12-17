@@ -5,7 +5,6 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import Modal from "react-native-modal";
 import DatePicker from "react-native-date-picker";
 import Moment from 'moment';
-import RNFetchBlob from 'rn-fetch-blob';
 import {
     exportToPdfRequest,
     getReportsDataForCsv,
@@ -18,6 +17,8 @@ import {HorizontalSelector} from "../../common/HorizontalSelector";
 import {getPatientProfile} from "../../../netcalls/requestsAccount";
 import {processData} from "../../../commonFunctions/reportDataFormatter";
 import {calculateAdherence, zipMedicationData} from "./MedicationTable";
+import ResponseModal from "../../onboarding/fitbit/ResponseModal";
+import {STATUS} from "../../onboarding/fitbit/Status";
 
 
 // fs library
@@ -49,6 +50,7 @@ function ExportReportsModal(props) {
         return {...type, selected: false};
     }));
     const [exportFormat, setExportFormat] = React.useState(defaultExportFormat);
+    const [downloadSuccess, setDownloadSuccess] = React.useState(false);
 
     // Takes in report name that will be toggled.
     const updateReportSelected = (reportName) => {
@@ -319,16 +321,34 @@ function ExportReportsModal(props) {
             }
 
             if (reportType === 'Activity') {
-                const plot = processData(null, fullDataset.activityData, d=>d.date,
+                const caloriePlot = processData(null, fullDataset.activityData, d=>d.date,
                     d=>d.calories, 'sum', null);
+                const durationPlot = processData(null, fullDataset.activityData, d=>d.date,
+                        d=>d.duration, 'sum', null);
+                const stepsPlot = processData(null, fullDataset.activityData, d=>d.date,
+                        d=>d.steps, 'sum', null);
                 const dataset = {
                     "title": reportType,
                     "plots": [
                         {
                             "graph_name": "Total Calories Burnt - kcal",
                             "type": "bar",
-                            "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
-                            "y": plot.map(d => d.y),
+                            "x": caloriePlot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": caloriePlot.map(d => d.y),
+                            "plot_type": "inter-day"
+                        },
+                        {
+                            "graph_name": "Duration - min",
+                            "type": "bar",
+                            "x": durationPlot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": durationPlot.map(d => d.y),
+                            "plot_type": "inter-day"
+                        },
+                        {
+                            "graph_name": "Steps Taken",
+                            "type": "bar",
+                            "x": stepsPlot.map(d => Moment(d.x).format(datetimeFormat)),
+                            "y": stepsPlot.map(d => d.y),
                             "plot_type": "inter-day"
                         }
                     ]
@@ -338,12 +358,20 @@ function ExportReportsModal(props) {
             }
         }
 
-        //console.log(JSON.stringify(payload));
+        setDownloadSuccess(true);
 
         let resp = await exportToPdfRequest(payload);
-
-        return resp;
-
+        if (resp.respInfo.status === 200) {
+            return resp;
+        } else {
+            Alert.alert("Download error! Please try again later.", '', [
+                {
+                    text: 'Got It',
+                    onPress: () => {},
+                },
+            ]);
+            return resp;
+        }
     }
 
     return (
@@ -380,6 +408,15 @@ function ExportReportsModal(props) {
                     </TouchableHighlight>
                 </View>
             </View>
+            {
+                downloadSuccess && (<ResponseModal
+                        visible={downloadSuccess}
+                        closeModal={()=>setDownloadSuccess(false)}
+                        status={STATUS.FINISHED_SUCCESSFULLY}
+                        overrideSuccessMessage={'Download success!'}
+                        timeoutDuration={2000}
+                    />)
+            }
         </Modal>
     );
 }

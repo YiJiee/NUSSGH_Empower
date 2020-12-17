@@ -12,6 +12,7 @@ import {
   renderLogIcon,
 } from '../../commonFunctions/logFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
+import {notificationPathMapping} from "../../config/AppConfig";
 
 
 const NotificationRow = (props) => {
@@ -30,6 +31,9 @@ const NotificationRow = (props) => {
   };
 
   const notifPress = () => {
+    if (type in notificationPathMapping) {
+      navigation.navigate(notificationPathMapping[type]);
+    }
     if (type === notif_log) {
       navigation.navigate('AddLog');
     }
@@ -69,6 +73,20 @@ const NotificationRow = (props) => {
           />
         </>
       )}
+      {
+        type in notificationPathMapping && (
+            <>
+              <View style={{flex: 1}}>
+                <Text style={styles.notifDetails}>{text}</Text>
+              </View>
+              <Octicon
+                  name="primitive-dot"
+                  color={'red'}
+                  style={{alignSelf: 'center'}}
+              />
+            </>
+        )
+      }
     </TouchableOpacity>
   );
 };

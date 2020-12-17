@@ -7,7 +7,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 export default function ResponseModal(props) {
-  const {visible, status, closeModal} = props;
+  const {visible, status, closeModal, overrideSuccessMessage, timeoutDuration} = props;
 
   React.useEffect(() => {
     // automatic close when dialogue is done.
@@ -16,18 +16,18 @@ export default function ResponseModal(props) {
       status === STATUS.CANCELLED ||
       status === STATUS.ERROR
     ) {
-      setTimeout(closeModal, 1000);
+      setTimeout(closeModal, timeoutDuration || 1000);
     }
   }, [status]);
   return (
-    <Modal isVisible={visible} style={{alignItems: 'center'}}>
+    <Modal isVisible={visible} style={{alignItems: 'center'}} onBackdropPress={closeModal}>
       <View style={styles.messageBox}>
         {status === STATUS.IN_PROGRESS ? (
           <Text style={styles.messageText}>Setting up fitbit account</Text>
         ) : status === STATUS.CANCELLED ? (
           <Text style={styles.messageText}>Cancelled</Text>
         ) : status === STATUS.FINISHED_SUCCESSFULLY ? (
-          <Text style={styles.messageText}>Successfully Linked!</Text>
+          <Text style={styles.messageText}>{overrideSuccessMessage || 'Successfully Linked!'}</Text>
         ) : status === STATUS.ERROR ? (
           <React.Fragment>
             <Text style={styles.messageText}>Network error.</Text>
