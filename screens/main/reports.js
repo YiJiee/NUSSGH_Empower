@@ -21,7 +21,13 @@ import HIGHLIGHTED_ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/
 import ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-running.svg';
 import {Colors} from '../../styles/colors';
 import {requestNutrientConsumption} from '../../netcalls/mealEndpoints/requestMealLog';
-import {getLastMinuteFromTodayDate} from '../../commonFunctions/common';
+import {
+  bglLowerBound,
+  bglUpperBound, getHealthyCalorieUpperBound, getHealthyWeightRange,
+  getLastMinuteFromTodayDate,
+  idealActivityDurationPerDayInMinutes,
+  idealStepsPerDay
+} from '../../commonFunctions/common';
 import Moment from 'moment';
 import {
   getActivitySummaries,
@@ -132,6 +138,10 @@ const ReportsScreen = (props) => {
     activityData: [],
     medData: [],
     foodData: [],
+
+    // patient healthy weight range
+    healthyWeightRange: null,
+    healthyCalorieUpperBound: null
   });
 
   const initialTab =
@@ -188,6 +198,13 @@ const ReportsScreen = (props) => {
     const foodLogs = data?.[selectedDate]?.food?.logs;
 
     graphsData.foodLogs = foodLogs;
+
+    let healthyWeightRange = await getHealthyWeightRange();
+
+    graphsData.healthyWeightRange = healthyWeightRange;
+
+    let healthyCalorieUpperBound = await getHealthyCalorieUpperBound();
+    graphsData.healthyCalorieUpperBound = healthyCalorieUpperBound;
 
     return graphsData;
   };
@@ -288,7 +305,7 @@ const ReportsScreen = (props) => {
                   />
                   <ChartLegend
                     size={chartLegendSize}
-                    legendName="Target Range (4.0 - 12.0)"
+                    legendName={`Target Range (${bglLowerBound.toFixed(1)} - ${bglUpperBound.toFixed(1)})`}
                     color={boundaryFill}
                     textPaddingLeft={adjustSize(5)}
                     textPaddingRight={adjustSize(20)}
@@ -306,8 +323,8 @@ const ReportsScreen = (props) => {
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
                     defaultMaxY={14}
-                    lowerBound={4}
-                    upperBound={12}
+                    lowerBound={bglLowerBound}
+                    upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
                     boundaryFill={boundaryFill}
                     width={width}
@@ -328,8 +345,8 @@ const ReportsScreen = (props) => {
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
                     defaultMaxY={14}
-                    lowerBound={4}
-                    upperBound={12}
+                    lowerBound={bglLowerBound}
+                    upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
                     boundaryFill={boundaryFill}
                     width={width}
@@ -347,16 +364,20 @@ const ReportsScreen = (props) => {
                 <Text style={[globalStyles.pageDetails, {color: 'grey'}]}>
                   Total Calories Consumed - kcal
                 </Text>
-                <View
-                  style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
-                  <ChartLegend
-                    size={chartLegendSize}
-                    legendName="Target Range (1.7 K - 2.2 K)"
-                    color={boundaryFill}
-                    textPaddingLeft={adjustSize(5)}
-                    textPaddingRight={adjustSize(20)}
-                  />
-                </View>
+                {
+                  fullDataset.healthyCalorieUpperBound && (
+                      <View
+                          style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                        <ChartLegend
+                            size={chartLegendSize}
+                            legendName={`Target Range (less than ${(fullDataset.healthyCalorieUpperBound / 1000).toFixed(1)} K)`}
+                            color={boundaryFill}
+                            textPaddingLeft={adjustSize(5)}
+                            textPaddingRight={adjustSize(20)}
+                        />
+                      </View>
+                  )
+                }
                 <BarChart
                   data={fullDataset.foodData}
                   filterKey={filterKey}
@@ -364,8 +385,7 @@ const ReportsScreen = (props) => {
                   yExtractor={(d) => d.nutrients.energy.amount}
                   boundaryFill={boundaryFill}
                   defaultMaxY={2500}
-                  lowerBound={1700}
-                  upperBound={2200}
+                  upperBound={fullDataset.healthyCalorieUpperBound}
                   width={width}
                   height={adjustSize(300)}
                 />
@@ -418,16 +438,20 @@ const ReportsScreen = (props) => {
                 <Text style={[globalStyles.pageDetails, {color: 'grey'}]}>
                   Progress - kg
                 </Text>
-                <View
-                  style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
-                  <ChartLegend
-                    size={chartLegendSize}
-                    legendName="Healthy"
-                    color={boundaryFill}
-                    textPaddingLeft={5}
-                    textPaddingRight={20}
-                  />
-                </View>
+                {
+                  fullDataset.healthyWeightRange && (
+                      <View
+                          style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                        <ChartLegend
+                            size={chartLegendSize}
+                            legendName={`Target Range (${fullDataset.healthyWeightRange[0].toFixed(1)} - ${fullDataset.healthyWeightRange[1].toFixed(1)})`}
+                            color={boundaryFill}
+                            textPaddingLeft={5}
+                            textPaddingRight={20}
+                        />
+                      </View>
+                  )
+                }
                 <LineChart
                   data={fullDataset.weightData}
                   filterKey={filterKey}
@@ -437,6 +461,9 @@ const ReportsScreen = (props) => {
                   yExtractor={(d) => d.weight}
                   defaultMinY={30}
                   defaultMaxY={110}
+                  boundaryFill={boundaryFill}
+                  lowerBound={fullDataset.healthyWeightRange[0]}
+                  upperBound={fullDataset.healthyWeightRange[1]}
                   showFood={false}
                 />
               </View>
@@ -471,12 +498,23 @@ const ReportsScreen = (props) => {
                   ]}>
                   Duration (minutes)
                 </Text>
+                <View
+                    style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                  <ChartLegend
+                      size={chartLegendSize}
+                      legendName={`Target Range (greater than ${(idealActivityDurationPerDayInMinutes).toFixed(1) + ' min'})`}
+                      color={boundaryFill}
+                      textPaddingLeft={adjustSize(5)}
+                      textPaddingRight={adjustSize(20)}
+                  />
+                </View>
                 <BarChart
                   data={fullDataset.activityData}
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={500}
+                  lowerBound={idealActivityDurationPerDayInMinutes}
+                  defaultMaxY={50}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.duration}
                   height={300}
@@ -492,7 +530,7 @@ const ReportsScreen = (props) => {
                   style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
                   <ChartLegend
                     size={chartLegendSize}
-                    legendName="Target Range (1K - 1.5K)"
+                    legendName={`Target Range (greater than ${(idealStepsPerDay / 1000).toFixed(1) + ' K'})`}
                     color={boundaryFill}
                     textPaddingLeft={adjustSize(5)}
                     textPaddingRight={adjustSize(20)}
@@ -503,9 +541,8 @@ const ReportsScreen = (props) => {
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={5000}
-                  lowerBound={1000}
-                  upperBound={1500}
+                  defaultMaxY={11000}
+                  lowerBound={10000}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.steps}
                   height={adjustSize(300)}

@@ -1,3 +1,4 @@
+import {Platform, PermissionsAndroid} from 'react-native';
 import {requestNutrientConsumption} from "../mealEndpoints/requestMealLog";
 import {
     getActivityLogs,
@@ -15,7 +16,7 @@ import {getPlan} from "../requestsMedPlan";
 import {getEntry4Day} from "../requestsDiary";
 import {getToken} from "../../storage/asyncStorageFunctions";
 
-let dirs = RNFetchBlob.fs.dirs;
+var RNFS = require('react-native-fs');
 
 async function getReportsDataForCsv(reportTypes, startDate, endDate) {
     const datestringFormatForLogs = 'YYYY-MM-DD';
@@ -100,11 +101,32 @@ async function getReportsDataForGraphs(startDate, endDate) {
 async function exportToPdfRequest(payload) {
     console.log('Exporting pdf... please wait');
     try {
+
+        if (Platform.OS === 'android') {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: "Enable downloads from Empower",
+                    message:
+                        "Required to download reports!",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+
+            if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                return false;
+            }
+        }
+
+        const dir = Platform.OS === 'ios' ? RNFS.DocumentDirectoryPath : RNFS.DownloadDirectoryPath;
+
         let resp = await RNFetchBlob.config({
             // add this option that makes response data to be stored as a file,
             // this is much more performant.
             fileCache : true,
-            path : dirs.DocumentDir + `/${payload.profile.name}.pdf`
+            path : dir + `/${payload.profile.name}.pdf`
             //appendExt : 'pdf'
         })
             .fetch('POST', exportReportEndpoint, {
@@ -115,7 +137,13 @@ async function exportToPdfRequest(payload) {
             }, JSON.stringify(payload));
 
         console.log(`Successfully exported pdf to ${resp.path()}!`);
+        if (resp.respInfo.status === 200) {
+            if (Platform.OS === 'ios') {
+                RNFetchBlob.ios.openDocument(resp.data);
+            }
+        }
         return resp;
+
     } catch (e) {
         console.log('Error occurred while exporting pdf: ', e);
         return false;

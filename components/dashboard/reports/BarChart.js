@@ -60,15 +60,19 @@ export default function BarChart(props) {
     const handleSelect = (index) => {
         setSelectedIndex(index);
     }
+
+    const lowBound = props.lowerBound ? props.lowerBound : 0;
+    const upBound = props.upperBound ? props.upperBound : maxY;
+
     return (
         <View style={styles.root}>
             <View style={styles.barchartContainer}>
                 <Svg width={width} height={height}>
                     {   // boundaries
-                        props.lowerBound && props.upperBound &&
+                        (props.lowerBound || props.upperBound) &&
                         <Path key='healthyRange' stroke='none' fill={props.boundaryFill || '#F1F6D7'}
-                              d={`M ${paddingLeft - axisMargin - barWidth / 2} ${scaleY(props.lowerBound)} l ${width - paddingLeft - paddingRight + 2 * axisMargin + barWidth} 0
-                              l 0 ${-scaleHeight(props.upperBound - props.lowerBound)} l ${-(width - paddingLeft - paddingRight + 2 * axisMargin + barWidth)} 0 Z`}/>
+                              d={`M ${paddingLeft - axisMargin - barWidth / 2} ${scaleY(lowBound)} l ${width - paddingLeft - paddingRight + 2 * axisMargin + barWidth} 0
+                              l 0 ${-scaleHeight(upBound - lowBound)} l ${-(width - paddingLeft - paddingRight + 2 * axisMargin + barWidth)} 0 Z`}/>
 
 
                     }

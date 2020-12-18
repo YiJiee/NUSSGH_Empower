@@ -48,7 +48,7 @@ function getCsvHeader(reportType, data) {
     } else if (reportType === 'Weight') {
         return 'date,weight(kg)';
     } else if (reportType === 'Activity') {
-        return 'date,name,calories-burnt,steps,duration(min)';
+        return 'date,distance,calories-burnt,steps,duration(min)';
     }
 }
 

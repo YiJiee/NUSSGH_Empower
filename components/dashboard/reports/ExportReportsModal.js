@@ -11,7 +11,7 @@ import {
     getReportsDataForGraphs
 } from "../../../netcalls/reports/exportReports";
 import {getCsvHeader, toCsv} from "../../../commonFunctions/IOFunctions";
-import {getUsername} from "../../../storage/asyncStorageFunctions";
+import {getLastWeightLog, getUsername} from "../../../storage/asyncStorageFunctions";
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 import {HorizontalSelector} from "../../common/HorizontalSelector";
 import {getPatientProfile} from "../../../netcalls/requestsAccount";
@@ -19,6 +19,13 @@ import {processData} from "../../../commonFunctions/reportDataFormatter";
 import {calculateAdherence, zipMedicationData} from "./MedicationTable";
 import ResponseModal from "../../onboarding/fitbit/ResponseModal";
 import {STATUS} from "../../onboarding/fitbit/Status";
+import {COLOR_MAP, filterAndProcessData} from "./NutritionPie";
+import {
+    bglLowerBound,
+    bglUpperBound, getHealthyCalorieUpperBound, getHealthyWeightRange,
+    idealActivityDurationPerDayInMinutes,
+    idealStepsPerDay
+} from "../../../commonFunctions/common";
 
 
 // fs library
@@ -44,7 +51,7 @@ const defaultExportFormat = 'PDF';
 
 function ExportReportsModal(props) {
     const {visible, setVisible} = props;
-    const [startDate, setStartDate] = useState(Moment(new Date()).subtract(7, 'days').toDate());
+    const [startDate, setStartDate] = useState(Moment(new Date()).subtract(6, 'days').toDate());
     const [endDate, setEndDate] = useState(new Date());
     const [selectedReportType, setSelectedReportTypes] = useState(reportTypes.map(type =>  {
         return {...type, selected: false};
@@ -222,13 +229,19 @@ function ExportReportsModal(props) {
 
         // get profile information
         let profile = (await getPatientProfile()).patient;
+        let weight = 'Not taken yet';
+        let lastWeightLog = await getLastWeightLog();
+
+        if (lastWeightLog) {
+            weight = lastWeightLog.value;
+        }
 
         // generate payload
         let payload = {
             "profile": {
                 "name": profile.first_name,
                 "age": profile.age,
-                "weight": 60.0
+                "weight": weight
             },
             "period": {
                 "start": Moment(startDate).format(datetimeFormat),
@@ -252,8 +265,8 @@ function ExportReportsModal(props) {
                             "type": "line",
                             "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": plot.map(d => d.y),
-                            "boundary_min": 4.0,
-                            "boundary_max": 12.0,
+                            "boundary_min": bglLowerBound,
+                            "boundary_max": bglUpperBound,
                             "plot_type": "inter-day"
                         }
                     ]
@@ -265,6 +278,14 @@ function ExportReportsModal(props) {
             if (reportType === 'Food Intake') {
                 const plot = processData(null, fullDataset.foodData, d=>d.date,
                     d=>d.nutrients.energy.amount, 'sum', null);
+                const pieData = filterAndProcessData(fullDataset.foodData, null, ['carbohydrate', 'total-fat', 'protein']);
+                const totalSum = pieData.reduce((acc, curr, index) => acc + curr.value, 0);
+                const sliceColors = pieData.map(d => COLOR_MAP[d.name]);
+                const pieX = pieData.map(d => d.name);
+                const pieY = pieData.map(d => totalSum > 0 ? (d.value / totalSum) : 0);
+
+                const healthyCalorieUpBound = await getHealthyCalorieUpperBound();
+
                 const dataset = {
                     "title": reportType,
                     "plots": [
@@ -273,9 +294,15 @@ function ExportReportsModal(props) {
                             "type": "bar",
                             "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": plot.map(d => d.y),
-                            "boundary_min": 1700,
-                            "boundary_max": 2200,
+                            "boundary_max": healthyCalorieUpBound,
                             "plot_type": "inter-day"
+                        },
+                        {
+                            "graph_name": "Nutrition Distribution",
+                            "type": "pie-chart",
+                            "x": [pieX],
+                            "y": [pieY],
+                            "y_background_color": [sliceColors]
                         }
                     ]
                 }
@@ -304,6 +331,8 @@ function ExportReportsModal(props) {
             if (reportType === 'Weight') {
                 const plot = processData(null, fullDataset.weightData, d=>d.record_date,
                     d=>d.weight, 'average', null);
+
+                const healthyWeightRange = await getHealthyWeightRange();
                 const dataset = {
                     "title": reportType,
                     "plots": [
@@ -312,7 +341,9 @@ function ExportReportsModal(props) {
                             "type": "bar",
                             "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": plot.map(d => d.y),
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "boundary_min": healthyWeightRange[0],
+                            "boundary_max": healthyWeightRange[1]
                         }
                     ]
                 }
@@ -342,14 +373,16 @@ function ExportReportsModal(props) {
                             "type": "bar",
                             "x": durationPlot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": durationPlot.map(d => d.y),
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "boundary_min": idealActivityDurationPerDayInMinutes
                         },
                         {
                             "graph_name": "Steps Taken",
                             "type": "bar",
                             "x": stepsPlot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": stepsPlot.map(d => d.y),
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "boundary_min": idealStepsPerDay
                         }
                     ]
                 }
@@ -361,7 +394,7 @@ function ExportReportsModal(props) {
         setDownloadSuccess(true);
 
         let resp = await exportToPdfRequest(payload);
-        if (resp.respInfo.status === 200) {
+        if (resp?.respInfo.status === 200) {
             return resp;
         } else {
             Alert.alert("Download error! Please try again later.", '', [
@@ -372,6 +405,7 @@ function ExportReportsModal(props) {
             ]);
             return resp;
         }
+
     }
 
     return (

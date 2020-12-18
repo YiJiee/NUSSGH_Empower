@@ -84,9 +84,11 @@ function filterAndProcessData(data, filterKey, pieKeys) {
             result.push(binCount);
         }
     }
+
     const pieData = result.length > 0 ? result.map((d, index) => {
         const [nutrient, quantity] = Object.entries(d)[0];
         return ({
+            name: nutrient,
             value: Math.round(quantity),
             svg: {
                 fill: COLOR_MAP[nutrient],
@@ -96,6 +98,7 @@ function filterAndProcessData(data, filterKey, pieKeys) {
         });
     }) : [
         {
+            name: 'empty',
             value: 100,
             svg: {
                 fill: '#d8d8d8'
@@ -131,4 +134,4 @@ const EmptyLabels = ({ slices }) => {
     })
 }
 
-export {NutritionPie, COLOR_MAP};
+export {NutritionPie, COLOR_MAP, filterAndProcessData};
