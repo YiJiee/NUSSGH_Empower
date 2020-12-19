@@ -76,7 +76,7 @@ const cursorRadius = adjustSize(10);
 const THRESHOLD = adjustSize(12.5); // The min distance to switch index.
 
 // x label
-const xLabelTextBoxWidth = adjustSize(100);
+const xLabelTextBoxWidth = adjustSize(95);
 
 // bar label properties
 const barLabelHeight = adjustSize(25);
@@ -276,12 +276,13 @@ export default class LineChart extends React.Component {
           opacity: 1,
         });
 
+        //console.log(Math.max(axisMargin + paddingLeft + xLabelTextBoxWidth / 2,Math.min(shownDatapoint[0] - xLabelTextBoxWidth / 2, width - xLabelTextBoxWidth / 2 - paddingRight - axisMargin)));
         this.xLabel.current.setNativeProps({
           text: `${Moment(this.state.scaleX.invert(shownDatapoint[0])).format(
             this.props.filterKey === DAY_FILTER_KEY ? 'h:mm a' : 'DD MMM YYYY',
           )}`,
           // clamp the left and right
-          left: Math.max(axisMargin + paddingLeft + xLabelTextBoxWidth / 2,Math.min(shownDatapoint[0] - xLabelTextBoxWidth / 2, width - xLabelTextBoxWidth / 2 - paddingRight - axisMargin)),
+          left: Math.max(paddingLeft - axisMargin, Math.min(shownDatapoint[0] - xLabelTextBoxWidth / 2, width  - paddingRight + axisMargin - xLabelTextBoxWidth)),
           opacity: 1,
         });
       } else {
@@ -751,7 +752,7 @@ const styles = StyleSheet.create({
     color: '#3c3c43',
     opacity: 0.6,
     width: xLabelTextBoxWidth,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   triangle: {
     width: 0,
