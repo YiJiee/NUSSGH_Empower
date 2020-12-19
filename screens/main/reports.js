@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Animated,
+  Animated, Platform,
 } from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import BarChart from '../../components/dashboard/reports/BarChart';
@@ -58,6 +58,7 @@ import FOOD_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-food.s
 import WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-weight.svg';
 import MED_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-med.svg';
 import {getReportsDataForGraphs} from "../../netcalls/reports/exportReports";
+import RNFetchBlob from "rn-fetch-blob";
 
 const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
 
@@ -217,6 +218,20 @@ const ReportsScreen = (props) => {
   const toggleInfoCallback = () => {
     setShowInfo(!showInfo);
   };
+
+  // for automatic file opening when export report is successful
+  const handleExportSuccess = async (filepath) => {
+    setOpenExportModal(false); // close the export window.
+    setTimeout(async () => {
+      if (Platform.OS === 'ios') {
+        const ios = RNFetchBlob.ios;
+        ios.openDocument(filepath); // only works when all modals are closed.
+      } else {
+        const android = RNFetchBlob.android;
+        await android.actionViewIntent(filepath, 'application/pdf');
+      }
+    }, 2000);
+  }
 
   //for bg-food
   const onSelectFilterDate = async (value) => {
@@ -560,6 +575,7 @@ const ReportsScreen = (props) => {
         <ExportReportsModal
           visible={openExportModal}
           setVisible={setOpenExportModal}
+          onSuccessExport={handleExportSuccess}
         />
       </ScrollView>
     </View>

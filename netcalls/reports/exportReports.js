@@ -136,12 +136,8 @@ async function exportToPdfRequest(payload) {
                 Authorization: `Bearer ${await getToken()}`
             }, JSON.stringify(payload));
 
-        console.log(`Successfully exported pdf to ${resp.path()}!`);
-        if (resp.respInfo.status === 200) {
-            if (Platform.OS === 'ios') {
-                RNFetchBlob.ios.openDocument(resp.data);
-            }
-        }
+        const outputFilePath = resp.path();
+        console.log(`Successfully exported pdf to ${outputFilePath}!`);
         return resp;
 
     } catch (e) {

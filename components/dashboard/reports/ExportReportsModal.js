@@ -1,5 +1,18 @@
 import React, {useRef, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, TouchableHighlight, ScrollView, Image, FlatList, Alert} from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    Animated,
+    Dimensions,
+    TouchableHighlight,
+    ScrollView,
+    Image,
+    FlatList,
+    Alert,
+    Platform
+} from 'react-native';
 import globalStyles from "../../../styles/globalStyles";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Modal from "react-native-modal";
@@ -26,6 +39,7 @@ import {
     idealActivityDurationPerDayInMinutes,
     idealStepsPerDay
 } from "../../../commonFunctions/common";
+import RNFetchBlob from "rn-fetch-blob";
 
 
 // fs library
@@ -50,14 +64,14 @@ const exportFormats = [
 const defaultExportFormat = 'PDF';
 
 function ExportReportsModal(props) {
-    const {visible, setVisible} = props;
+    const {visible, setVisible, onSuccessExport} = props;
     const [startDate, setStartDate] = useState(Moment(new Date()).subtract(6, 'days').toDate());
     const [endDate, setEndDate] = useState(new Date());
     const [selectedReportType, setSelectedReportTypes] = useState(reportTypes.map(type =>  {
         return {...type, selected: false};
     }));
     const [exportFormat, setExportFormat] = React.useState(defaultExportFormat);
-    const [downloadSuccess, setDownloadSuccess] = React.useState(false);
+    const [downloadProgress, setDownloadProgress] = React.useState(0);
 
     // Takes in report name that will be toggled.
     const updateReportSelected = (reportName) => {
@@ -73,6 +87,10 @@ function ExportReportsModal(props) {
         });
         setSelectedReportTypes(newSelectedReports);
     }
+
+    const handleDownloadDone = () => {
+        setDownloadProgress(0);
+    };
 
     const handleExport = async () => {
         const srt = selectedReportType.filter(type => type.selected).map(type => type.name);
@@ -97,6 +115,7 @@ function ExportReportsModal(props) {
             return ;
         }
 
+        setDownloadProgress(1);
         if (exportFormat === 'PDF') {
             console.log('EXPORT AS PDF');
             await exportAsPdf(srt);
@@ -139,88 +158,6 @@ function ExportReportsModal(props) {
     }
 
     const exportAsPdf = async (srt) => {
-
-        /*
-        // SAMPLE PAYLOAD
-        {
-                "profile": {
-                    "name": "Jimmy",
-                    "age": 32,
-                    "weight": 59
-                },
-                "period": {
-                    "start": "14/08/2020",
-                    "end": "20/08/2020"
-                },
-                "graphs": {
-                    "datasets": [
-                        {
-                            "title": "Blood Glucose",
-                            "plots": [
-                                {
-                                    "graph_name": "Readings - mmol/L",
-                                    "type": "line",
-                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
-                                    "y": [12, 19, 3, 5, 5, 3, 7],
-                                    "boundary_min": 4.0,
-                                    "boundary_max": 7.0,
-                                    "plot_type": "inter-day"
-                                },
-                                {
-                                    "graph_name": "Readings2 - mmol/L",
-                                    "type": "line",
-                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
-                                    "y": [1, 1, 3, 5, 5, 3, 2],
-                                    "boundary_min": 2.0,
-                                    "boundary_max": 4.0,
-                                    "plot_type": "inter-day"
-                                },
-                                {
-                                    "graph_name": "Readings3 - mmol/L",
-                                    "type": "line",
-                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
-                                    "y": [1, 1, 3, 5, 5, 3, 4],
-                                    "boundary_min": 2.0,
-                                    "boundary_max": 4.0,
-                                    "plot_type": "inter-day"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Food Intake",
-                            "plots": [
-                                {
-                                    "graph_name": "Calories consumed - kcal",
-                                    "type": "bar",
-                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
-                                    "y": [1800, 2400, 1900, 2200, 2100, 1950, 2040],
-                                    "plot_type": "inter-day"
-                                },
-                                {
-                                    "graph_name": "Fat consumed - grams",
-                                    "type": "bar",
-                                    "x": ["14/08/2020 00:00:00", "15/08/2020 00:00:00", "16/08/2020 00:00:00", "17/08/2020 00:00:00", "18/08/2020 00:00:00", "19/08/2020 00:00:00", "20/08/2020 00:00:00"],
-                                    "y": [210, 165, 340, 540, 195, 425, 377],
-                                    "plot_type": "inter-day"
-                                }
-                            ]
-                        },
-                        {
-                            "title": "Medication",
-                            "plots": [
-                                {
-                                    "graph_name": "Average adherence - %",
-                                    "type": "progress-bar",
-                                    "x": ["Metformin - 500mg", "Insulin - 1 bolus", "Metformin - 500mg", "Insulin - 1 bolus", "Metformin - 500mg", "Insulin - 1 bolus"],
-                                    "y": [0.75, 0.8, 0.5, 0.6, 0.7, 0.4],
-                                    "plot_type": "inter-day"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
-         */
 
         const datetimeFormat = 'DD/MM/YYYY HH:mm:ss';
 
@@ -391,10 +328,12 @@ function ExportReportsModal(props) {
             }
         }
 
-        setDownloadSuccess(true);
-
         let resp = await exportToPdfRequest(payload);
         if (resp?.respInfo.status === 200) {
+            setDownloadProgress(100);
+
+            const outputFilePath = resp.path();
+            await onSuccessExport(outputFilePath);
             return resp;
         } else {
             Alert.alert("Download error! Please try again later.", '', [
@@ -403,10 +342,13 @@ function ExportReportsModal(props) {
                     onPress: () => {},
                 },
             ]);
+            setDownloadProgress(-1);
             return resp;
         }
 
     }
+
+    const status = downloadProgress === 0 ? STATUS.NOT_STARTED : downloadProgress === 100 ? STATUS.FINISHED_SUCCESSFULLY : STATUS.IN_PROGRESS;
 
     return (
         <Modal isVisible={visible} style={{margin: 0}}>
@@ -443,12 +385,15 @@ function ExportReportsModal(props) {
                 </View>
             </View>
             {
-                downloadSuccess && (<ResponseModal
-                        visible={downloadSuccess}
-                        closeModal={()=>setDownloadSuccess(false)}
-                        status={STATUS.FINISHED_SUCCESSFULLY}
-                        overrideSuccessMessage={'Download success!'}
+                downloadProgress !== 0 && (<ResponseModal
+                        visible={downloadProgress}
+                        closeModal={handleDownloadDone}
+                        status={status}
+                        successMessage={'Download success!'}
+                        inProgressMessage={'Downloading...'}
+                        errorMessage={'Network Error.'}
                         timeoutDuration={2000}
+                        disableBackdropPress={true}
                     />)
             }
         </Modal>

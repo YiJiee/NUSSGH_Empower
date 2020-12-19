@@ -7,7 +7,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 export default function ResponseModal(props) {
-  const {visible, status, closeModal, overrideSuccessMessage, timeoutDuration} = props;
+  const {visible, status, closeModal, successMessage, errorMessage, inProgressMessage, timeoutDuration, disableBackdropPress} = props;
 
   React.useEffect(() => {
     // automatic close when dialogue is done.
@@ -20,17 +20,17 @@ export default function ResponseModal(props) {
     }
   }, [status]);
   return (
-    <Modal isVisible={visible} style={{alignItems: 'center'}} onBackdropPress={closeModal}>
+    <Modal isVisible={visible} style={{alignItems: 'center'}} onBackdropPress={disableBackdropPress ? null : closeModal}>
       <View style={styles.messageBox}>
         {status === STATUS.IN_PROGRESS ? (
-          <Text style={styles.messageText}>Setting up fitbit account</Text>
+          <Text style={styles.messageText}>{inProgressMessage}</Text>
         ) : status === STATUS.CANCELLED ? (
           <Text style={styles.messageText}>Cancelled</Text>
         ) : status === STATUS.FINISHED_SUCCESSFULLY ? (
-          <Text style={styles.messageText}>{overrideSuccessMessage || 'Successfully Linked!'}</Text>
+          <Text style={styles.messageText}>{successMessage}</Text>
         ) : status === STATUS.ERROR ? (
           <React.Fragment>
-            <Text style={styles.messageText}>Network error.</Text>
+            <Text style={styles.messageText}>{errorMessage}</Text>
             <Text style={styles.messageSubText}>Please Try again later</Text>
           </React.Fragment>
         ) : null}
