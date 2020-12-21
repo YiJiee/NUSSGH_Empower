@@ -1,6 +1,5 @@
 import React from 'react';
 import {Platform} from 'react-native';
-/*
 import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import {notificationPathMapping} from "../../config/AppConfig";
@@ -113,6 +112,11 @@ const configure = (handler) => {
         // default: true
         popInitialNotification: true,
 
+        /**
+         * (optional) default: true
+         * - Specified if permissions (ios) and token (android and ios) will requested or not,
+         * - if not, you must call PushNotificationsHandler.requestPermissions() later
+         */
         requestPermissions: true,
     });
 }
@@ -136,4 +140,3 @@ const testSendNotification = () => {
 //testSendNotification()
 
 export {handler, configure};
-*/
