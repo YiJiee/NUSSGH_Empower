@@ -21,7 +21,7 @@ import LoadingScreen from '../components/account/initLoadingScreen';
 
 import {appRootUrl, availablePaths} from '../config/AppConfig';
 import {handler} from '../components/notification/PushNotifHandler';
-import PushNotification from 'react-native-push-notification';
+//import PushNotification from 'react-native-push-notification';
 import QnVerifcationScreen from './login/qnVerificationScreen';
 import OnboardingWizard from './onboarding/onboardingWizard';
 import {getSecurityQnByUsername} from '../netcalls/requestsSecurityQn';
