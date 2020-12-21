@@ -110,6 +110,36 @@ const timeFilterTabs = [
   {name: MONTH_FILTER_KEY},
 ];
 
+// default range of values
+const defaultRange = {
+  bglChart: {
+    min: null,
+    max: 14
+  },
+  calorieChart: {
+    min: null,
+    max: 2500
+  },
+  weightChart: {
+    min: 30.0,
+    max: 110.0
+  },
+  activity: {
+    stepsChart: {
+      min: null,
+      max: 11000
+    },
+    durationChart: {
+      min: null,
+      max: 50
+    },
+    calorieBurntChart: {
+      min: null,
+      max: 1000
+    }
+  }
+}
+
 const padding = adjustSize(20);
 const tabSpace = adjustSize(15);
 
@@ -337,7 +367,7 @@ const ReportsScreen = (props) => {
                     filterKey={filterKey}
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
-                    defaultMaxY={14}
+                    defaultMaxY={defaultRange.bglChart.max}
                     lowerBound={bglLowerBound}
                     upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
@@ -359,7 +389,7 @@ const ReportsScreen = (props) => {
                     filterKey={filterKey}
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
-                    defaultMaxY={14}
+                    defaultMaxY={defaultRange.bglChart.max}
                     lowerBound={bglLowerBound}
                     upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
@@ -399,7 +429,7 @@ const ReportsScreen = (props) => {
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.nutrients.energy.amount}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={2500}
+                  defaultMaxY={defaultRange.calorieChart.max}
                   upperBound={fullDataset.healthyCalorieUpperBound}
                   width={width}
                   height={adjustSize(300)}
@@ -474,8 +504,8 @@ const ReportsScreen = (props) => {
                   height={adjustSize(300)}
                   xExtractor={(d) => d.record_date}
                   yExtractor={(d) => d.weight}
-                  defaultMinY={30}
-                  defaultMaxY={110}
+                  defaultMinY={defaultRange.weightChart.min}
+                  defaultMaxY={defaultRange.weightChart.max}
                   boundaryFill={boundaryFill}
                   lowerBound={fullDataset.healthyWeightRange[0]}
                   upperBound={fullDataset.healthyWeightRange[1]}
@@ -501,7 +531,7 @@ const ReportsScreen = (props) => {
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={1000}
+                  defaultMaxY={defaultRange.activity.calorieBurntChart.max}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.calories}
                   height={300}
@@ -529,7 +559,7 @@ const ReportsScreen = (props) => {
                   width={width}
                   boundaryFill={boundaryFill}
                   lowerBound={idealActivityDurationPerDayInMinutes}
-                  defaultMaxY={50}
+                  defaultMaxY={defaultRange.activity.durationChart.max}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.duration}
                   height={300}
@@ -556,7 +586,7 @@ const ReportsScreen = (props) => {
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={11000}
+                  defaultMaxY={defaultRange.activity.stepsChart.max}
                   lowerBound={10000}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.steps}
@@ -683,4 +713,5 @@ export {
   MEDICATION_KEY,
   FOOD_INTAKE_KEY,
   BGL_TAB_KEY,
+  defaultRange
 };

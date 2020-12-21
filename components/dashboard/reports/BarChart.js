@@ -45,7 +45,7 @@ export default function BarChart(props) {
     const data = processData(props.filterKey, props.data, props.xExtractor, props.yExtractor, 'sum');
     const {width, height} = props;
     // d3 properties
-    const maxY = Math.max(props.defaultMaxY, 1.25* Math.max(...data.map(d => d.y)));
+    const maxY = Math.max(props.defaultMaxY ? props.defaultMaxY : 0, 1.25* Math.max(...data.map(d => d.y)));
     const xAxisLabels = generateXAxisLabels(props.filterKey);
     const minX = xAxisLabels[0];
     const maxX = xAxisLabels[xAxisLabels.length - 1];

@@ -40,6 +40,7 @@ import {
     idealStepsPerDay
 } from "../../../commonFunctions/common";
 import RNFetchBlob from "rn-fetch-blob";
+import {defaultRange} from "../../../screens/main/reports";
 
 
 // fs library
@@ -204,7 +205,11 @@ function ExportReportsModal(props) {
                             "y": plot.map(d => d.y),
                             "boundary_min": bglLowerBound,
                             "boundary_max": bglUpperBound,
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "options": {
+                                "y_default_min": defaultRange.bglChart.min,
+                                "y_default_max": defaultRange.bglChart.max
+                            }
                         }
                     ]
                 }
@@ -232,7 +237,11 @@ function ExportReportsModal(props) {
                             "x": plot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": plot.map(d => d.y),
                             "boundary_max": healthyCalorieUpBound,
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "options": {
+                                "y_default_min": defaultRange.calorieChart.min,
+                                "y_default_max": defaultRange.calorieChart.max
+                            }
                         },
                         {
                             "graph_name": "Nutrition Distribution",
@@ -280,7 +289,11 @@ function ExportReportsModal(props) {
                             "y": plot.map(d => d.y),
                             "plot_type": "inter-day",
                             "boundary_min": healthyWeightRange[0],
-                            "boundary_max": healthyWeightRange[1]
+                            "boundary_max": healthyWeightRange[1],
+                            "options": {
+                                "y_default_min": defaultRange.weightChart.min,
+                                "y_default_max": defaultRange.weightChart.max
+                            }
                         }
                     ]
                 }
@@ -303,7 +316,11 @@ function ExportReportsModal(props) {
                             "type": "bar",
                             "x": caloriePlot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": caloriePlot.map(d => d.y),
-                            "plot_type": "inter-day"
+                            "plot_type": "inter-day",
+                            "options": {
+                                "y_default_min": defaultRange.activity.calorieBurntChart.min,
+                                "y_default_max": defaultRange.activity.calorieBurntChart.max
+                            }
                         },
                         {
                             "graph_name": "Duration - min",
@@ -311,7 +328,11 @@ function ExportReportsModal(props) {
                             "x": durationPlot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": durationPlot.map(d => d.y),
                             "plot_type": "inter-day",
-                            "boundary_min": idealActivityDurationPerDayInMinutes
+                            "boundary_min": idealActivityDurationPerDayInMinutes,
+                            "options": {
+                                "y_default_min": defaultRange.activity.durationChart.min,
+                                "y_default_max": defaultRange.activity.durationChart.max
+                            }
                         },
                         {
                             "graph_name": "Steps Taken",
@@ -319,7 +340,11 @@ function ExportReportsModal(props) {
                             "x": stepsPlot.map(d => Moment(d.x).format(datetimeFormat)),
                             "y": stepsPlot.map(d => d.y),
                             "plot_type": "inter-day",
-                            "boundary_min": idealStepsPerDay
+                            "boundary_min": idealStepsPerDay,
+                            "options": {
+                                "y_default_min": defaultRange.activity.stepsChart.min,
+                                "y_default_max": defaultRange.activity.stepsChart.max
+                            }
                         }
                     ]
                 }
@@ -329,7 +354,8 @@ function ExportReportsModal(props) {
         }
 
         let resp = await exportToPdfRequest(payload);
-        if (resp?.respInfo.status === 200) {
+
+        if (resp && resp.respInfo.status === 200) {
             setDownloadProgress(100);
 
             const outputFilePath = resp.path();
@@ -348,7 +374,11 @@ function ExportReportsModal(props) {
 
     }
 
-    const status = downloadProgress === 0 ? STATUS.NOT_STARTED : downloadProgress === 100 ? STATUS.FINISHED_SUCCESSFULLY : STATUS.IN_PROGRESS;
+    const status = downloadProgress === 0 ?
+        STATUS.NOT_STARTED
+        : downloadProgress === 100
+            ? STATUS.FINISHED_SUCCESSFULLY
+            : downloadProgress === -1 ? STATUS.ERROR : STATUS.IN_PROGRESS;
 
     return (
         <Modal isVisible={visible} style={{margin: 0}}>

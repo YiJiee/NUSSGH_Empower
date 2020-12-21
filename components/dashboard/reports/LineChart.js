@@ -165,7 +165,7 @@ export default class LineChart extends React.Component {
     );
     // d3 properties
     const maxY = Math.max(
-      defaultMaxY,
+      defaultMaxY ? defaultMaxY : 0,
       1.25 * Math.max(...data.map((d) => d.y)),
     );
     const xAxisLabels = generateXAxisLabels(

@@ -126,7 +126,8 @@ async function exportToPdfRequest(payload) {
             // add this option that makes response data to be stored as a file,
             // this is much more performant.
             fileCache : true,
-            path : dir + `/${payload.profile.name}.pdf`
+            path : dir + `/${payload.profile.name}.pdf`,
+            IOSBackgroundTask: true
             //appendExt : 'pdf'
         })
             .fetch('POST', exportReportEndpoint, {
