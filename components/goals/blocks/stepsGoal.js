@@ -62,7 +62,7 @@ const StepsGoal = (props) => {
           },
         ]);
       } else {
-        Alert.alert('Unexpected Error Occured', 'Please try again later!', [
+        Alert.alert('Unexpected Error Occurred', 'Please try again later!', [
           {
             text: 'Got It',
           },

@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  Animated,
+  Animated, Platform,
 } from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import BarChart from '../../components/dashboard/reports/BarChart';
@@ -21,7 +21,13 @@ import HIGHLIGHTED_ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/
 import ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-running.svg';
 import {Colors} from '../../styles/colors';
 import {requestNutrientConsumption} from '../../netcalls/mealEndpoints/requestMealLog';
-import {getLastMinuteFromTodayDate} from '../../commonFunctions/common';
+import {
+  bglLowerBound,
+  bglUpperBound, getHealthyCalorieUpperBound, getHealthyWeightRange,
+  getLastMinuteFromTodayDate,
+  idealActivityDurationPerDayInMinutes,
+  idealStepsPerDay
+} from '../../commonFunctions/common';
 import Moment from 'moment';
 import {
   getActivitySummaries,
@@ -51,6 +57,8 @@ import BGL_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-bloodgl
 import FOOD_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-food.svg';
 import WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-weight.svg';
 import MED_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-med.svg';
+import {getReportsDataForGraphs} from "../../netcalls/reports/exportReports";
+import RNFetchBlob from "rn-fetch-blob";
 
 const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
 
@@ -102,6 +110,36 @@ const timeFilterTabs = [
   {name: MONTH_FILTER_KEY},
 ];
 
+// default range of values
+const defaultRange = {
+  bglChart: {
+    min: null,
+    max: 14
+  },
+  calorieChart: {
+    min: null,
+    max: 2500
+  },
+  weightChart: {
+    min: 30.0,
+    max: 110.0
+  },
+  activity: {
+    stepsChart: {
+      min: null,
+      max: 11000
+    },
+    durationChart: {
+      min: null,
+      max: 50
+    },
+    calorieBurntChart: {
+      min: null,
+      max: 1000
+    }
+  }
+}
+
 const padding = adjustSize(20);
 const tabSpace = adjustSize(15);
 
@@ -131,6 +169,10 @@ const ReportsScreen = (props) => {
     activityData: [],
     medData: [],
     foodData: [],
+
+    // patient healthy weight range
+    healthyWeightRange: null,
+    healthyCalorieUpperBound: null
   });
 
   const initialTab =
@@ -177,59 +219,25 @@ const ReportsScreen = (props) => {
   }, [props.route.params, props.navigation, selectedDate]);
 
   const init = async () => {
-    console.log('initing ');
-    //load data
     const startDate = Moment(new Date()).subtract(28, 'days');
     const endDate = Moment(new Date()).add(1, 'day');
-    const foodData = (
-      await requestNutrientConsumption(
-        startDate.format('DD/MM/YYYY HH:mm:ss'),
-        getLastMinuteFromTodayDate(),
-      )
-    ).data;
-    const weightData = (
-      await getWeightLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const medData = (
-      await getMedicationLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const bglData = (
-      await getBloodGlucoseLogs(
-        startDate.format('YYYY-MM-DD'),
-        endDate.format('YYYY-MM-DD'),
-      )
-    ).logs;
-    const activityData = replaceActivitySummary(
-      (
-        await getActivitySummaries(
-          startDate.format('YYYY-MM-DD'),
-          endDate.format('YYYY-MM-DD'),
-        )
-      ).summaries,
-    );
-    const medPlan = await getPlan(
-      startDate.format('YYYY-MM-DD'),
-      endDate.format('YYYY-MM-DD'),
-    );
+    console.log('initing ');
+
+    let graphsData = await getReportsDataForGraphs(startDate, endDate)
 
     let data = await getEntry4Day(selectedDate);
     const foodLogs = data?.[selectedDate]?.food?.logs;
 
-    return {
-      foodData,
-      medData,
-      bglData,
-      activityData,
-      weightData,
-      medPlan,
-      foodLogs,
-    };
+    graphsData.foodLogs = foodLogs;
+
+    let healthyWeightRange = await getHealthyWeightRange();
+
+    graphsData.healthyWeightRange = healthyWeightRange;
+
+    let healthyCalorieUpperBound = await getHealthyCalorieUpperBound();
+    graphsData.healthyCalorieUpperBound = healthyCalorieUpperBound;
+
+    return graphsData;
   };
 
   const handleTabSelectChange = (tabIndex) => {
@@ -240,6 +248,20 @@ const ReportsScreen = (props) => {
   const toggleInfoCallback = () => {
     setShowInfo(!showInfo);
   };
+
+  // for automatic file opening when export report is successful
+  const handleExportSuccess = async (filepath) => {
+    setOpenExportModal(false); // close the export window.
+    setTimeout(async () => {
+      if (Platform.OS === 'ios') {
+        const ios = RNFetchBlob.ios;
+        ios.openDocument(filepath); // only works when all modals are closed.
+      } else {
+        const android = RNFetchBlob.android;
+        await android.actionViewIntent(filepath, 'application/pdf');
+      }
+    }, 2000);
+  }
 
   //for bg-food
   const onSelectFilterDate = async (value) => {
@@ -328,7 +350,7 @@ const ReportsScreen = (props) => {
                   />
                   <ChartLegend
                     size={chartLegendSize}
-                    legendName="Target Range (4.0 - 12.0)"
+                    legendName={`Target Range (${bglLowerBound.toFixed(1)} - ${bglUpperBound.toFixed(1)})`}
                     color={boundaryFill}
                     textPaddingLeft={adjustSize(5)}
                     textPaddingRight={adjustSize(20)}
@@ -345,9 +367,9 @@ const ReportsScreen = (props) => {
                     filterKey={filterKey}
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
-                    defaultMaxY={14}
-                    lowerBound={4}
-                    upperBound={12}
+                    defaultMaxY={defaultRange.bglChart.max}
+                    lowerBound={bglLowerBound}
+                    upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
                     boundaryFill={boundaryFill}
                     width={width}
@@ -367,9 +389,9 @@ const ReportsScreen = (props) => {
                     filterKey={filterKey}
                     xExtractor={(d) => d.record_date}
                     yExtractor={(d) => d.bg_reading}
-                    defaultMaxY={14}
-                    lowerBound={4}
-                    upperBound={12}
+                    defaultMaxY={defaultRange.bglChart.max}
+                    lowerBound={bglLowerBound}
+                    upperBound={bglUpperBound}
                     outsideBoundaryColor="red"
                     boundaryFill={boundaryFill}
                     width={width}
@@ -387,25 +409,28 @@ const ReportsScreen = (props) => {
                 <Text style={[globalStyles.pageDetails, {color: 'grey'}]}>
                   Total Calories Consumed - kcal
                 </Text>
-                <View
-                  style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
-                  <ChartLegend
-                    size={chartLegendSize}
-                    legendName="Target Range (1.7 K - 2.2 K)"
-                    color={boundaryFill}
-                    textPaddingLeft={adjustSize(5)}
-                    textPaddingRight={adjustSize(20)}
-                  />
-                </View>
+                {
+                  fullDataset.healthyCalorieUpperBound && (
+                      <View
+                          style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                        <ChartLegend
+                            size={chartLegendSize}
+                            legendName={`Target Range (less than ${(fullDataset.healthyCalorieUpperBound / 1000).toFixed(1)} K)`}
+                            color={boundaryFill}
+                            textPaddingLeft={adjustSize(5)}
+                            textPaddingRight={adjustSize(20)}
+                        />
+                      </View>
+                  )
+                }
                 <BarChart
                   data={fullDataset.foodData}
                   filterKey={filterKey}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.nutrients.energy.amount}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={2500}
-                  lowerBound={1700}
-                  upperBound={2200}
+                  defaultMaxY={defaultRange.calorieChart.max}
+                  upperBound={fullDataset.healthyCalorieUpperBound}
                   width={width}
                   height={adjustSize(300)}
                 />
@@ -458,16 +483,20 @@ const ReportsScreen = (props) => {
                 <Text style={[globalStyles.pageDetails, {color: 'grey'}]}>
                   Progress - kg
                 </Text>
-                <View
-                  style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
-                  <ChartLegend
-                    size={chartLegendSize}
-                    legendName="Healthy"
-                    color={boundaryFill}
-                    textPaddingLeft={5}
-                    textPaddingRight={20}
-                  />
-                </View>
+                {
+                  fullDataset.healthyWeightRange && (
+                      <View
+                          style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                        <ChartLegend
+                            size={chartLegendSize}
+                            legendName={`Target Range (${fullDataset.healthyWeightRange[0].toFixed(1)} - ${fullDataset.healthyWeightRange[1].toFixed(1)})`}
+                            color={boundaryFill}
+                            textPaddingLeft={5}
+                            textPaddingRight={20}
+                        />
+                      </View>
+                  )
+                }
                 <LineChart
                   data={fullDataset.weightData}
                   filterKey={filterKey}
@@ -475,8 +504,11 @@ const ReportsScreen = (props) => {
                   height={adjustSize(300)}
                   xExtractor={(d) => d.record_date}
                   yExtractor={(d) => d.weight}
-                  defaultMinY={30}
-                  defaultMaxY={110}
+                  defaultMinY={defaultRange.weightChart.min}
+                  defaultMaxY={defaultRange.weightChart.max}
+                  boundaryFill={boundaryFill}
+                  lowerBound={fullDataset.healthyWeightRange[0]}
+                  upperBound={fullDataset.healthyWeightRange[1]}
                   showFood={false}
                 />
               </View>
@@ -499,7 +531,7 @@ const ReportsScreen = (props) => {
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={1000}
+                  defaultMaxY={defaultRange.activity.calorieBurntChart.max}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.calories}
                   height={300}
@@ -511,12 +543,23 @@ const ReportsScreen = (props) => {
                   ]}>
                   Duration (minutes)
                 </Text>
+                <View
+                    style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
+                  <ChartLegend
+                      size={chartLegendSize}
+                      legendName={`Target Range (greater than ${(idealActivityDurationPerDayInMinutes).toFixed(1) + ' min'})`}
+                      color={boundaryFill}
+                      textPaddingLeft={adjustSize(5)}
+                      textPaddingRight={adjustSize(20)}
+                  />
+                </View>
                 <BarChart
                   data={fullDataset.activityData}
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={500}
+                  lowerBound={idealActivityDurationPerDayInMinutes}
+                  defaultMaxY={defaultRange.activity.durationChart.max}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.duration}
                   height={300}
@@ -532,7 +575,7 @@ const ReportsScreen = (props) => {
                   style={[globalStyles.pageDetails, {flexDirection: 'row'}]}>
                   <ChartLegend
                     size={chartLegendSize}
-                    legendName="Target Range (1K - 1.5K)"
+                    legendName={`Target Range (greater than ${(idealStepsPerDay / 1000).toFixed(1) + ' K'})`}
                     color={boundaryFill}
                     textPaddingLeft={adjustSize(5)}
                     textPaddingRight={adjustSize(20)}
@@ -543,9 +586,8 @@ const ReportsScreen = (props) => {
                   filterKey={filterKey}
                   width={width}
                   boundaryFill={boundaryFill}
-                  defaultMaxY={5000}
-                  lowerBound={1000}
-                  upperBound={1500}
+                  defaultMaxY={defaultRange.activity.stepsChart.max}
+                  lowerBound={10000}
                   xExtractor={(d) => d.date}
                   yExtractor={(d) => d.steps}
                   height={adjustSize(300)}
@@ -563,6 +605,7 @@ const ReportsScreen = (props) => {
         <ExportReportsModal
           visible={openExportModal}
           setVisible={setOpenExportModal}
+          onSuccessExport={handleExportSuccess}
         />
       </ScrollView>
     </View>
@@ -670,4 +713,5 @@ export {
   MEDICATION_KEY,
   FOOD_INTAKE_KEY,
   BGL_TAB_KEY,
+  defaultRange
 };

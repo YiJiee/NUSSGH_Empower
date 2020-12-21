@@ -18,10 +18,9 @@ function MedicationTable(props) {
 
     return (
         <View style={props.style}>
-            {Object.entries(adherenceData).map((item, index) => {
-                const [key, value] = item;
+            {adherenceData.map((item, index) => {
                 return (
-                    <MedicationRowDisplay med={key} quantity={value.adherence} key={`med-${index}`} />
+                    <MedicationRowDisplay med={item.name} quantity={item.adherence} key={`med-${index}`} />
                 )
             })}
         </View>
@@ -109,7 +108,17 @@ function calculateAdherence(zippedData) {
                 .reduce((acc, curr, index) => acc + curr, 0) / values.adherence.length;
         }
     }
-    return result;
+
+    let flattened = Object.entries(result).map((item, index) => {
+        const [key, value] = item;
+        return {
+            name: key,
+            adherence: value.adherence,
+            spontaneous: value.spontaneous
+        }
+    });
+
+    return flattened;
 }
 
 function MedicationRowDisplay({med, quantity}) {
@@ -140,4 +149,4 @@ function MedicationDateDisplay({filterKey, style}) {
     )
 }
 
-export {MedicationTable, MedicationDateDisplay};
+export {MedicationTable, MedicationDateDisplay, zipMedicationData, calculateAdherence};

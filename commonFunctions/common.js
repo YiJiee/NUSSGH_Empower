@@ -24,6 +24,9 @@ const fats = 'Fat';
 const carbs = 'Carb';
 const cal = 'Cal';
 
+// healthy guidelines for patients
+
+// nutrients:
 //age range:  more or less 60 , >=30
 //female
 const maxProtein_F = 62.6;
@@ -33,7 +36,7 @@ const maxCarb_F_60under = 294;
 const maxCarb_F_60abv = 264;
 const maxCal_F_60under = 2035;
 const maxCal_F_60above = 1865;
-
+// male
 const maxProtein_M = 76.3;
 const maxFat_M_60under = 86;
 const maxFat_M_60above = 75;
@@ -41,6 +44,26 @@ const maxCarb_M_60under = 377;
 const maxCarb_M_60abv = 315;
 const maxCal_M_60under = 2590;
 const maxCal_M_60above = 2235;
+
+// blood glucose level
+const bglLowerBound = 5.0;
+const bglUpperBound = 7.0;
+
+// height
+const averageHeightOfMan = 1.71; // in metres according to https://goodyfeed.com/these-are-the-average-heights-for-sporean-males-females-are-you-above-or-below-average/
+const averageHeightOfWoman = 1.655; // in metres same source as above
+
+// weight
+const healthyBmiLowerBound = 18.5;
+const healthyBmiUpperBound = 23.0;
+const healthyWeightRangeForMan = [healthyBmiLowerBound * averageHeightOfMan * averageHeightOfMan,
+  healthyBmiUpperBound * averageHeightOfMan * averageHeightOfMan];
+const healthyWeightRangeForWoman = [healthyBmiLowerBound * averageHeightOfWoman * averageHeightOfWoman,
+  healthyBmiUpperBound * averageHeightOfWoman * averageHeightOfWoman];
+
+// activity
+const idealStepsPerDay = 10000;
+const idealActivityDurationPerDayInMinutes = 25;
 
 //notification type
 const notif_log = 'log';
@@ -139,19 +162,7 @@ const wholeNumber = 'number-pad';
 //for rendering % for nutrient type based on gender and age.
 const renderNutrientPercent = async (amount, type) => {
   //check gender, set the max
-  let role = await getRole();
-  let response = {};
-  let user = {};
-  let gender = {};
-  let age = {};
-  if (role === role_patient) {
-    response = await getPatientProfile();
-  } else {
-    response = await getCaregiverProfile();
-  }
-  user = response?.patient;
-  gender = user?.gender;
-  age = Number(user?.age);
+  const {user, age, gender} = await getPatientInfo();
 
   let max = getMax4Type(age, type, gender);
   return Math.floor((amount / max) * 100);
@@ -212,6 +223,38 @@ const getMax4Type = (age, type, gender) => {
   }
 };
 
+const getPatientInfo = async () => {
+  let role = await getRole();
+  let response = {};
+  let user = {};
+  let gender = {};
+  let age = {};
+  if (role === role_patient) {
+    response = await getPatientProfile();
+  } else {
+    response = await getCaregiverProfile();
+  }
+  user = response?.patient;
+  gender = user?.gender;
+  age = Number(user?.age);
+
+  return {user, gender, age};
+}
+
+const getHealthyWeightRange = async () => {
+  const {user, gender, age} = await getPatientInfo();
+  if (gender === 'male') {
+    return healthyWeightRangeForMan;
+  } else {
+    return healthyWeightRangeForWoman;
+  }
+}
+
+const getHealthyCalorieUpperBound = async () => {
+  const {user, gender, age} = await getPatientInfo();
+  return getMax4Type(age, cal, gender);
+}
+
 const getAge = (date) => {
   let now = Moment(new Date());
   let dob = Moment(getDateObj(date));
@@ -265,6 +308,12 @@ export {
   maxCarb_M_60abv,
   maxCal_M_60under,
   maxCal_M_60above,
+  idealActivityDurationPerDayInMinutes,
+  idealStepsPerDay,
+  bglLowerBound,
+  bglUpperBound,
+  healthyBmiLowerBound,
+  healthyBmiUpperBound,
   getMax4Type,
   getAge,
   notif_log,
@@ -275,4 +324,6 @@ export {
   text,
   get3DayB4NAfter,
   convertDatestring,
+  getHealthyWeightRange,
+  getHealthyCalorieUpperBound
 };

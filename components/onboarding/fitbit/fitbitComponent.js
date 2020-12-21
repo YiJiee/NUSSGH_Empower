@@ -173,6 +173,9 @@ const FitbitComponent = (props) => {
         visible={modalVisible}
         closeModal={handleCloseModal}
         status={processingStatus}
+        successMessage={'Successfully Linked!'}
+        errorMessage={'Network error.'}
+        inProgressMessage={'Setting up fitbit account'}
       />
     </>
   );

@@ -117,7 +117,7 @@ function processData(
 
   const squashedToXY = squashToXY(dataset, xExtractor, yExtractor);
 
-  if (filterKey === WEEK_FILTER_KEY || filterKey === MONTH_FILTER_KEY) {
+  if (filterKey !== DAY_FILTER_KEY) {
     const partitionDataset = partitionDataPoints(squashedToXY);
     let result = [];
     for (const dayLogs of partitionDataset) {

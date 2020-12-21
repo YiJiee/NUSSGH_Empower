@@ -75,6 +75,9 @@ const showYAxisLines = true;
 const cursorRadius = adjustSize(10);
 const THRESHOLD = adjustSize(12.5); // The min distance to switch index.
 
+// x label
+const xLabelTextBoxWidth = adjustSize(95);
+
 // bar label properties
 const barLabelHeight = adjustSize(25);
 const barLabelWidth = adjustSize(50);
@@ -162,7 +165,7 @@ export default class LineChart extends React.Component {
     );
     // d3 properties
     const maxY = Math.max(
-      defaultMaxY,
+      defaultMaxY ? defaultMaxY : 0,
       1.25 * Math.max(...data.map((d) => d.y)),
     );
     const xAxisLabels = generateXAxisLabels(
@@ -180,9 +183,6 @@ export default class LineChart extends React.Component {
       yAxisStartsFrom,
       maxY,
     );
-
-    console.log('min X ' + minX);
-    console.log('max X ' + maxX);
 
     // d3 scale properties
     const scaleX = scaleTime()
@@ -208,10 +208,6 @@ export default class LineChart extends React.Component {
 
     // new field for tracking cursor
     const dataCoordinates = data.map((d) => [scaleX(d.x), scaleY(d.y)]);
-
-    console.log('mapping ----');
-    console.log(data);
-    console.log(dataCoordinates);
 
     return {
       scaleX,
@@ -247,8 +243,14 @@ export default class LineChart extends React.Component {
       selectedIndex,
       dataCoordinates,
       data,
+      maxX,
+      scaleX
     } = this.state;
-    console.log('move cursor----');
+    const {
+      width
+    } = this.props;
+
+    //console.log('move cursor----');
     if (lineLength > 0) {
       const {x, y} = lineProperties.getPointAtLength(lineLength - value);
       const mapped = dataCoordinates.map((d) =>
@@ -274,11 +276,13 @@ export default class LineChart extends React.Component {
           opacity: 1,
         });
 
+        //console.log(Math.max(axisMargin + paddingLeft + xLabelTextBoxWidth / 2,Math.min(shownDatapoint[0] - xLabelTextBoxWidth / 2, width - xLabelTextBoxWidth / 2 - paddingRight - axisMargin)));
         this.xLabel.current.setNativeProps({
           text: `${Moment(this.state.scaleX.invert(shownDatapoint[0])).format(
             this.props.filterKey === DAY_FILTER_KEY ? 'h:mm a' : 'DD MMM YYYY',
           )}`,
-          left: shownDatapoint[0] - Dimensions.get('window').width * 0.55,
+          // clamp the left and right
+          left: Math.max(paddingLeft - axisMargin, Math.min(shownDatapoint[0] - xLabelTextBoxWidth / 2, width  - paddingRight + axisMargin - xLabelTextBoxWidth)),
           opacity: 1,
         });
       } else {
@@ -407,6 +411,9 @@ export default class LineChart extends React.Component {
       scaleX(firstAndLastPoints[0].x) - scaleX(firstAndLastPoints[1].x);
     const yDistToBase = data.length > 0 && scaleHeight(firstAndLastPoints[1].y);
 
+    const lowBound = lowerBound ? lowerBound : yAxisStartsFrom;
+    const upBound = upperBound ? upperBound : maxY;
+
     return (
       <View>
         {
@@ -453,17 +460,15 @@ export default class LineChart extends React.Component {
             </Defs>
             {
               // boundaries
-              lowerBound && upperBound && (
+              (lowerBound || upperBound) && (
                 <Path
                   key="healthyRange"
                   stroke="none"
                   fill={boundaryFill || '#F1F6D7'}
-                  d={`M ${paddingLeft - axisMargin} ${scaleY(lowerBound)} l ${
+                  d={`M ${paddingLeft - axisMargin} ${scaleY(lowBound)} l ${
                     width - paddingLeft - paddingRight + 2 * axisMargin
                   } 0
-                              l 0 ${-scaleHeight(
-                                upperBound - lowerBound,
-                              )} l ${-(
+                              l 0 ${scaleY(upBound) - scaleY(lowBound)} l ${-(
                     width -
                     paddingLeft -
                     paddingRight +
@@ -558,8 +563,8 @@ export default class LineChart extends React.Component {
                   r={pointRadius}
                   fill={
                     this.props.outsideBoundaryColor
-                      ? d.y < this.props.lowerBound ||
-                        d.y > this.props.upperBound
+                      ? d.y < lowBound ||
+                        d.y > upBound
                         ? this.props.outsideBoundaryColor
                         : pointColor
                       : pointColor
@@ -687,8 +692,6 @@ export default class LineChart extends React.Component {
 }
 
 function LinePlot({data, scaleX, scaleY, lineColor, lineWidth}) {
-  console.log('in line plot');
-  console.log(data);
 
   if (data.length <= 1) {
     return null;
@@ -716,7 +719,7 @@ function LinePlot({data, scaleX, scaleY, lineColor, lineWidth}) {
       result.push(p);
       currentDataPoint = nextPoint;
     }
-    console.log(result);
+
     return result;
   }
 }
@@ -748,7 +751,8 @@ const styles = StyleSheet.create({
     fontSize: adjustSize(16),
     color: '#3c3c43',
     opacity: 0.6,
-    alignSelf: 'center',
+    width: xLabelTextBoxWidth,
+    textAlign: 'center'
   },
   triangle: {
     width: 0,
