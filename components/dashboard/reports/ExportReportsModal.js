@@ -45,7 +45,7 @@ import {defaultRange} from "../../../screens/main/reports";
 
 // fs library
 const RNFS = require('react-native-fs');
-const pathPrefix = RNFS.DocumentDirectoryPath + '/';
+const pathPrefix = Platform.OS === 'ios' ? RNFS.DocumentDirectoryPath + '/' : RNFS.DownloadDirectoryPath + '/';
 
 const {width, height} = Dimensions.get('window');
 
