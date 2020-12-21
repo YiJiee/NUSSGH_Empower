@@ -131,6 +131,7 @@ function ExportReportsModal(props) {
         const startDateString = Moment(startDate).format('DD_MM_YYYY');
         const endDateString = Moment(endDate).format('DD_MM_YYYY');
         const username = await getUsername();
+        const promises = [];
         for (const [reportType, data] of Object.entries(reportData)) {
             const filename = `${username}_${reportType}_From_${startDateString}_To_${endDateString}.csv`;
             const fp = pathPrefix + filename;
@@ -139,12 +140,17 @@ function ExportReportsModal(props) {
             const csvFile = fileHeader + '\n' + fileContent;
             // begin writing
 
-            RNFS.writeFile(fp, csvFile, 'utf8').then(success => {
-                console.log(`Yay it worked, ${srt} file(s) saved at ${fp}`);
-            }).catch(err => {
-                console.log('Oh no it failed due to ' + err.message.toString());
-            });
+            promises.push(
+                new Promise((resolve, reject) => {
+                    resolve(RNFS.writeFile(fp, csvFile, 'utf8').catch(err => {
+                        console.log('Oh no it failed due to ' + err.message.toString());
+                    }));
+                }))
         }
+        Promise.all(promises).then(outcome => {
+            console.log(pathPrefix);
+            setDownloadProgress(100);
+        });
         /*
         const filename = 'MyReports.csv';
         const fp = pathPrefix + filename;
