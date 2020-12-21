@@ -1,5 +1,6 @@
 import React from 'react';
 import {Platform} from 'react-native';
+/*
 import RNPusherPushNotifications from 'react-native-pusher-push-notifications';
 import {notificationPathMapping} from '../config/AppConfig';
 import {defaultRoute} from '../components/notification/PushNotifHandler';
@@ -26,11 +27,6 @@ function initPusherNotif(username, pusherToken) {
 
   console.log("Successfully registered pusher notifications");
   // RNPusherPushNotifications.on('notification', handleNotification);
-  /*
-  RNPusherPushNotifications.getSubscriptions(
-    (sub) => console.log('Get sub', sub),
-    (e) => console.log(e),
-  );*/
 }
 
 // This is the notification handler for ios devices. To modify the handling of android notifications, modify the
@@ -97,3 +93,4 @@ const clearPushNotifState = () => {
 }
 
 export {initPusherNotif, clearPushNotifState};
+*/
