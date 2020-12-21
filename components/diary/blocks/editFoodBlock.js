@@ -1,12 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Alert,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party libr
 import Modal from 'react-native-modal';
 import moment from 'moment';

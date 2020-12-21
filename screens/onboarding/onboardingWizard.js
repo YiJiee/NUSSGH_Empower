@@ -1,14 +1,5 @@
-import React, {Component, useRef, createRef} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-} from 'react-native';
+import React, {Component} from 'react';
+import {KeyboardAvoidingView, Platform, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
 //component
@@ -19,12 +10,7 @@ import MedPlanComponent from '../../components/onboarding/medPlanComponent';
 import SecurityQnComponent from '../../components/onboarding/securityQnComponent';
 import FitbitComponent from '../../components/onboarding/fitbit/fitbitComponent';
 import LoadingModal from '../../components/loadingModal';
-import {
-  submitSecurityQn,
-  submitMedPlan,
-} from '../../commonFunctions/onboardingFunction';
-import {connect} from 'react-redux';
-import {mapDispatchToProps, mapStateToProps} from '../../redux/reduxMapping';
+import {submitMedPlan, submitSecurityQn} from '../../commonFunctions/onboardingFunction';
 
 class OnboardingWizard extends Component {
   constructor(props) {

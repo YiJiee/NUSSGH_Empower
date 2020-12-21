@@ -1,10 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-} from '../../commonFunctions/common';
+import {StyleSheet, Text, View} from 'react-native';
+import {afternoonObj, eveningObj, morningObj} from '../../commonFunctions/common';
 //style
 import {Colors} from '../../styles/colors';
 //third party lib

@@ -1,10 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import CHEV_RIGHT from '../../resources/images/Patient-Icons/SVG/icon-grey-chevron-right.svg';
 //styles
 import globalStyles from '../../styles/globalStyles';
@@ -20,28 +15,28 @@ import StepsGoal from './blocks/stepsGoal';
 import ActivityGoal from './blocks/activityGoal';
 import WeightGoal from './blocks/weightGoal';
 import {
-  bg_key,
-  renderLogIconNavy,
-  food_key,
-  med_key,
-  weight_key,
-  activity_key,
-  step_key,
+    activity_key,
+    bg_key,
+    food_key,
+    med_key,
+    renderLogIconNavy,
+    step_key,
+    weight_key,
 } from '../../commonFunctions/logFunctions';
 import {
-  bg,
-  food,
-  med,
-  weight,
-  activity,
-  steps,
-  renderGoalTypeName,
-  getGoalObjById,
-  filterForGoalType,
-  selfv,
-  defaultv,
-  phyv,
-  bgpost,
+    activity,
+    bg,
+    bgpost,
+    defaultv,
+    filterForGoalType,
+    food,
+    getGoalObjById,
+    med,
+    phyv,
+    renderGoalTypeName,
+    selfv,
+    steps,
+    weight,
 } from '../../commonFunctions/goalFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 

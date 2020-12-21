@@ -1,35 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party library
 import Modal from 'react-native-modal';
-import Ionicon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 //component
 import LeftArrowBtn from '../../logs/leftArrowBtn';
 import TimeSection from '../timeSection';
-import MissedContent from './missedContent';
 import WeightLogBlock from '../../logs/weight/weightLogBlock';
 //style
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 //function
-import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-} from '../../../commonFunctions/common';
-import {
-  showEdit,
-  getMissedArr,
-  getTime12hr,
-} from '../../../commonFunctions/diaryFunctions';
+import {afternoonObj, eveningObj, morningObj} from '../../../commonFunctions/common';
+import {getMissedArr, getTime12hr, showEdit} from '../../../commonFunctions/diaryFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 const WeightBlock = (props) => {

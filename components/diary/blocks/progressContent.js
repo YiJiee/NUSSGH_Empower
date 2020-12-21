@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //component
 import ProgressBar from '../../progressbar';
 //style
 import {Colors} from '../../../styles/colors';
 //third party lib
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {getAge, getMax4Type} from '../../../commonFunctions/common';
+import {getMax4Type} from '../../../commonFunctions/common';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 const ProgressContent = (props) => {

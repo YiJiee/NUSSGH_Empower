@@ -1,13 +1,14 @@
 import React, {useRef, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Animated, Platform,
+    Animated,
+    Dimensions,
+    Image,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import BarChart from '../../components/dashboard/reports/BarChart';
@@ -20,34 +21,20 @@ import HIGHLIGHTED_WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/ic
 import HIGHLIGHTED_ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/icon-lightgreen-running-home.svg';
 import ACTIVITY_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-running.svg';
 import {Colors} from '../../styles/colors';
-import {requestNutrientConsumption} from '../../netcalls/mealEndpoints/requestMealLog';
 import {
-  bglLowerBound,
-  bglUpperBound, getHealthyCalorieUpperBound, getHealthyWeightRange,
-  getLastMinuteFromTodayDate,
-  idealActivityDurationPerDayInMinutes,
-  idealStepsPerDay
+    bglLowerBound,
+    bglUpperBound,
+    getHealthyCalorieUpperBound,
+    getHealthyWeightRange,
+    idealActivityDurationPerDayInMinutes,
+    idealStepsPerDay,
 } from '../../commonFunctions/common';
 import Moment from 'moment';
-import {
-  getActivitySummaries,
-  getBloodGlucoseLogs,
-  getMedicationLogs,
-  getWeightLogs,
-} from '../../netcalls/requestsLog';
-import {
-  MedicationDateDisplay,
-  MedicationTable,
-} from '../../components/dashboard/reports/MedicationTable';
-import {
-  COLOR_MAP,
-  NutritionPie,
-} from '../../components/dashboard/reports/NutritionPie';
-import {getPlan} from '../../netcalls/requestsMedPlan';
+import {MedicationDateDisplay, MedicationTable} from '../../components/dashboard/reports/MedicationTable';
+import {COLOR_MAP, NutritionPie} from '../../components/dashboard/reports/NutritionPie';
 import {ChartLegend} from '../../components/dashboard/reports/ChartLegend';
 import {ExportReportsModal} from '../../components/dashboard/reports/ExportReportsModal';
-import {replaceActivitySummary} from '../../commonFunctions/reportDataFormatter';
-import {getEntryForDateRange, getEntry4Day} from '../../netcalls/requestsDiary';
+import {getEntry4Day} from '../../netcalls/requestsDiary';
 import ReportInfo from '../../components/dashboard/reports/reportInfo';
 import BgFilterDate from '../../components/dashboard/reports/bgFilterDate';
 import {getDateObj} from '../../commonFunctions/diaryFunctions';
@@ -57,8 +44,8 @@ import BGL_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-bloodgl
 import FOOD_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-food.svg';
 import WEIGHT_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-weight.svg';
 import MED_ICON from '../../resources/images/Patient-Icons/SVG/icon-navy-med.svg';
-import {getReportsDataForGraphs} from "../../netcalls/reports/exportReports";
-import RNFetchBlob from "rn-fetch-blob";
+import {getReportsDataForGraphs} from '../../netcalls/reports/exportReports';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const EXPORT_BTN = require('../../resources/images/Patient-Icons/2x/icon-green-export-2x.png');
 

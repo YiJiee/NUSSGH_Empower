@@ -1,5 +1,4 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import {getDateObj} from '../commonFunctions/diaryFunctions';
 
 const key_username = 'username';
 const key_role = 'role';

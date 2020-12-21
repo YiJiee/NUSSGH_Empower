@@ -2,39 +2,23 @@ import React from 'react';
 import Moment from 'moment';
 import {Alert} from 'react-native';
 import {
-  glucoseAddLogRequest,
-  medicationAddLogRequest,
-  weightAddLogRequest,
-  getWeightLogs,
-  getBloodGlucoseLogs,
+    getBloodGlucoseLogs,
+    getWeightLogs,
+    glucoseAddLogRequest,
+    medicationAddLogRequest,
+    weightAddLogRequest,
 } from '../netcalls/requestsLog';
 import {
-  storeLastBgLog,
-  storeLastMedicationLog,
-  storeLastWeightLog,
-  getLastBgLog,
-  getLastWeightLog,
-  getLastMedicationLog,
-  getLastMealLog,
+    getLastMedicationLog,
+    getLastWeightLog,
+    storeLastBgLog,
+    storeLastMedicationLog,
+    storeLastWeightLog,
 } from '../storage/asyncStorageFunctions';
 
-import {
-  getGreetingFromHour,
-  checkLast7Day,
-  noLog,
-  eveningObj,
-  afternoonObj,
-} from './common';
+import {afternoonObj, eveningObj, getGreetingFromHour, noLog} from './common';
 import {getEntry4Day} from '../netcalls/requestsDiary';
-import {
-  filterMorning,
-  filterAfternoon,
-  getTime,
-  getHour,
-  getDateRange,
-  getDateObj,
-  checkFoodLogQuantity,
-} from './diaryFunctions';
+import {getDateObj, getDateRange, getHour} from './diaryFunctions';
 //svg
 import DARKGREEN_BG from '../resources/images/Patient-Icons/SVG/icon-darkgreen-bloodglucose.svg';
 import DARKGREEN_FOOD from '../resources/images/Patient-Icons/SVG/icon-darkgreen-food.svg';
@@ -52,12 +36,7 @@ import WHITE_BG from '../resources/images/Patient-Icons/SVG/icon-white-bloodgluc
 import WHITE_FOOD from '../resources/images/Patient-Icons/SVG/icon-white-food.svg';
 import WHITE_MED from '../resources/images/Patient-Icons/SVG/icon-white-med.svg';
 import WHITE_WEIGHT from '../resources/images/Patient-Icons/SVG/icon-white-weight.svg';
-
-import GREEN_BG from '../resources/images/Patient-Icons/SVG/icon-lightgreen-bloodglucose.svg';
-import GREEN_FOOD from '../resources/images/Patient-Icons/SVG/icon-lightgreen-food.svg';
-import GREEN_MED from '../resources/images/Patient-Icons/SVG/icon-lightgreen-med.svg';
-import GREEN_WEIGHT from '../resources/images/Patient-Icons/SVG/icon-lightgreen-weight.svg';
-import {logIconHomeStyle, logIconAddLogStyle} from './scaleFunction';
+import {logIconAddLogStyle, logIconHomeStyle} from './scaleFunction';
 
 const bg_key = 'Blood Glucose Log';
 const food_key = 'Food Intake Log';

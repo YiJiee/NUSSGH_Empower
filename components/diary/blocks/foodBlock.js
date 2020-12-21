@@ -1,33 +1,22 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //functions
 import {
-  getMissedArr,
-  maxCarbs,
-  maxFats,
-  maxProtein,
-  showEdit,
-  getDateObj,
-  checkFoodLogQuantity,
-  getTime12hr,
+    checkFoodLogQuantity,
+    getDateObj,
+    getMissedArr,
+    getTime12hr,
+    showEdit,
 } from '../../../commonFunctions/diaryFunctions';
-import {food_key} from '../../../commonFunctions/logFunctions';
 import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-  carbs,
-  fats,
-  protein,
-  isEmpty,
-  role_patient,
+    afternoonObj,
+    carbs,
+    eveningObj,
+    fats,
+    isEmpty,
+    morningObj,
+    protein,
+    role_patient,
 } from '../../../commonFunctions/common';
 //third party library
 import Modal from 'react-native-modal';
@@ -35,7 +24,6 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 //component
 import LeftArrowBtn from '../../logs/leftArrowBtn';
-import MissedContent from './missedContent';
 import ProgressContent from './progressContent';
 import TimeSection from '../timeSection';
 import EditFoodBlock from './editFoodBlock';
@@ -45,10 +33,7 @@ import globalStyles from '../../../styles/globalStyles';
 import {Colors} from '../../../styles/colors';
 import diaryStyles from '../../../styles/diaryStyles';
 import {horizontalMargins} from '../../../styles/variables';
-import {
-  getPatientProfile,
-  getCaregiverProfile,
-} from '../../../netcalls/requestsAccount';
+import {getCaregiverProfile, getPatientProfile} from '../../../netcalls/requestsAccount';
 import {getRole} from '../../../storage/asyncStorageFunctions';
 //function
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';

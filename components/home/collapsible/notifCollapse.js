@@ -1,15 +1,12 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated, FlatList} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import NotificationRow from '../notificationRow';
 
 import {Colors} from '../../../styles/colors';
-import {
-  notif_log,
-  morningObj,
-} from '../../../commonFunctions/common';
+import {morningObj, notif_log} from '../../../commonFunctions/common';
 import {getLogIncompleteText} from '../../../commonFunctions/notifFunction';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-import {getInAppNotifications} from "../../../netcalls/notif/inApp";
+import {getInAppNotifications} from '../../../netcalls/notif/inApp';
 
 const NotifCollapse = (props) => {
   const {hour, morningNotDone, afternoonNotDone} = props;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../styles/colors';
 import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 //third party library

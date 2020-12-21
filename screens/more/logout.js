@@ -3,9 +3,9 @@ import {View} from 'react-native';
 //third party libs
 import {connect} from 'react-redux';
 //functions
-import {mapStateToProps, mapDispatchToProps} from '../../redux/reduxMapping';
-import {storeToken, storeRole} from '../../storage/asyncStorageFunctions';
-import {clearPushNotifState} from "../../commonFunctions/AuthorisePusherNotif";
+import {mapDispatchToProps, mapStateToProps} from '../../redux/reduxMapping';
+import {storeRole, storeToken} from '../../storage/asyncStorageFunctions';
+import {clearPushNotifState} from '../../commonFunctions/AuthorisePusherNotif';
 
 const Logout = (props) => {
   storeToken('');

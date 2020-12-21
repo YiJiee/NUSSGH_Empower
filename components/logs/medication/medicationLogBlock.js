@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -10,10 +10,7 @@ import SelectMedicationModalContent from './selectMedicationModalContent';
 import ExtraMedItem from './extraMedItem';
 import SuccessDialogue from '../../successDialogue';
 // functions
-import {
-  handleSubmitMedication,
-  med_key,
-} from '../../../commonFunctions/logFunctions';
+import {handleSubmitMedication, med_key} from '../../../commonFunctions/logFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 //style
 import {Colors} from '../../../styles/colors';

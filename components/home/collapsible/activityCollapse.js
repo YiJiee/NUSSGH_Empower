@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
-import {maxSteps, maxCalBurnt} from '../../../commonFunctions/diaryFunctions';
+import {maxCalBurnt, maxSteps} from '../../../commonFunctions/diaryFunctions';
 import CircularProgress from '../../dashboard/todayOverview/CircularProgress';
 
 import STEP from '../../../resources/images/Patient-Icons/SVG/icon-darkgreen-steps-home.svg';

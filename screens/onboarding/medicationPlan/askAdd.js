@@ -1,28 +1,16 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party library
 import Ionicons from 'react-native-vector-icons/Ionicons';
 //styles
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 //component
-import LoadingModal from '../../../components/loadingModal';
 import AddMedicationModal from '../../../components/medication/addMedicationModal';
 import PlannedMedList from '../../../components/medication/displayMedList/plannedMedList';
 //function
-import {
-  onboardAdd,
-  onboardEdit,
-  editMed,
-} from '../../../commonFunctions/medicationFunction';
-import {prepareData, postPlan} from '../../../netcalls/requestsMedPlan';
+import {editMed, onboardAdd, onboardEdit} from '../../../commonFunctions/medicationFunction';
+import {postPlan, prepareData} from '../../../netcalls/requestsMedPlan';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 class AskAdd extends Component {

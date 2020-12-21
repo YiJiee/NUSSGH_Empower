@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../styles/colors';
 import {createDrawerNavigator, DrawerItem} from '@react-navigation/drawer';
 //third party library
@@ -14,7 +14,6 @@ import ACCOUNT from '../resources/images/Patient-Icons//SVG/icon-white-sidemenu-
 import DIARY from '../resources/images/Patient-Icons//SVG/icon-white-sidemenu-diary.svg';
 import LAB from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-lab.svg';
 import APPT from '../resources/images/Patient-Icons/SVG/icon-white-sidemenu-appt.svg';
-import {getCaregiverProfile} from '../netcalls/requestsAccount';
 import {getPermissions} from '../storage/asyncStorageFunctions';
 
 const iconStyle = {

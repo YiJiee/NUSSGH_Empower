@@ -1,4 +1,4 @@
-import {appRootUrl} from "./AppConfig";
+import {appRootUrl} from './AppConfig';
 
 const Buffer = require('buffer/').Buffer;
 

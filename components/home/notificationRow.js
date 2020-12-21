@@ -1,18 +1,12 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Octicon from 'react-native-vector-icons/Octicons';
-import {
-  notif_log,
-  morningObj,
-  notif_addlog,
-} from '../../commonFunctions/common';
+import {morningObj, notif_addlog, notif_log} from '../../commonFunctions/common';
 import {useNavigation} from '@react-navigation/native';
-import {
-  renderLogIcon,
-} from '../../commonFunctions/logFunctions';
+import {renderLogIcon} from '../../commonFunctions/logFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
-import {notificationPathMapping} from "../../config/AppConfig";
+import {notificationPathMapping} from '../../config/AppConfig';
 
 
 const NotificationRow = (props) => {

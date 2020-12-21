@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from './colors';
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
 
 export const loginLogoStyle = {

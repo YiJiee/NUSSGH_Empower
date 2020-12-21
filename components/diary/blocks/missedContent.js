@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../../styles/globalStyles';
 import {Colors} from '../../../styles/colors';
 import {renderGreetingText} from '../../../commonFunctions/diaryFunctions';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
 // Just a very simple pagination ui.
 function Pagination(props) {

@@ -1,11 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party library
 import Modal from 'react-native-modal';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -13,24 +7,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import LeftArrowBtn from '../../logs/leftArrowBtn';
 import MissedContent from './missedContent';
 import TimeSection from '../timeSection';
-import SelectMedicationModalContent from '../../logs/medication/selectMedicationModalContent';
 //style
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 //function
-import {
-  getMissedArr,
-  showEdit,
-  getDateObj,
-  getTime12hr,
-} from '../../../commonFunctions/diaryFunctions';
+import {getDateObj, getMissedArr, getTime12hr, showEdit} from '../../../commonFunctions/diaryFunctions';
 import {med_key} from '../../../commonFunctions/logFunctions';
-import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-} from '../../../commonFunctions/common';
+import {afternoonObj, eveningObj, morningObj} from '../../../commonFunctions/common';
 import EditMedicineBlock from './editMedicineBlock';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 

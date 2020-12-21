@@ -1,14 +1,14 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Colors} from './colors';
 import {
-  statusBarHeight,
-  headerHeight,
-  horizontalMargins,
-  verticalMarginsBetweenComponent,
-  headerTextFontSize,
-  boldFontFamily,
-  normalTextFontSize,
-  regularFontFamily,
+    boldFontFamily,
+    headerHeight,
+    headerTextFontSize,
+    horizontalMargins,
+    normalTextFontSize,
+    regularFontFamily,
+    statusBarHeight,
+    verticalMarginsBetweenComponent,
 } from './variables';
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from "react-native";
-import Icon from "react-native-vector-icons/dist/FontAwesome";
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 

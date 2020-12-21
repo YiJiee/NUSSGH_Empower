@@ -1,11 +1,6 @@
 import Moment from 'moment';
-import {
-  DAY_FILTER_KEY,
-  MONTH_FILTER_KEY,
-  WEEK_FILTER_KEY,
-} from '../screens/main/reports';
-import {getLastMinuteFromTodayDate, getTodayDate} from './common';
-import {getDateObj} from './diaryFunctions';
+import {DAY_FILTER_KEY, MONTH_FILTER_KEY, WEEK_FILTER_KEY} from '../screens/main/reports';
+import {getTodayDate} from './common';
 
 // Input: dataset -> list of log object.
 //        dateOfInterest -> Date object specifying which date to filter

@@ -1,22 +1,17 @@
 import React, {useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  FlatList,
-} from 'react-native';
+import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 //function
 import {
-  bg_key,
-  food_key,
-  med_key,
-  weight_key,
-  activity_key,
-  step_key,
-  renderLogIconNavy,
+    activity_key,
+    bg_key,
+    food_key,
+    med_key,
+    renderLogIconNavy,
+    step_key,
+    weight_key,
 } from '../../commonFunctions/logFunctions';
 //styles
 import logStyles from '../../styles/logStyles';

@@ -1,11 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 //components
 import PickDrag from './pickDrag';
 import LeftArrowBtn from '../leftArrowBtn';
@@ -14,7 +8,6 @@ import DateSelectionBlock from '../dateSelectionBlock';
 import RemoveModal from '../../diary/removeModal';
 //third party library
 import Modal from 'react-native-modal';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 //styles
 import {Colors} from '../../../styles/colors';
@@ -22,11 +15,7 @@ import globalStyles from '../../../styles/globalStyles';
 import logStyles from '../../../styles/logStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 //function
-import {
-  checkWeight,
-  handleSubmitWeight,
-  weight_key,
-} from '../../../commonFunctions/logFunctions';
+import {checkWeight, handleSubmitWeight, weight_key} from '../../../commonFunctions/logFunctions';
 import {getDateObj} from '../../../commonFunctions/diaryFunctions';
 import {deleteWeightLog, editWeightLog} from '../../../netcalls/requestsDiary';
 import DeleteBin from '../../deleteBin';

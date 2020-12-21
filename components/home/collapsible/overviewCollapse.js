@@ -1,19 +1,9 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
-import {
-  renderLogIconNavy,
-  bg_key,
-  food_key,
-  med_key,
-  weight_key,
-} from '../../../commonFunctions/logFunctions';
+import {bg_key, food_key, med_key, renderLogIconNavy, weight_key} from '../../../commonFunctions/logFunctions';
 import BgBlock from '../../diary/blocks/bgBlock';
-import {
-  filterMorning,
-  filterAfternoon,
-  filterEvening,
-} from '../../../commonFunctions/diaryFunctions';
+import {filterAfternoon, filterEvening, filterMorning} from '../../../commonFunctions/diaryFunctions';
 import FoodBlock from '../../diary/blocks/foodBlock';
 import MedBlock from '../../diary/blocks/medBlock';
 import WeightBlock from '../../diary/blocks/weightBlock';

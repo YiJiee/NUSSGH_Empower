@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Text,
-  Alert,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
+    Alert,
+    Dimensions,
+    KeyboardAvoidingView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 //third party
 import LinearGradient from 'react-native-linear-gradient';

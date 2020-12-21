@@ -1,4 +1,4 @@
-import {Platform, Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 
 const defaultAndroidScreenIOs = 411;
 const defaultAndroidScreenWidth = 411;

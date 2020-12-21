@@ -1,14 +1,13 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {Colors} from './colors';
 import {
-  statusBarHeight,
-  headerHeight,
-  horizontalMargins,
-  verticalMarginsBetweenComponent,
-  normalTextFontSize,
-  headerTextFontSize,
+    headerHeight,
+    headerTextFontSize,
+    horizontalMargins,
+    normalTextFontSize,
+    statusBarHeight,
+    verticalMarginsBetweenComponent,
 } from './variables';
-import {scaleFont} from '../commonFunctions/scaleFunction';
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
 
 const globalStyles = StyleSheet.create({

@@ -1,6 +1,6 @@
-import {mealAddLogRequest} from "../netcalls/requestsLog";
-import {storeLastMealLog} from "../storage/asyncStorageFunctions";
-import Moment from "moment";
+import {mealAddLogRequest} from '../netcalls/requestsLog';
+import {storeLastMealLog} from '../storage/asyncStorageFunctions';
+import Moment from 'moment';
 
 function getDefaultMealType(hours) {
     let defaultMealType = null;

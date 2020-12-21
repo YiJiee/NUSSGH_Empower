@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Animated} from 'react-native';
+import {Text, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 //styles

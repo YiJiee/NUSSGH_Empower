@@ -1,16 +1,12 @@
 import React, {Component} from 'react';
-import {View, Linking} from 'react-native';
+import {Linking} from 'react-native';
 //third party libs
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import Entypo from 'react-native-vector-icons/Entypo';
 //functions
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '../redux/reduxMapping';
 //other screens
-
 //components
 import CaregiverDrawerNavigator from './drawerCaregiver';
 import AccountDetailScreen from './more/accountDetails';

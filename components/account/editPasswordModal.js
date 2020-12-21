@@ -1,21 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-  Text,
-  Alert,
-  Platform,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View} from 'react-native';
 //third party library
 import Modal from 'react-native-modal';
 //function
-import {
-  getPassword,
-  getToken,
-  storePassword,
-} from '../../storage/asyncStorageFunctions';
+import {getPassword, getToken, storePassword} from '../../storage/asyncStorageFunctions';
 import {resetPassword} from '../../netcalls/requestsPasswordReset';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //style

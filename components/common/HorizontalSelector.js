@@ -1,8 +1,7 @@
 import React from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../styles/colors';
-import globalStyles from "../../styles/globalStyles";
-import {adjustSize} from "../../commonFunctions/autoResizeFuncs";
+import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
 function HorizontalSelector(props) {
     const {setSelected, currentlySelected, choices, style} = props;

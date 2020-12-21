@@ -1,11 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import UncompleteLogCard from '../../uncompleteLogCard';
-import {
-  green_color,
-  role_caregiver,
-  isEmpty,
-} from '../../../commonFunctions/common';
+import {green_color, isEmpty, role_caregiver} from '../../../commonFunctions/common';
 import {Colors} from '../../../styles/colors';
 import {getRole} from '../../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';

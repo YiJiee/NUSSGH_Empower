@@ -1,32 +1,18 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
-import Moment from 'moment';
 //styles
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 //component
 import LeftArrowBtn from '../../logs/leftArrowBtn';
 import NameDateSelector from '../nameDateSelector';
-import DropdownSelector from '../dropDownSelector';
 import WeightDragModal from '../weightDragModal';
 import {normalTextFontSize} from '../../../styles/variables';
 //function
 import {addWeightGoalReq} from '../../../netcalls/requestsGoals';
-import {
-  weeklyGoalList,
-  getWeeklyObj,
-  defaultv,
-} from '../../../commonFunctions/goalFunctions';
-import {getDateObj} from '../../../commonFunctions/diaryFunctions';
+import {defaultv} from '../../../commonFunctions/goalFunctions';
 
 const WeightGoal = (props) => {
   const {visible, parent, weightObj} = props;

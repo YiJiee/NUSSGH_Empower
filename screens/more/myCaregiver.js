@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //style
 import {Colors} from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
@@ -8,18 +8,13 @@ import {isEmpty} from '../../commonFunctions/common';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //third party lib
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 //component
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
 
 import USER_MALE from '../../resources/images/Patient-Icons/SVG/user-male.svg';
 import USER_FEMALE from '../../resources/images/Patient-Icons/SVG/user-female.svg';
 import AddViewCaregiverModal from '../../components/myCaregiver/addViewCaregiverModal';
-import {
-  getMyCaregiver,
-  getPendingReq,
-  getCode,
-} from '../../netcalls/requestsMyCaregiver';
+import {getCode, getMyCaregiver, getPendingReq} from '../../netcalls/requestsMyCaregiver';
 import AuthoriseContent from '../../components/myCaregiver/authoriseContent';
 import AuthoriseReqModal from '../../components/authoriseReqModal';
 

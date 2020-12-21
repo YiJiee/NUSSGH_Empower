@@ -1,25 +1,21 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image, Alert, ScrollView} from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 // third party lib
 import Moment from 'moment';
 //functions
 import {
-  getLastBgLog,
-  getLastWeightLog,
-  getLastMealLog,
-  getLastMedicationLog,
+    getLastBgLog,
+    getLastMealLog,
+    getLastMedicationLog,
+    getLastWeightLog,
 } from '../../../storage/asyncStorageFunctions';
+import {getDefaultMealType, handleSubmitMealLog} from '../../../commonFunctions/mealLogFunctions';
 import {
-  getDefaultMealType,
-  handleSubmitMealLog,
-  isValidMeal,
-} from '../../../commonFunctions/mealLogFunctions';
-import {
-  checkBloodGlucose,
-  checkWeight,
-  handleSubmitBloodGlucose,
-  handleSubmitMedication,
-  handleSubmitWeight,
+    checkBloodGlucose,
+    checkWeight,
+    handleSubmitBloodGlucose,
+    handleSubmitMedication,
+    handleSubmitWeight,
 } from '../../../commonFunctions/logFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 //components

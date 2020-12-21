@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, Image, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 //component
 import Clickable from '../../components/account/clickable';
 //style
@@ -10,10 +10,7 @@ import Ant from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import {Colors} from '../../styles/colors';
-import {
-  getPatientProfile,
-  getCaregiverProfile,
-} from '../../netcalls/requestsAccount';
+import {getCaregiverProfile, getPatientProfile} from '../../netcalls/requestsAccount';
 
 import USER_MALE from '../../resources/images/Patient-Icons/SVG/user-male.svg';
 import USER_FEMALE from '../../resources/images/Patient-Icons/SVG/user-female.svg';
@@ -173,7 +170,7 @@ const AccountDetailScreen = (props) => {
           closeModal={() => {}}
           modalVisible={false}
         />
-        
+
         <Clickable
           heading="Medication Plan"
           content=""

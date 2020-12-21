@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {Colors} from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
 import InProgress from '../inProgress';
-import CrossBtn from "../crossBtn";
-import {BackAndForwardButton} from "../BackAndForwardButtons";
-import {Pagination} from "../common/Pagination";
+import CrossBtn from '../crossBtn';
+import {BackAndForwardButton} from '../BackAndForwardButtons';
+import {Pagination} from '../common/Pagination';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
 

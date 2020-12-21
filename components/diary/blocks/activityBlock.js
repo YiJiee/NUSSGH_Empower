@@ -1,34 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import {
-  maxSteps,
-  maxCalBurnt,
-} from '../../../commonFunctions/diaryFunctions';
+import React, {useEffect, useRef, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {maxCalBurnt, maxSteps} from '../../../commonFunctions/diaryFunctions';
 //component
 import LeftArrowBtn from '../../logs/leftArrowBtn';
-import ProgressContent from './progressContent';
 //third party library
 import Modal from 'react-native-modal';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 //styles
-import { Colors } from '../../../styles/colors';
+import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 import logStyles from '../../../styles/logStyles';
-import { adjustSize } from '../../../commonFunctions/autoResizeFuncs';
+import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 //svg	import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-import HEARTRATE from '../../../resources/images/Patient-Icons/SVG/icon-navy-heartrate.svg';
 import DISTANCE from '../../../resources/images/Patient-Icons/SVG/icon-navy-distance.svg';
 import CALBURNT from '../../../resources/images/Patient-Icons/SVG/icon-navy-calburnt.svg';
 import STEPS from '../../../resources/images/Patient-Icons/SVG/icon-navy-steps.svg';
 import EXERCISE from '../../../resources/images/Patient-Icons/SVG/icon-navy-activemins.svg';
-import { step_key } from '../../../commonFunctions/logFunctions';
+import {step_key} from '../../../commonFunctions/logFunctions';
 import ProgressContent2 from './progressContent2';
 
 const heartRate = 'heartrate';

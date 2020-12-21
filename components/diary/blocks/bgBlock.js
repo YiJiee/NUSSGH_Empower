@@ -1,17 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 //function
-import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-} from '../../../commonFunctions/common';
-import {
-  showEdit,
-  getMissedArr,
-  getTime12hr,
-} from '../../../commonFunctions/diaryFunctions';
+import {afternoonObj, eveningObj, morningObj} from '../../../commonFunctions/common';
+import {getMissedArr, getTime12hr, showEdit} from '../../../commonFunctions/diaryFunctions';
 import {bg_key} from '../../../commonFunctions/logFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 //third party library

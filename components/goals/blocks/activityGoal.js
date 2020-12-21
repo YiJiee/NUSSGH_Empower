@@ -1,18 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  Alert,
-} from 'react-native';
-import {
-  maxDuration,
-  maxCalBurnt,
-} from '../../../commonFunctions/diaryFunctions';
+import React, {useEffect, useState} from 'react';
+import {Alert, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {maxCalBurnt, maxDuration} from '../../../commonFunctions/diaryFunctions';
 //third party lib
 import Modal from 'react-native-modal';
-import Moment, {duration} from 'moment';
 //styles
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
@@ -21,11 +11,7 @@ import LeftArrowBtn from '../../logs/leftArrowBtn';
 import NameDateSelector from '../nameDateSelector';
 import RenderCounter from '../../renderCounter';
 import {addActivityGoalReq} from '../../../netcalls/requestsGoals';
-import {
-  getFrequency,
-  activity,
-  defaultv,
-} from '../../../commonFunctions/goalFunctions';
+import {defaultv} from '../../../commonFunctions/goalFunctions';
 
 const ActivityGoal = (props) => {
   const {visible, parent, activity} = props;

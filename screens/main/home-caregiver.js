@@ -1,13 +1,5 @@
-import React, {useEffect, useState, useRef} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Animated,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 //component
 import MenuBtn from '../../components/menuBtn';
 import HeaderCard from '../../components/home/headerCard';
@@ -23,9 +15,9 @@ import AssignedPatientCollapse from '../../components/home/collapsible/assignedP
 import PatientType from '../../components/home/collapsible/patientTypeCollapse';
 import PatientInfo from '../../components/home/collapsible/patientInfo';
 import {
-  getAuthorisedStatusCaregiver,
-  storeAuthorisedStatusCaregiver,
-  storePermissions,
+    getAuthorisedStatusCaregiver,
+    storeAuthorisedStatusCaregiver,
+    storePermissions,
 } from '../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 import AuthorisationCaregiver from '../../components/home/authorisationCaregiver';

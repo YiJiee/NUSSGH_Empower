@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 //component
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
@@ -9,7 +9,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import moment from 'moment';
 
 import {getDateObj} from '../../commonFunctions/diaryFunctions';
-import dummyData from '../../components/lab/dummyLabData.json';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 import LabReportDetail from '../../components/lab/labReportDetail';
 import {getLabResults} from '../../netcalls/requestsLab';

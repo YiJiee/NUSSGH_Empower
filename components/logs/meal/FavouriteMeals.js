@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, StyleSheet, ActivityIndicator, Alert, TouchableOpacity, Text} from 'react-native';
+import {ActivityIndicator, Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 // Functions
-import {requestUnfavouriteMeal, requestFavouriteMealList} from "../../../netcalls/mealEndpoints/requestMealLog";
+import {requestFavouriteMealList, requestUnfavouriteMeal} from '../../../netcalls/mealEndpoints/requestMealLog';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 // Others
-import MealList from "./MealList";
+import MealList from './MealList';
 // third party lib
 import Modal from 'react-native-modal';
 

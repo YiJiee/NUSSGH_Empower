@@ -1,13 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
-import {
-  med_key,
-  food_key,
-  bg_key,
-  weight_key,
-} from '../../commonFunctions/logFunctions';
+import {bg_key, food_key, med_key, weight_key} from '../../commonFunctions/logFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
 

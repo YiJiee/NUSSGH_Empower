@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import RadioButton from '../radioButton';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 

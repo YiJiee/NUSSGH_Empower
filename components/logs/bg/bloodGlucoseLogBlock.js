@@ -1,12 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 //components
 import HypoglycemiaBlock from './hypoglycemiaBlock';
 import LeftArrowBtn from '../leftArrowBtn';
@@ -15,10 +8,10 @@ import RemoveModal from '../../diary/removeModal';
 import SuccessDialogue from '../../successDialogue';
 //functions
 import {
-  checkBloodGlucoseText,
-  checkBloodGlucose,
-  handleSubmitBloodGlucose,
-  bg_key,
+    bg_key,
+    checkBloodGlucose,
+    checkBloodGlucoseText,
+    handleSubmitBloodGlucose,
 } from '../../../commonFunctions/logFunctions';
 import {getDateObj} from '../../../commonFunctions/diaryFunctions';
 import {deleteBgLog, editBgLog} from '../../../netcalls/requestsDiary';
@@ -30,7 +23,6 @@ import logStyles from '../../../styles/logStyles';
 import diaryStyles from '../../../styles/diaryStyles';
 //third party lib
 import Modal from 'react-native-modal';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DeleteBin from '../../deleteBin';
 
 const BloodGlucoseLogBlock = (props) => {

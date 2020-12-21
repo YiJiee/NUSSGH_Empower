@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
-import {View, Linking} from 'react-native';
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from '@react-navigation/stack';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 //functions
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '../redux/reduxMapping';
@@ -19,7 +15,6 @@ import MyWord from './main/gameCenter/myWord';
 import FillTheCard from './main/gameCenter/fillTheCard';
 import RedeemPage from './main/gameCenter/redeemPage';
 //components
-import AskAdd from './onboarding/medicationPlan/askAdd';
 import FitbitSetup from './onboarding/fitbit/FitbitSetup';
 import DrawerNavigator from './drawer';
 import MyCaregiverScreen from './more/myCaregiver';

@@ -1,21 +1,13 @@
 import React from 'react';
-import {
-    FlatList,
-    View,
-    Text,
-    ScrollView,
-    StyleSheet,
-    TouchableHighlight
-} from "react-native";
+import {FlatList, ScrollView, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 // Functions
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 // Components
 import RenderMealItem from './RenderMealItem';
 // Others
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import {unfavouriteMealEndpoint} from '../../../netcalls/urls';
-import FoodRow from "./FoodRow";
-import logStyles from "../../../styles/logStyles";
+import FoodRow from './FoodRow';
+import logStyles from '../../../styles/logStyles';
 import Modal from 'react-native-modal';
 
 // Props description

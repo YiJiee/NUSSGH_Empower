@@ -1,27 +1,26 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {Text, View, TouchableOpacity, Image, Animated} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 //styles
 import logStyles from '../../styles/logStyles';
 import globalStyles from '../../styles/globalStyles';
 //function
 import {
-  renderLogIcon,
-  bg_key,
-  food_key,
-  med_key,
-  weight_key,
-  isToday,
-  isPeriod,
-  renderLogIconWhite,
+    bg_key,
+    food_key,
+    isPeriod,
+    isToday,
+    med_key,
+    renderLogIconWhite,
+    weight_key,
 } from '../../commonFunctions/logFunctions';
 //third part lib
 import Entypo from 'react-native-vector-icons/Entypo';
 //function
 import {
-  getLastBgLog,
-  getLastMealLog,
-  getLastMedicationLog,
-  getLastWeightLog,
+    getLastBgLog,
+    getLastMealLog,
+    getLastMedicationLog,
+    getLastWeightLog,
 } from '../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //component

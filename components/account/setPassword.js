@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import PasswordStrengthMeter from '../passwordStrengthMeter';
 import globalStyles from '../../styles/globalStyles';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';

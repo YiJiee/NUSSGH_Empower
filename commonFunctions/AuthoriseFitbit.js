@@ -1,5 +1,5 @@
-import {authorisationHeader, client_id, fitbitTokenUri, redirect_uri} from "../config/FitbitConfig";
-import {postFitbitToken} from "../netcalls/fitbitEndpoints/tokenRequests";
+import {authorisationHeader, client_id, fitbitTokenUri, redirect_uri} from '../config/FitbitConfig';
+import {postFitbitToken} from '../netcalls/fitbitEndpoints/tokenRequests';
 
 const qs = require('qs');
 

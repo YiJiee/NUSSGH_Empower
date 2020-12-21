@@ -1,19 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Alert,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import CountdownTimer from '../../components/countdownTimer';
-import {
-  verifyOTPRequest,
-  sendOTPRequest,
-} from '../../netcalls/requestsPasswordReset';
+import {sendOTPRequest, verifyOTPRequest} from '../../netcalls/requestsPasswordReset';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //third party lib
 import Modal from 'react-native-modal';

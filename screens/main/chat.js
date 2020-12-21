@@ -1,5 +1,5 @@
-import React, {useRef, useEffect} from 'react';
-import {View, StyleSheet, Text, Animated, Dimensions} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
 import InProgress from '../../components/inProgress';

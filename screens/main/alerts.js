@@ -1,11 +1,8 @@
-import React, {useRef, useEffect, useState} from 'react';
-import {View, StyleSheet, Text, Animated, Dimensions} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, Dimensions, StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
-import {
-  notif_addlog,
-  getGreetingFromHour,
-} from '../../commonFunctions/common';
+import {getGreetingFromHour, notif_addlog} from '../../commonFunctions/common';
 import NotificationRow from '../../components/home/notificationRow';
 import {useNavigation} from '@react-navigation/native';
 import {storeReadNotifDate} from '../../storage/asyncStorageFunctions';

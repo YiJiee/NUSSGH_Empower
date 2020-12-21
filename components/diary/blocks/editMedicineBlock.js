@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Text, TouchableOpacity, View} from 'react-native';
 //third party library
 import Modal from 'react-native-modal';
 import Entypo from 'react-native-vector-icons/Entypo';

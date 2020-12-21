@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import {Dimensions, Text, View} from 'react-native';
 // Components
 import FoodRow from './FoodRow';
 import logStyles from '../../../styles/logStyles';

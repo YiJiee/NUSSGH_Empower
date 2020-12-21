@@ -1,25 +1,26 @@
 import React, {Component} from 'react';
 import {
-  View,
-  Text,
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  Alert,
-  KeyboardAvoidingView, ScrollView,
+  View,
 } from 'react-native';
 //third party libs
 import {connect} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 //functions
-import {mapStateToProps, mapDispatchToProps} from '../../redux/reduxMapping';
+import {mapDispatchToProps, mapStateToProps} from '../../redux/reduxMapping';
 import {
-  storeUsername,
+  getPassword,
   getUsername,
   storePassword,
-  getPassword,
-  storeToken,
   storeRole,
+  storeToken,
+  storeUsername,
 } from '../../storage/asyncStorageFunctions';
 import {loginRequest} from '../../netcalls/requestsAuth';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
@@ -29,7 +30,6 @@ import globalStyles from '../../styles/globalStyles';
 import loginStyles, {loginLogoStyle} from '../../styles/loginStyles';
 //svg
 import Logo from '../../resources/images/Patient-Icons/SVG/icon-color-empower.svg';
-import {role_patient, role_caregiver} from '../../commonFunctions/common';
 import {Colors} from '../../styles/colors';
 import {getSecurityQnByUsername} from '../../netcalls/requestsSecurityQn';
 

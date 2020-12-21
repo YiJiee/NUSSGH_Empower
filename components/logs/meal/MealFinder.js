@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableHighlight, StyleSheet} from "react-native";
+import {StyleSheet, Text, TouchableHighlight} from 'react-native';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 

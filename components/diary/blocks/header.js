@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 //third part library
 import Entypo from 'react-native-vector-icons/Entypo';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';

@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 import CrossBtn from '../crossBtn';

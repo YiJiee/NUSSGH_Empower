@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {Text, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';

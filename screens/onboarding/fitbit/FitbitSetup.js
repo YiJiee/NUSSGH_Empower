@@ -1,12 +1,10 @@
-import React, {useState, useRef} from 'react';
-import {View, StyleSheet, Text, Animated, Linking, Image} from 'react-native';
+import React, {useRef} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 //function
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 // components
-import ResponseModal from '../../../components/onboarding/fitbit/ResponseModal';
 import LeftArrowBtn from '../../../components/logs/leftArrowBtn';
 // others
-import {STATUS} from '../../../components/onboarding/fitbit/Status';
 import globalStyles from '../../../styles/globalStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Colors} from '../../../styles/colors';

@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, FlatList } from 'react-native';
+import {ActivityIndicator, FlatList, Text, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
-import { ResourcesTab } from "../../components/education/ResourcesTab";
-import { getArticles, getHypoCorrectionFoodArticles } from "../../netcalls/education/educationEndpoints";
-import { EducationMediaRow } from "../../components/education/EducationMediaRow";
-import { HypoCorrectionFoodRow } from "../../components/education/HypoCorrectionFoodRow";
+import {ResourcesTab} from '../../components/education/ResourcesTab';
+import {getArticles, getHypoCorrectionFoodArticles} from '../../netcalls/education/educationEndpoints';
+import {EducationMediaRow} from '../../components/education/EducationMediaRow';
+import {HypoCorrectionFoodRow} from '../../components/education/HypoCorrectionFoodRow';
 import Modal from 'react-native-modal';
-import FoodModalContent from "../../components/logs/meal/FoodModalContent";
-import { adjustSize } from '../../commonFunctions/autoResizeFuncs';
+import FoodModalContent from '../../components/logs/meal/FoodModalContent';
+import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 
 
 const EducationMaterialsScreen = (props) => {

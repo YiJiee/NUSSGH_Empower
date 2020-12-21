@@ -1,11 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party libs
 import Moment from 'moment';
 import DatePicker from 'react-native-date-picker';

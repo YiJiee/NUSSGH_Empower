@@ -1,20 +1,20 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  TextInput,
-  Image,
-  TouchableWithoutFeedback,
-  Animated,
-  LayoutAnimation,
-  Platform,
-  UIManager,
-  Alert,
-  TouchableOpacity,
-  FlatList,
-  Modal,
+    Alert,
+    Animated,
+    FlatList,
+    Image,
+    LayoutAnimation,
+    Modal,
+    Platform,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableHighlight,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    UIManager,
+    View,
 } from 'react-native';
 // Components
 import FoodModalContent from './FoodModalContent';
@@ -25,10 +25,7 @@ import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 // Others such as images, icons.
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import FlashMessage from '../../FlashMessage';
-import {
-  handleSubmitMealLog,
-  isValidMeal,
-} from '../../../commonFunctions/mealLogFunctions';
+import {handleSubmitMealLog, isValidMeal} from '../../../commonFunctions/mealLogFunctions';
 import FoodSearchEngineScreen from './FoodSearchEngine';
 import SuccessDialogue from '../../successDialogue';
 import {food_key} from '../../../commonFunctions/logFunctions';

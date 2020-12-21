@@ -1,10 +1,5 @@
 import moment from 'moment';
-import {
-  morningObj,
-  afternoonObj,
-  eveningObj,
-  getGreetingFromHour,
-} from './common';
+import {afternoonObj, eveningObj, getGreetingFromHour, morningObj} from './common';
 import {getMedication4Day} from '../netcalls/requestsLog';
 
 const maxCarbs = 150; //grams

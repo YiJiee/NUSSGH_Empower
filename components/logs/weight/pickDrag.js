@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Platform,
-  InteractionManager,
-  Dimensions,
-} from 'react-native';
+import {Dimensions, InteractionManager, Platform, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 

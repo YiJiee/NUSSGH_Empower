@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, Alert} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 //styles
 import globalStyles from '../../styles/globalStyles';
 //components
@@ -7,18 +7,13 @@ import LeftArrowBtn from '../../components/logs/leftArrowBtn';
 //style
 import {Colors} from '../../styles/colors';
 import {
-  getCompletePlan,
-  prepareDataFromAPI,
-  postPlan,
-  prepareData,
-  deleteMedPlan,
+    deleteMedPlan,
+    getCompletePlan,
+    postPlan,
+    prepareData,
+    prepareDataFromAPI,
 } from '../../netcalls/requestsMedPlan';
-import {
-  med_plan,
-  med_planAdd,
-  med_planEdit,
-  editMed,
-} from '../../commonFunctions/medicationFunction';
+import {editMed, med_planAdd, med_planEdit} from '../../commonFunctions/medicationFunction';
 import LoadingModal from '../../components/loadingModal';
 import PlannedMedList from '../../components/medication/displayMedList/plannedMedList';
 import AddMedicationModal from '../../components/medication/addMedicationModal';

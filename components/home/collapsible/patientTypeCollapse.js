@@ -1,12 +1,11 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 import TYPE_1 from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-type1-alert.svg';
 import TYPE_2 from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-type2-alert.svg';
 import HYPER from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-hyper-alert.svg';
-import HYPO from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-hypo-alert.svg';
 import INSULIN from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-insulin-alert.svg';
 import PREGNANT from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-preg-alert.svg';
 import PRIORITY from '../../../resources/images/Caregiver-Additional-Icons/SVG/cg-icon-navy-priority-alert.svg';

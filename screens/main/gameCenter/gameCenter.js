@@ -1,14 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Animated,
-  Text,
-  Dimensions,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {Animated, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party libs
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';

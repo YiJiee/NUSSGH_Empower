@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, StyleSheet, FlatList} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 //third party libs
 import {connect} from 'react-redux';
 //functions
-import {mapStateToProps, mapDispatchToProps} from '../../redux/reduxMapping';
+import {mapDispatchToProps, mapStateToProps} from '../../redux/reduxMapping';
 import {storeToken} from '../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //components

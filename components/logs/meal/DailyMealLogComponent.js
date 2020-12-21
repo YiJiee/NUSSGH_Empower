@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 // Components
-import DateSelectionBlock from "../dateSelectionBlock";
-import MealTypeSelectionBlock from "./MealTypeSelectionBlock";
-import MealFinder from "./MealFinder";
-import RenderMealItem from "./RenderMealItem";
+import DateSelectionBlock from '../dateSelectionBlock';
+import MealTypeSelectionBlock from './MealTypeSelectionBlock';
+import MealFinder from './MealFinder';
+import RenderMealItem from './RenderMealItem';
 // Others
 import Entypo from 'react-native-vector-icons/Entypo';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';

@@ -20,29 +20,11 @@ import AlertNotifIcon from '../components/alertNotifIcon';
 //function
 import {adjustSize} from '../commonFunctions/autoResizeFuncs';
 
-import {
-  morningObj,
-  afternoonObj,
-  getGreetingFromHour,
-} from '../commonFunctions/common';
-import {
-  checkLogDone,
-  food_key,
-  bg_key,
-  med_key,
-  weight_key,
-} from '../commonFunctions/logFunctions';
-import {
-  getParticularLogTypeIncompleteText,
-  checkNotificationMsg,
-} from '../commonFunctions/notifFunction';
-import {
-  getReadNotifDate,
-  storeReadNotifDate,
-  getPermissions,
-} from '../storage/asyncStorageFunctions';
+import {afternoonObj, getGreetingFromHour, morningObj} from '../commonFunctions/common';
+import {bg_key, checkLogDone, food_key, med_key, weight_key} from '../commonFunctions/logFunctions';
+import {checkNotificationMsg, getParticularLogTypeIncompleteText} from '../commonFunctions/notifFunction';
+import {getPermissions, getReadNotifDate} from '../storage/asyncStorageFunctions';
 import moment from 'moment';
-import {getCaregiverProfile} from '../netcalls/requestsAccount';
 
 const Tab = createBottomTabNavigator();
 

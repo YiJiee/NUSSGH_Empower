@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import globalStyles from '../../styles/globalStyles';
 //component
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
@@ -7,7 +7,7 @@ import PartialNFullCalendar from '../../components/partialNFullCalendar';
 //third party lib
 import Moment from 'moment';
 //function
-import {get3DayB4NAfter, convertDatestring} from '../../commonFunctions/common';
+import {get3DayB4NAfter} from '../../commonFunctions/common';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 import AppointmentContainer from '../../components/appointmentContainer';
 import {getAppointments} from '../../netcalls/requestsAppointment';

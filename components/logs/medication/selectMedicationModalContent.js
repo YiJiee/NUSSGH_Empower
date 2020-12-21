@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 //style
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
@@ -13,11 +12,7 @@ import RenderCounter from '../../renderCounter';
 //functions
 import {isEmpty} from '../../../commonFunctions/common';
 import SearchMedication from '../../medication/searchMedication';
-import {
-  med_key,
-  checkRepeatMedicine,
-  checkDosageText,
-} from '../../../commonFunctions/logFunctions';
+import {checkDosageText, checkRepeatMedicine, med_key} from '../../../commonFunctions/logFunctions';
 import logStyles from '../../../styles/logStyles';
 
 const SelectMedicationModalContent = (props) => {

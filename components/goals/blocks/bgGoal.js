@@ -1,17 +1,16 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
+    Alert,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
-import Moment from 'moment';
 //styles
 import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
@@ -19,12 +18,8 @@ import globalStyles from '../../../styles/globalStyles';
 import LeftArrowBtn from '../../logs/leftArrowBtn';
 import NameDateSelector from '../nameDateSelector';
 //styles
-import logStyles from '../../../styles/logStyles';
 //function
-import {
-  checkBloodGlucoseText,
-  min_bg,
-} from '../../../commonFunctions/logFunctions';
+import {checkBloodGlucoseText, min_bg} from '../../../commonFunctions/logFunctions';
 import {addBgGoalReq} from '../../../netcalls/requestsGoals';
 import {defaultv} from '../../../commonFunctions/goalFunctions';
 import RenderCounter from '../../renderCounter';

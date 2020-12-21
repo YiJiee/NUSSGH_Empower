@@ -1,10 +1,8 @@
 import React from 'react';
 import {Platform} from 'react-native';
 import RNPusherPushNotifications from 'react-native-pusher-push-notifications';
-import {getToken} from '../storage/asyncStorageFunctions';
-import {appRootNavigation} from "../screens/appRoot";
-import {notificationPathMapping} from "../config/AppConfig";
-import {defaultRoute} from "../components/notification/PushNotifHandler";
+import {notificationPathMapping} from '../config/AppConfig';
+import {defaultRoute} from '../components/notification/PushNotifHandler';
 
 const donutsInterest = 'debug-donuts';
 

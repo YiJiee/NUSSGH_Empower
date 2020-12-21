@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {View, StyleSheet, FlatList, Text, Animated} from 'react-native';
+import {Animated, FlatList, Text, View} from 'react-native';
 //styles
 import logStyles from '../../../styles/logStyles';
 import {Colors} from '../../../styles/colors';

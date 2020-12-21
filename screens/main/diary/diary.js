@@ -1,15 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Animated,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 //component
 import TargetBlock from '../../../components/diary/targetBlock';
-import CalendarDay2Component from '../../../components/diary/calendarDay_2';
 //functions
 import {getDateRange} from '../../../commonFunctions/diaryFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
@@ -18,8 +10,6 @@ import globalStyles from '../../../styles/globalStyles';
 import {Colors} from '../../../styles/colors';
 //third party lib
 import Moment from 'moment';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Calendar} from 'react-native-calendars';
 import LeftArrowBtn from '../../../components/logs/leftArrowBtn';
 import PartialNFullCalendar from '../../../components/partialNFullCalendar';
 

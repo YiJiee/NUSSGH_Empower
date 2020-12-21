@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View, StyleSheet} from "react-native";
+import {StyleSheet, Text, View} from 'react-native';
 // Components
-import Select from "../../select";
-import logStyles from "../../../styles/logStyles";
+import Select from '../../select';
+import logStyles from '../../../styles/logStyles';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 

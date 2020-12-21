@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {renderNutrientPercent} from '../../commonFunctions/common';
 import ProgressBar from '../progressbar';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';

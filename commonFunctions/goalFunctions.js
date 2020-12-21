@@ -1,11 +1,6 @@
 import moment from 'moment';
 import {getDateObj} from './diaryFunctions';
-import {
-  bg_key,
-  food_key,
-  med_key,
-  weight_key,
-} from '../commonFunctions/logFunctions';
+import {bg_key, food_key, med_key, weight_key} from '../commonFunctions/logFunctions';
 
 const bg = 'blood_glucose';
 const food = 'food';

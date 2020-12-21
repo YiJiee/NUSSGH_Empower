@@ -1,14 +1,10 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Colors} from '../../../styles/colors';
 import {useNavigation} from '@react-navigation/native';
 
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
-import {
-  requestGetOverview,
-  requestGetRewardOverview,
-} from '../../../netcalls/gameCenterEndPoints/requestGameCenter';
 
 const GameCollapse = (props) => {
   const {availableItems, allItems, points, chances} = props;

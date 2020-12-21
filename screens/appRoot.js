@@ -1,16 +1,8 @@
 import React, {Component} from 'react';
-import {View, Linking} from 'react-native';
+import {Linking, View} from 'react-native';
 //third party libs
-import {
-  getFocusedRouteNameFromRoute,
-  NavigationContainer,
-} from '@react-navigation/native';
-import {
-  createStackNavigator,
-  CardStyleInterpolators,
-} from '@react-navigation/stack';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Animated, {Easing} from 'react-native-reanimated';
+import {NavigationContainer} from '@react-navigation/native';
+import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 //functions
 import {connect} from 'react-redux';
 import {mapDispatchToProps, mapStateToProps} from '../redux/reduxMapping';
@@ -23,15 +15,12 @@ import Logout from './more/logout';
 import ContactUs from './contactUs';
 import PatientRoot from './patientRoot';
 import {getRole, getUsername} from '../storage/asyncStorageFunctions';
-import {role_patient, role_caregiver} from '../commonFunctions/common';
+import {role_caregiver, role_patient} from '../commonFunctions/common';
 import CaregiverRoot from './caregiverRoot';
 import LoadingScreen from '../components/account/initLoadingScreen';
 
 import {appRootUrl, availablePaths} from '../config/AppConfig';
-import {
-  defaultRoute,
-  handler,
-} from '../components/notification/PushNotifHandler';
+import {handler} from '../components/notification/PushNotifHandler';
 import PushNotification from 'react-native-push-notification';
 import QnVerifcationScreen from './login/qnVerificationScreen';
 import OnboardingWizard from './onboarding/onboardingWizard';

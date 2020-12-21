@@ -1,5 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Animated} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';

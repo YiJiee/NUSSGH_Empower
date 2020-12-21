@@ -1,5 +1,5 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {TextInput, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, TextInput} from 'react-native';
 //styles
 import logStyles from '../../styles/logStyles';
 import {Colors} from '../../styles/colors';

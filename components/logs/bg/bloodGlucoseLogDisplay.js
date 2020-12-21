@@ -1,9 +1,8 @@
-import React, {useRef, useEffect} from 'react';
-import {Text, View, Animated} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Text, View} from 'react-native';
 //styles
 import logStyles from '../../../styles/logStyles';
 import {Colors} from '../../../styles/colors';
-import {horizontalMargins} from '../../../styles/variables';
 
 //show last values
 const BloodGlucoseLogDisplay = (props) => {

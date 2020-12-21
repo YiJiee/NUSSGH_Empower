@@ -1,27 +1,25 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //function
 import {getEntry4Day} from '../../netcalls/requestsDiary';
 import {
-  getNutrientCount,
-  filterMorning,
-  filterAfternoon,
-  filterEvening,
-  checkMedTaken4Day,
-  getMedDonePeriods,
-  renderGreetingText,
-  checkFoodLogQuantity,
-  getDateObj,
+    checkFoodLogQuantity,
+    checkMedTaken4Day,
+    filterAfternoon,
+    filterEvening,
+    filterMorning,
+    getMedDonePeriods,
+    getNutrientCount,
+    renderGreetingText,
 } from '../../commonFunctions/diaryFunctions';
 import {
-  bg_key,
-  food_key,
-  weight_key,
-  med_key,
-  activity_key,
-  renderLogIcon,
-  renderLogIconNavy,
-  dateFrom2dayLog,
+    activity_key,
+    bg_key,
+    dateFrom2dayLog,
+    food_key,
+    med_key,
+    renderLogIconNavy,
+    weight_key,
 } from '../../commonFunctions/logFunctions';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
 //styles
@@ -37,13 +35,7 @@ import WeightBlock from './blocks/weightBlock';
 import ActivityBlock from './blocks/activityBlock';
 import MedBlock from './blocks/medBlock';
 import FoodBlock from './blocks/foodBlock';
-import {getMedication4Day} from '../../netcalls/requestsLog';
-import {
-  renderNutrientPercent,
-  carbs,
-  protein,
-  fats,
-} from '../../commonFunctions/common';
+import {carbs, fats, protein, renderNutrientPercent} from '../../commonFunctions/common';
 
 const button_list = [bg_key, food_key, med_key, weight_key, activity_key];
 

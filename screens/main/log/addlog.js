@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import {Animated, Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Moment from 'moment';
 import Modal from 'react-native-modal';
@@ -18,22 +10,15 @@ import {Colors} from '../../../styles/colors';
 import globalStyles from '../../../styles/globalStyles';
 //function
 import {
-  bg_key,
-  food_key,
-  med_key,
-  weight_key,
-  renderLogIcon,
-  checkLogDone,
-  renderLogIconNavy,
-  renderUncompleteLogText,
+    bg_key,
+    checkLogDone,
+    food_key,
+    med_key,
+    renderLogIconNavy,
+    renderUncompleteLogText,
+    weight_key,
 } from '../../../commonFunctions/logFunctions';
-import {
-  getGreetingFromHour,
-  morningObj,
-  afternoonObj,
-  navy_color,
-  eveningObj,
-} from '../../../commonFunctions/common';
+import {afternoonObj, getGreetingFromHour, morningObj} from '../../../commonFunctions/common';
 //components
 import LastLogButton from '../../../components/logs/lastLogBtn';
 import DateSelectionBlock from '../../../components/logs/dateSelectionBlock';

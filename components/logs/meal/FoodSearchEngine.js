@@ -1,35 +1,34 @@
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  TouchableHighlight,
-  Alert,
-  Animated,
-  Keyboard,
-  Platform,
-  KeyboardAvoidingView,
+    ActivityIndicator,
+    Alert,
+    Animated,
+    FlatList,
+    Image,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 // Components
 import Searchbar from '../../Searchbar';
 import FoodModalContent from './FoodModalContent';
-import FavouriteMealComponent from "./FavouriteMeals";
+import FavouriteMealComponent from './FavouriteMeals';
 // Functions
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 // Others
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import {requestFoodSearch} from '../../../netcalls/foodEndpoints/requestFoodSearch';
-import {requestMealLogList, requestNutrientConsumption} from "../../../netcalls/mealEndpoints/requestMealLog";
-import globalStyles from "../../../styles/globalStyles";
-import logStyles from "../../../styles/logStyles";
+import {requestMealLogList} from '../../../netcalls/mealEndpoints/requestMealLog';
+import globalStyles from '../../../styles/globalStyles';
+import logStyles from '../../../styles/logStyles';
 import Modal from 'react-native-modal';
-import {Colors} from "../../../styles/colors";
+import {Colors} from '../../../styles/colors';
 import Moment from 'moment';
-import {getLastMinuteFromTodayDate, getTodayDate} from "../../../commonFunctions/common";
 // third party lib
 
 const AnimatedKeyboardAvoidingView = Animated.createAnimatedComponent(KeyboardAvoidingView);

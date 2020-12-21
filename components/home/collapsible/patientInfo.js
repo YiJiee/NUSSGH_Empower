@@ -1,7 +1,7 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
-import {isEmpty, getAge} from '../../../commonFunctions/common';
+import {isEmpty} from '../../../commonFunctions/common';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 
 const PatientInfo = (props) => {

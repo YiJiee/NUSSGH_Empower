@@ -1,15 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
-import moment from 'moment';
 //styles
 import {Colors} from '../../styles/colors';
 import globalStyles from '../../styles/globalStyles';
@@ -17,16 +9,16 @@ import logStyles from '../../styles/logStyles';
 //function
 import {normalTextFontSize} from '../../styles/variables';
 import {
-  weight,
-  bg,
-  food,
-  med,
-  activity,
-  renderGoalTypeName,
-  isMonday,
-  bgpost,
-  phyv,
-  selfv,
+    activity,
+    bg,
+    bgpost,
+    food,
+    isMonday,
+    med,
+    phyv,
+    renderGoalTypeName,
+    selfv,
+    weight,
 } from '../../commonFunctions/goalFunctions';
 import {deleteGoal} from '../../netcalls/requestsGoals';
 import {adjustSize} from '../../commonFunctions/autoResizeFuncs';

@@ -1,26 +1,12 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Alert,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //styles
 import globalStyles from '../../styles/globalStyles';
 import {Colors} from '../../styles/colors';
 //component
-import SecurityQnDropdown from '../../components/account/SecurityQnDropdown';
 import LeftArrowBtn from '../../components/logs/leftArrowBtn';
 //function
-import {getQuestions, setSecurityQn} from '../../netcalls/requestsSecurityQn';
 import {isEmpty} from '../../commonFunctions/common';
-import RadioButton from '../../components/radioButton';
 import {submitSecurityQn} from '../../commonFunctions/onboardingFunction';
 import SecurityQnComponent from '../../components/onboarding/securityQnComponent';
 

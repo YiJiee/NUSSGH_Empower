@@ -1,12 +1,5 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  Animated,
-  Alert,
-} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Alert, Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Colors} from '../../../styles/colors';
 //third party lib
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
@@ -15,9 +8,8 @@ import USER_F from '../../../resources/images/Patient-Icons/SVG/user-female.svg'
 import USER_M from '../../../resources/images/Patient-Icons/SVG/user-male.svg';
 
 import OptionsList from '../../optionList';
-import {bin, text, isEmpty} from '../../../commonFunctions/common';
+import {bin, isEmpty, text} from '../../../commonFunctions/common';
 import {unassignCaregiver} from '../../../netcalls/requestsMyCaregiver';
-import {scaleFont} from '../../../commonFunctions/scaleFunction';
 import {storeAuthorisedStatusCaregiver} from '../../../storage/asyncStorageFunctions';
 import {adjustSize} from '../../../commonFunctions/autoResizeFuncs';
 

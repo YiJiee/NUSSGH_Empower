@@ -1,16 +1,9 @@
-import React, {useState, useRef, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  Animated,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {Animated, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party libs
 import moment from 'moment';
 import DatePicker from 'react-native-date-picker';
 //styles
-import logStyles from '../../styles/logStyles';
 import {Colors} from '../../styles/colors';
 import {normalTextFontSize} from '../../styles/variables';
 import globalStyles from '../../styles/globalStyles';

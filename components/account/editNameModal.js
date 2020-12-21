@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, TextInput, Text, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Text, TextInput, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 import globalStyles from '../../styles/globalStyles';

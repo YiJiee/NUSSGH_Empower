@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {Alert, Dimensions, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 //third party library
 import Modal from 'react-native-modal';
 //component

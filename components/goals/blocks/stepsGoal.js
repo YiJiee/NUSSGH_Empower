@@ -1,13 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  Alert,
-  KeyboardAvoidingView,
-  Platform,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 //third party lib
 import Modal from 'react-native-modal';
 //styles
@@ -18,7 +10,6 @@ import LeftArrowBtn from '../../logs/leftArrowBtn';
 import NameDateSelector from '../nameDateSelector';
 import RenderCounter from '../../renderCounter';
 //function
-import {maxSteps} from '../../../commonFunctions/diaryFunctions';
 import {addStepsGoalReq} from '../../../netcalls/requestsGoals';
 import {defaultv} from '../../../commonFunctions/goalFunctions';
 

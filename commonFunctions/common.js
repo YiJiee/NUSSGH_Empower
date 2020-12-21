@@ -1,9 +1,6 @@
 import Moment from 'moment';
-import {getDateRange, getDateObj, getDateArray} from './diaryFunctions';
-import {
-  getPatientProfile,
-  getCaregiverProfile,
-} from '../netcalls/requestsAccount';
+import {getDateArray, getDateObj, getDateRange} from './diaryFunctions';
+import {getCaregiverProfile, getPatientProfile} from '../netcalls/requestsAccount';
 import {getRole} from '../storage/asyncStorageFunctions';
 
 const morning_key = 'Morning';

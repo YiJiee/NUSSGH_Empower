@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {View, StyleSheet, Dimensions, ScrollView, Animated} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, Dimensions, ScrollView, View} from 'react-native';
 //third party lib
 import Moment from 'moment';
 //component
@@ -9,30 +9,21 @@ import HeaderCard from '../../components/home/headerCard';
 import globalStyles from '../../styles/globalStyles';
 import {Colors} from '../../styles/colors';
 //function
-import {
-  checkLogDone,
-  dateFrom2dayLog,
-  weight_key,
-  bg_key,
-} from '../../commonFunctions/logFunctions';
+import {bg_key, checkLogDone, dateFrom2dayLog, weight_key} from '../../commonFunctions/logFunctions';
 import {requestNutrientConsumption} from '../../netcalls/mealEndpoints/requestMealLog';
 import {
-  getGreetingFromHour,
-  getLastMinuteFromTodayDate,
-  getTodayDate,
-  morningObj,
-  afternoonObj,
-  renderNutrientPercent,
-  carbs,
-  fats,
-  protein,
+    afternoonObj,
+    carbs,
+    fats,
+    getGreetingFromHour,
+    getLastMinuteFromTodayDate,
+    getTodayDate,
+    morningObj,
+    protein,
+    renderNutrientPercent,
 } from '../../commonFunctions/common';
 import {getEntry4Day} from '../../netcalls/requestsDiary';
-import {
-  checkMedTaken4Day,
-  getMedDonePeriods,
-  renderGreetingText,
-} from '../../commonFunctions/diaryFunctions';
+import {checkMedTaken4Day, getMedDonePeriods, renderGreetingText} from '../../commonFunctions/diaryFunctions';
 import NotifCollapse from '../../components/home/collapsible/notifCollapse';
 import DailyCollapse from '../../components/home/collapsible/dailyCollapse';
 import {getPatientProfile} from '../../netcalls/requestsAccount';
@@ -40,11 +31,7 @@ import ActivityCollapse from '../../components/home/collapsible/activityCollapse
 import OverviewCollapse from '../../components/home/collapsible/overviewCollapse';
 import GameCollapse from '../../components/home/collapsible/gameCollapse';
 import {getRole} from '../../storage/asyncStorageFunctions';
-import {adjustSize} from '../../commonFunctions/autoResizeFuncs';
-import {
-  requestGetOverview,
-  requestGetRewardOverview,
-} from '../../netcalls/gameCenterEndPoints/requestGameCenter';
+import {requestGetOverview, requestGetRewardOverview} from '../../netcalls/gameCenterEndPoints/requestGameCenter';
 
 // properties
 const today_date = Moment(new Date()).format('YYYY-MM-DD');

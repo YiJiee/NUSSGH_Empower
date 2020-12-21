@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Text, Animated, ScrollView} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated, ScrollView, StyleSheet, Text} from 'react-native';
 //styles
 import globalStyles from '../../../styles/globalStyles';
 //component
