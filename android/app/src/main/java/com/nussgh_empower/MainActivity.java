@@ -1,6 +1,7 @@
 package com.nussgh_empower;
 
 import com.facebook.react.ReactActivity;
+import com.rnfs.RNFSPackage; // <------- add package
 
 public class MainActivity extends ReactActivity {
   /**

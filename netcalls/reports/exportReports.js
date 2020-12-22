@@ -8,7 +8,6 @@ import {
     getWeightLogs
 } from "../requestsLog";
 import Moment from 'moment';
-import RNFetchBlob from "rn-fetch-blob";
 import {exportReportEndpoint} from "../urls";
 import {getLastMinuteFromTodayDate} from "../../commonFunctions/common";
 import {replaceActivitySummary} from "../../commonFunctions/reportDataFormatter";
@@ -101,27 +100,37 @@ async function getReportsDataForGraphs(startDate, endDate) {
 async function exportToPdfRequest(payload) {
     console.log('Exporting pdf... please wait');
     try {
-
-        if (Platform.OS === 'android') {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                {
-                    title: "Enable downloads from Empower",
-                    message:
-                        "Required to download reports!",
-                    buttonNeutral: "Ask Me Later",
-                    buttonNegative: "Cancel",
-                    buttonPositive: "OK"
-                }
-            );
-
-            if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-                return false;
-            }
-        }
-
         const dir = Platform.OS === 'ios' ? RNFS.DocumentDirectoryPath : RNFS.DownloadDirectoryPath;
+        let buildResp = await fetch(exportReportEndpoint, {
+            method: "POST",
+            headers: {
+                'Content-Type' : 'application/json',
+                Accept: 'application/json',
+                Authorization: `Bearer ${await getToken()}`
+            },
+            body: JSON.stringify(payload)
+        });
+        let file_id = (await buildResp.json())["_id"];
+        //console.log(file_id);
+        const filepath = dir + `/${payload.profile.name}.pdf`;
+        const downloadOptions = {
+            fromUrl: exportReportEndpoint + `?id=${file_id}`,
+            toFile: filepath,
+            headers: {
+                'Content-Type' : 'application/json',
+                Accept: 'application/pdf',
+                Authorization: `Bearer ${await getToken()}`
+            },
+            background: false
+        };
+        let downloadResult = await RNFS.downloadFile(downloadOptions).promise;
 
+        return {
+            downloadResult,
+            filepath
+        };
+
+    /*
         let resp = await RNFetchBlob.config({
             // add this option that makes response data to be stored as a file,
             // this is much more performant.
@@ -139,7 +148,7 @@ async function exportToPdfRequest(payload) {
 
         const outputFilePath = resp.path();
         console.log(`Successfully exported pdf to ${outputFilePath}!`);
-        return resp;
+     */
 
     } catch (e) {
         console.log('Error occurred while exporting pdf: ', e);

@@ -11,7 +11,7 @@ import {
     Image,
     FlatList,
     Alert,
-    Platform
+    Platform, PermissionsAndroid
 } from 'react-native';
 import globalStyles from "../../../styles/globalStyles";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -39,7 +39,6 @@ import {
     idealActivityDurationPerDayInMinutes,
     idealStepsPerDay
 } from "../../../commonFunctions/common";
-import RNFetchBlob from "rn-fetch-blob";
 import {defaultRange} from "../../../screens/main/reports";
 
 
@@ -66,7 +65,7 @@ const defaultExportFormat = 'PDF';
 
 function ExportReportsModal(props) {
     const {visible, setVisible, onSuccessExport} = props;
-    const [startDate, setStartDate] = useState(Moment(new Date()).subtract(6, 'days').toDate());
+    const [startDate, setStartDate] = useState(Moment(new Date()).subtract(6, 'days').startOf('day').toDate());
     const [endDate, setEndDate] = useState(new Date());
     const [selectedReportType, setSelectedReportTypes] = useState(reportTypes.map(type =>  {
         return {...type, selected: false};
@@ -114,6 +113,24 @@ function ExportReportsModal(props) {
                 },
             ]);
             return ;
+        }
+
+        if (Platform.OS === 'android') {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: "Enable downloads from Empower",
+                    message:
+                        "Required to download reports!",
+                    buttonNeutral: "Ask Me Later",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "OK"
+                }
+            );
+
+            if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                return false;
+            }
         }
 
         setDownloadProgress(1);
@@ -226,13 +243,14 @@ function ExportReportsModal(props) {
             if (reportType === 'Food Intake') {
                 const plot = processData(null, fullDataset.foodData, d=>d.date,
                     d=>d.nutrients.energy.amount, 'sum', null);
-                const pieData = filterAndProcessData(fullDataset.foodData, null, ['carbohydrate', 'total-fat', 'protein']);
+                let pieData = filterAndProcessData(fullDataset.foodData, null, ['carbohydrate', 'total-fat', 'protein']);
                 const totalSum = pieData.reduce((acc, curr, index) => acc + curr.value, 0);
                 const sliceColors = pieData.map(d => COLOR_MAP[d.name]);
-                const pieX = pieData.map(d => d.name);
-                const pieY = pieData.map(d => totalSum > 0 ? (d.value / totalSum) : 0);
 
                 const healthyCalorieUpBound = await getHealthyCalorieUpperBound();
+
+                const pieX = pieData.map(d => d.name);
+                const pieY = pieData.map(d => totalSum > 0 ? (d.value / totalSum) : 0);
 
                 const dataset = {
                     "title": reportType,
@@ -248,15 +266,18 @@ function ExportReportsModal(props) {
                                 "y_default_min": defaultRange.calorieChart.min,
                                 "y_default_max": defaultRange.calorieChart.max
                             }
-                        },
-                        {
-                            "graph_name": "Nutrition Distribution",
-                            "type": "pie-chart",
-                            "x": [pieX],
-                            "y": [pieY],
-                            "y_background_color": [sliceColors]
                         }
                     ]
+                }
+
+                if (pieData.length > 1) {
+                    dataset.plots.push({
+                        "graph_name": "Nutrition Distribution",
+                        "type": "pie-chart",
+                        "x": [pieX],
+                        "y": [pieY],
+                        "y_background_color": [sliceColors]
+                    });
                 }
 
                 payload.graphs.datasets.push(dataset);
@@ -359,14 +380,15 @@ function ExportReportsModal(props) {
             }
         }
 
-        let resp = await exportToPdfRequest(payload);
+        const resp = await exportToPdfRequest(payload);
 
-        if (resp && resp.respInfo.status === 200) {
+        if (resp && resp.downloadResult.statusCode === 200) {
+            const {filepath, downloadResult} = resp;
             setDownloadProgress(100);
 
-            const outputFilePath = resp.path();
-            await onSuccessExport(outputFilePath);
-            return resp;
+            await onSuccessExport(filepath);
+            console.log(`Successfully exported to ${filepath}`);
+            return downloadResult;
         } else {
             Alert.alert("Download error! Please try again later.", '', [
                 {
@@ -375,7 +397,7 @@ function ExportReportsModal(props) {
                 },
             ]);
             setDownloadProgress(-1);
-            return resp;
+            return null;
         }
 
     }
@@ -409,6 +431,7 @@ function ExportReportsModal(props) {
                         <CustomDatePicker date={startDate} label='From' setDate={setStartDate} />
                         <CustomDatePicker date={endDate} label='To' setDate={setEndDate} />
                     </View>
+                    <Text style={[globalStyles.pageDetails, {color: 'red', fontWeight: 'normal'}]}>Generated reports will appear in your default download folder</Text>
                 </ScrollView>
                 <View style={{flex: 1}} />
                 <View style={globalStyles.buttonContainer}>
